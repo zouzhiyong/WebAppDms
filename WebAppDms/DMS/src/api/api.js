@@ -18,7 +18,7 @@ let loadingInstance;
 //     location: "bottom"
 // })
 
-let base = 'http://localhost/WebAppDms';
+let base = '/WebAppDms';
 
 let _time = null;
 // 添加请求拦截器
