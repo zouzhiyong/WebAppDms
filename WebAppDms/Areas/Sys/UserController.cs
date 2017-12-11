@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -9,6 +10,9 @@ using WebAppDms.Models;
 
 namespace WebAppDms.Areas.Sys
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UserController : ApiBaseController
     {
         /// <summary>
@@ -39,7 +43,17 @@ namespace WebAppDms.Areas.Sys
             int currentPage = obj.currentPage;
             int total = 0;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => DeptID == 0 ? 1 == 1 : (x.DeptID == DeptID), s => s.UserID, true);
+            Expression<Func<view_user, bool>> where = null;
+
+            if (DeptID == 0)
+            {
+                where = a => true;
+            }else
+            {
+                where = a => a.DeptID == DeptID;
+            }
+
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, where, s => s.UserID, true);
 
             return Json(list, currentPage, pageSize, total);
         }

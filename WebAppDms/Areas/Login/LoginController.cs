@@ -10,6 +10,9 @@ using WebAppDms.Models;
 
 namespace WebAppDms.Areas.Login
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LoginController : ApiController
     {
         ////[Authorize]
@@ -24,12 +27,10 @@ namespace WebAppDms.Areas.Login
         }
 
         /// <summary>
-        /// 用户登录
+        /// 
         /// </summary>
-        /// <param name="strUser"></param>
-        /// <param name="strPwd"></param>
+        /// <param name="loginData"></param>
         /// <returns></returns>
-
         public object Login(getLogin loginData)
         {
             if (!ValidateUser(loginData.strUser, loginData.strPwd))

@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Security;
 using System.Web.SessionState;
 using WebAppDms.App_Start;
+using WebAppDms.Startup;
 
 namespace WebAppDms
 {
