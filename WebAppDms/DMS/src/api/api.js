@@ -33,8 +33,6 @@ instance.interceptors.request.use(function(config) {
     _time = setTimeout(() => {
         loadingInstance = Loading.service(options)
     }, 800);
-
-
     return config;
 }, function(error) {
     // 对请求错误做些什么
@@ -46,7 +44,7 @@ instance.interceptors.request.use(function(config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function(response) {
     // 对响应数据做点什么
-    // new Vue().$Progress.finish();
+    // new Vue().$Progress.finish();    
     clearTimeout(_time);
     try {
         loadingInstance.close();
@@ -58,7 +56,7 @@ instance.interceptors.response.use(function(response) {
                 type: 'success'
             });
         }
-    }
+    } else
     //判断返回状态是否为否
     if (response.data.result === false) {
         new Vue().$message({
@@ -70,14 +68,22 @@ instance.interceptors.response.use(function(response) {
 }, function(error) {
     // 对响应错误做点什么
     // this.$Progress.fail()
+
     clearTimeout(_time);
     try {
         loadingInstance.close();
     } catch (e) {}
-    new Vue().$message({
-        message: error.response.data.ExceptionMessage,
-        type: 'error'
-    });
+    if (error.response.data.Message) {
+        new Vue().$message({
+            message: error.response.data.Message + '请重新登录！',
+            type: 'error'
+        });
+    } else {
+        new Vue().$message({
+            message: error.response.data.ExceptionMessage,
+            type: 'error'
+        });
+    }
 
     return Promise.reject(error);
 });

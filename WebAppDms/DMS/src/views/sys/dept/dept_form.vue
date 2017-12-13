@@ -54,7 +54,7 @@ export default {
         if (valid) {
           SaveSysDeptForm(this.formData).then(result => {
             this.dialogVisible = false;
-            this.$parent.$parent.$refs.table.GetData();
+            this.$parent.$parent.$refs.table.$refs.table.GetData();
             this.$refs.ruleForm.resetFields();
           });
         } else {
