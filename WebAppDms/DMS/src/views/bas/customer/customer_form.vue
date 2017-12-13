@@ -1,8 +1,9 @@
 <template>
-  <el-dialog width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog width="550px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
-      <el-form @submit.native.prevent :inline="true" :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
+      <el-col :span="15">
+<el-form @submit.native.prevent :inline="false" :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
         <el-form-item label="客户编码" prop="Code">
           <el-input v-model="formData.Code" placeholder="客户编码"></el-input>
         </el-form-item> 
@@ -25,6 +26,14 @@
           </el-select>
         </el-form-item>
       </el-form>
+      </el-col>
+      <el-col :span="9">
+          <el-upload ref="upload" class="avatar-uploader" accept="image/png,image/jpeg" :headers="headers" action="/WebAppDms/api/customer/uploadPost" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+      </el-col>
+     
     </span>
     <span slot="footer">
       <custBotton>
@@ -38,9 +47,14 @@
 <script>
 import { FindBasCustomerForm, SaveBasCustomerForm } from "../../../api/api";
 import custBotton from "./../../layout/layout_button";
+let ticket = "BasicAuth " + sessionStorage.getItem("Ticket") || "";
 export default {
   data() {
     return {
+      headers: {
+        Authorization: ticket
+      },
+      imageUrl: "",
       dialogVisible: false,
       RegionList: [],
       formData: {},
@@ -81,19 +95,58 @@ export default {
     handleClose(done) {
       this.$refs.ruleForm.resetFields();
       this.dialogVisible = false;
+      this.$refs.upload.clearFiles();
       done();
     },
     handleChange(value) {
       this.formData.Region = value.toString();
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG、PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     }
   }
 };
 </script>
 
-<style scoped>
+<style scoped  lang="scss">
 .el-cascader,
 .el-input,
 .el-input__inner {
   width: 200px;
+}
+.avatar-uploader /deep/ .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader /deep/ .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

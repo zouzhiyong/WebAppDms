@@ -16,106 +16,106 @@
 </template>
 
 <script>
-  import { requestLogin, getMenu } from "../api/api";
-  //import NProgress from 'nprogress'
-  export default {
-    data() {
-      return {
-        logining: false,
-        ruleForm2: {
-          account: "admin",
-          checkPass: "12345678"
-        },
-        rules2: {
-          account: [
-            { required: true, message: "请输入账号", trigger: "blur" }
-            //{ validator: validaePass }
-          ],
-          checkPass: [
-            { required: true, message: "请输入密码", trigger: "blur" }
-            //{ validator: validaePass2 }
-          ]
-        },
-        checked: true
-      };
-    },
-    created() {
-      let leng = this.$router.options.routes.length;
-      this.$router.options.routes.splice(3, leng - 3);
-    },
-    methods: {
-      handleReset2() {
-        this.$refs.ruleForm2.resetFields();
+import { requestLogin, getMenu } from "../api/api";
+//import NProgress from 'nprogress'
+export default {
+  data() {
+    return {
+      logining: false,
+      ruleForm2: {
+        account: "admin",
+        checkPass: "12345678"
       },
-      handleSubmit2(ev) {
-        var _this = this;
-        this.$refs.ruleForm2.validate(valid => {
-          if (valid) {
-            //_this.$router.replace('/table');
-            this.logining = true;
-            // this.$Progress.start();
-            var loginParams = {
-              strUser: this.ruleForm2.account,
-              strPwd: this.ruleForm2.checkPass
-            };
-            requestLogin(loginParams).then(result => {
-              this.logining = false;
-              // this.$Progress.finish();
-              let { message, bRes, user, menu, Ticket } = result;
-              if (bRes !== true) {
-                this.$message({
-                  message: message,
-                  type: "error"
-                });
-              } else {
-                this.GetMenuData(menu);
-                sessionStorage.setItem("user", JSON.stringify(user));
-                sessionStorage.setItem("Ticket", Ticket);
-                this.$router.push({ path: "/index" });
-              }
-            });
-          } else {
-            console.log("error submit!!");
-            return false;
-          }
-        });
+      rules2: {
+        account: [
+          { required: true, message: "请输入账号", trigger: "blur" }
+          //{ validator: validaePass }
+        ],
+        checkPass: [
+          { required: true, message: "请输入密码", trigger: "blur" }
+          //{ validator: validaePass2 }
+        ]
       },
-      GetMenuData(data) {
-        sessionStorage.routes = JSON.stringify(data);
-        data.map(item => {
-          item.component = resolve => require([`./Home.vue`], resolve);
-          item.children.map(_item => {
-            _item.component = resolve =>
-              require(["./" + _item.MenuPath + `.vue`], resolve);
+      checked: true
+    };
+  },
+  created() {
+    let leng = this.$router.options.routes.length;
+    this.$router.options.routes.splice(3, leng - 3);
+  },
+  methods: {
+    handleReset2() {
+      this.$refs.ruleForm2.resetFields();
+    },
+    handleSubmit2(ev) {
+      var _this = this;
+      this.$refs.ruleForm2.validate(valid => {
+        if (valid) {
+          //_this.$router.replace('/table');
+          this.logining = true;
+          // this.$Progress.start();
+          var loginParams = {
+            strUser: this.ruleForm2.account,
+            strPwd: this.ruleForm2.checkPass
+          };
+          requestLogin(loginParams).then(result => {
+            this.logining = false;
+            // this.$Progress.finish();
+            let { message, bRes, user, menu, Ticket } = result;
+            if (bRes !== true) {
+              this.$message({
+                message: message,
+                type: "error"
+              });
+            } else {
+              sessionStorage.setItem("user", JSON.stringify(user));
+              sessionStorage.setItem("Ticket", Ticket);
+              this.GetMenuData(menu);
+              this.$router.push({ path: "/index" });
+            }
           });
-          this.$router.options.routes.push(item);
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    GetMenuData(data) {
+      sessionStorage.routes = JSON.stringify(data);
+      data.map(item => {
+        item.component = resolve => require([`./Home.vue`], resolve);
+        item.children.map(_item => {
+          _item.component = resolve =>
+            require(["./" + _item.MenuPath + `.vue`], resolve);
         });
-        this.$router.addRoutes(this.$router.options.routes);
-      }
+        this.$router.options.routes.push(item);
+      });
+      this.$router.addRoutes(this.$router.options.routes);
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-  .login-container {
-    /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    background-clip: padding-box;
-    margin: 180px auto;
-    width: 350px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-    box-shadow: 0 0 25px #cac6c6;
-    .title {
-      margin: 0px auto 40px auto;
-      text-align: center;
-      color: #505458;
-    }
-    .remember {
-      margin: 0px 0px 35px 0px;
-    }
+.login-container {
+  /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  background-clip: padding-box;
+  margin: 180px auto;
+  width: 350px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+  .title {
+    margin: 0px auto 40px auto;
+    text-align: center;
+    color: #505458;
   }
+  .remember {
+    margin: 0px 0px 35px 0px;
+  }
+}
 </style>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using WebAppDms.Controllers;
 using WebAppDms.Models;
@@ -137,6 +138,29 @@ namespace WebAppDms.Areas.Bas
             var result = obj.CustomerID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
+        }
+
+
+        public async Task<HttpResponseMessage> uploadPost()
+        {
+            // 检查是否是 multipart/form-data
+            if (!Request.Content.IsMimeMultipartContent("form-data"))
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            HttpResponseMessage response = null;
+
+            try
+            {
+                // 设置上传目录
+                var provider = new MultipartFormDataStreamProvider(System.Web.Hosting.HostingEnvironment.MapPath("~/UpLoad"));
+                // 接收数据，并保存文件
+                var bodyparts = await Request.Content.ReadAsMultipartAsync(provider);
+                response = Request.CreateResponse(HttpStatusCode.Accepted);
+            }
+            catch
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+            return response;
         }
     }
 }
