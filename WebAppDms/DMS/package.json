@@ -14,8 +14,12 @@
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "echarts": "^3.8.5",
-    "element-ui": "^2.0.7",
+    "element-ui": "^2.0.8",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
+    "http-proxy": "^1.16.2",
+    "net": "^1.0.2",
+    "tls": "0.0.1",
     "vue": "^2.5.9",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

@@ -402,6 +402,7 @@
     <Compile Include="Common\LoggingService.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
     <Compile Include="Controllers\DBhelper.cs" />
+    <Compile Include="Controllers\RequestAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

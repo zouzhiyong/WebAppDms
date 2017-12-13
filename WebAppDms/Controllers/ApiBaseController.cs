@@ -11,6 +11,7 @@ using WebAppDms.Models;
 
 namespace WebAppDms.Controllers
 {
+    [RequestAuthorize]
     [WebApiExceptionFilter]
     public class ApiBaseController : ApiController
     {
