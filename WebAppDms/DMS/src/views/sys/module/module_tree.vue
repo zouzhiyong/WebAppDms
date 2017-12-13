@@ -38,8 +38,8 @@ export default {
       });
     },
     handleNodeClick(data) {
-      this.$parent.$parent.$parent.$parent.$refs.table.conditionData = data;
-      this.$parent.$parent.$parent.$parent.$refs.table.GetData();
+      this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = data;
+      this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     }
   }
 };
