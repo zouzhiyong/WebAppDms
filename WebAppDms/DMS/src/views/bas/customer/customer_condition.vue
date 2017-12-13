@@ -21,22 +21,26 @@ export default {
       formInline: {
         CustomerName: "",
         RegionName: [],
-        Region: []
+        Region: ""
       }
     };
   },
   created() {
-    FindBasRegionList().then(result => {
-      this.RegionList = result.data;
-      this.formInline.Region = this.formInline.RegionName.toString();
-      this.$parent.$parent.$parent.$parent.$refs.table.conditionData = this.formInline;
-      this.$parent.$parent.$parent.$parent.$refs.table.GetData();
-    });
+    setTimeout(() => {
+      FindBasRegionList().then(result => {
+        this.RegionList = result.data;
+        this.formInline.Region = this.formInline.RegionName.toString();
+      });
+    }, 100);
+  },
+  mounted() {
+    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;
+    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
   },
   methods: {
     onSubmit() {
       this.$parent.$parent.$parent.$parent.$refs.table.conditionData = this.formInline;
-      this.$parent.$parent.$parent.$parent.$refs.table.GetData();
+      this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     },
     handleChange(value) {
       this.formInline.Region = value.toString();

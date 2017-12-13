@@ -32,7 +32,7 @@ instance.interceptors.request.use(function(config) {
     // new Vue().$Progress.start()
     _time = setTimeout(() => {
         loadingInstance = Loading.service(options)
-    }, 800);
+    }, 500);
     return config;
 }, function(error) {
     // 对请求错误做些什么
@@ -75,7 +75,7 @@ instance.interceptors.response.use(function(response) {
     } catch (e) {}
     if (error.response.data.Message) {
         new Vue().$message({
-            message: error.response.data.Message + '请重新登录！',
+            message: error.response.data.Message,
             type: 'error'
         });
     } else {
