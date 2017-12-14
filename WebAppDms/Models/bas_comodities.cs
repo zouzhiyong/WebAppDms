@@ -27,5 +27,6 @@ namespace WebAppDms.Models
         public string Barcode { get; set; }
         public string Remark { get; set; }
         public Nullable<int> IsValid { get; set; }
+        public string Photo { get; set; }
     }
 }

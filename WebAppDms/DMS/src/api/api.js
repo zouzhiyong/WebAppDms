@@ -87,7 +87,8 @@ axios.interceptors.response.use(function(response) {
     return Promise.reject(error);
 });
 
-
+//应用目录
+export const UploadPath = "/WebAppDms/UpLoad/";
 //登录
 export const requestLogin = params => { return axios.post(`/api/Login/Login`, params).then(res => res.data); };
 //模块设置页面

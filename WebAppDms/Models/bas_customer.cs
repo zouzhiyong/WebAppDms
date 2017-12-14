@@ -31,5 +31,6 @@ namespace WebAppDms.Models
         public Nullable<int> IsValid { get; set; }
         public Nullable<System.DateTime> ModifyDate { get; set; }
         public string Remark { get; set; }
+        public string Photo { get; set; }
     }
 }

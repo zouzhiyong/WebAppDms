@@ -28,7 +28,7 @@
       </el-form>
       </el-col>
       <el-col :span="9">
-          <el-upload ref="upload" class="avatar-uploader" accept="image/png,image/jpeg" :headers="headers" action="/WebAppDms/api/customer/uploadPost" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload ref="upload" class="avatar-uploader" accept="image/png,image/jpeg" :headers="headers" action="/WebAppDms/api/customer/ImgUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -45,7 +45,11 @@
 </template>
 
 <script>
-import { FindBasCustomerForm, SaveBasCustomerForm } from "../../../api/api";
+import {
+  FindBasCustomerForm,
+  SaveBasCustomerForm,
+  UploadPath
+} from "../../../api/api";
 import custBotton from "./../../layout/layout_button";
 let ticket = "BasicAuth " + sessionStorage.getItem("Ticket") || "";
 export default {
@@ -69,6 +73,7 @@ export default {
   methods: {
     GetData(row) {
       FindBasCustomerForm(row).then(result => {
+        this.imageUrl = result.data.Photo ? UploadPath + result.data.Photo : "";
         this.RegionList = this.$parent.$parent.$refs.condition.RegionList;
         result.data.RegionName = result.data.Region.split(",");
         this.formData = result.data;
@@ -103,6 +108,8 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.formData.Photo = file.response.url;
+      console.log(file);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";

@@ -560,6 +560,7 @@
     <Content Include="DMS\src\views\sys\user\user_tools.vue" />
     <Content Include="DMS\src\views\sys\user\user_tree.vue" />
     <Content Include="DMS\.vscode\settings.json" />
+    <Content Include="DMS\src\views\layout\layout_table.vue" />
     <None Include="Properties\PublishProfiles\webAppDms.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

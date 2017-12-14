@@ -22,6 +22,7 @@
           <Property Name="Barcode" Type="varchar" MaxLength="64" />
           <Property Name="Remark" Type="varchar" MaxLength="50" />
           <Property Name="IsValid" Type="int" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="bas_comoditiestype">
           <Key>
@@ -56,6 +57,7 @@
           <Property Name="IsValid" Type="int" />
           <Property Name="ModifyDate" Type="timestamp" Precision="6" />
           <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="bas_supplier">
           <Key>
@@ -521,6 +523,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="Barcode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="bas_comoditiestype">
           <Key>
@@ -555,6 +558,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="IsValid" Type="Int32" />
           <Property Name="ModifyDate" Type="DateTime" />
           <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="bas_supplier">
           <Key>
@@ -859,6 +863,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="bas_comodities">
             <EntityTypeMapping TypeName="webdmsModel.bas_comodities">
               <MappingFragment StoreEntitySet="bas_comodities">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
@@ -891,6 +896,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="bas_customer">
             <EntityTypeMapping TypeName="webdmsModel.bas_customer">
               <MappingFragment StoreEntitySet="bas_customer">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
