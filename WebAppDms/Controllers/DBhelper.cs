@@ -10,7 +10,7 @@ namespace WebAppDms.Controllers
 {
     public class DBHelper<T> where T : class
     {
-        webdmsEntities db = new webdmsEntities();
+        webDmsEntities db = new webDmsEntities();
 
         /// <summary>
         /// 新增一个实体

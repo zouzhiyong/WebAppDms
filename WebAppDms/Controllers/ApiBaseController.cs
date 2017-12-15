@@ -39,6 +39,6 @@ namespace WebAppDms.Controllers
             return Json(obj, false);
         }
 
-        public static webdmsEntities db = new webdmsEntities();
+        public static webDmsEntities db = new webDmsEntities();
     }
 }

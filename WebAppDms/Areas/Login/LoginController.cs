@@ -40,7 +40,7 @@ namespace WebAppDms.Areas.Login
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, loginData.strUser, DateTime.Now,
                             DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", loginData.strUser, loginData.strPwd),
                             FormsAuthentication.FormsCookiePath);
-            webdmsEntities db = new webdmsEntities();
+            webDmsEntities db = new webDmsEntities();
             var UserInfo = db.sys_user.Where(w => w.LoginName == loginData.strUser).FirstOrDefault();
 
             var homeOjb = new object[] { new { path = "/", iconCls = "fa fa-home", leaf = true, children = new object[] { new { path = "/index", MenuPath = "index", meta = new { name = "主页", button = new string[] { }.ToList() } } } } };
@@ -76,7 +76,7 @@ namespace WebAppDms.Areas.Login
         //校验用户名密码（正式环境中应该是数据库校验）
         private bool ValidateUser(string strUser, string strPwd)
         {
-            webdmsEntities db = new webdmsEntities();
+            webDmsEntities db = new webDmsEntities();
             var list = db.sys_user.FirstOrDefault(p => p.LoginName == strUser && p.LoginPassword == strPwd);
 
             if (list != null)

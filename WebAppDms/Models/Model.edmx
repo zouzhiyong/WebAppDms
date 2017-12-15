@@ -1,0 +1,1291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="webdmsModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="bas_comodities">
+          <Key>
+            <PropertyRef Name="ComoditiesID" />
+          </Key>
+          <Property Name="ComoditiesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" />
+          <Property Name="ShorName" Type="varchar" MaxLength="50" />
+          <Property Name="TypeID" Type="int" />
+          <Property Name="BrandID" Type="int" />
+          <Property Name="SpecificationsID" Type="int" />
+          <Property Name="RecPrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="SalPrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Barcode" Type="varchar" MaxLength="64" />
+          <Property Name="Remark" Type="varchar" MaxLength="50" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="bas_comoditiestype">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" />
+          <Property Name="TypeCode" Type="varchar" MaxLength="50" />
+          <Property Name="xh" Type="int" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Remark" Type="text" />
+        </EntityType>
+        <EntityType Name="bas_customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="60" />
+          <Property Name="Code" Type="varchar" MaxLength="60" />
+          <Property Name="LinkMan" Type="varchar" MaxLength="20" />
+          <Property Name="LinkManPhone" Type="varchar" MaxLength="30" />
+          <Property Name="Region" Type="varchar" MaxLength="30" />
+          <Property Name="QQ" Type="varchar" MaxLength="20" />
+          <Property Name="Wechat" Type="varchar" MaxLength="20" />
+          <Property Name="FAX" Type="varchar" MaxLength="20" />
+          <Property Name="Phone1" Type="varchar" MaxLength="30" />
+          <Property Name="Phone2" Type="varchar" MaxLength="30" />
+          <Property Name="Address1" Type="varchar" MaxLength="100" />
+          <Property Name="Address2" Type="varchar" MaxLength="100" />
+          <Property Name="DepositAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ModifyDate" Type="timestamp" Precision="6" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="bas_supplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SupplierName" Type="varchar" MaxLength="60" />
+          <Property Name="LinkMan" Type="varchar" MaxLength="20" />
+          <Property Name="LinkManPhone" Type="varchar" MaxLength="30" />
+          <Property Name="QQ" Type="varchar" MaxLength="20" />
+          <Property Name="Wechat" Type="varchar" MaxLength="20" />
+          <Property Name="FAX" Type="varchar" MaxLength="20" />
+          <Property Name="Phone1" Type="varchar" MaxLength="30" />
+          <Property Name="Phone2" Type="varchar" MaxLength="30" />
+          <Property Name="Address1" Type="varchar" MaxLength="100" />
+          <Property Name="Address2" Type="varchar" MaxLength="100" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="sys_application">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="10" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicationDesc" Type="varchar" MaxLength="128" />
+          <Property Name="ShowInMenu" Type="int" />
+        </EntityType>
+        <EntityType Name="sys_button">
+          <Key>
+            <PropertyRef Name="BtnID" />
+          </Key>
+          <Property Name="BtnID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BtnName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BtnNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BtnClass" Type="varchar" MaxLength="50" />
+          <Property Name="BtnIcon" Type="varchar" MaxLength="50" />
+          <Property Name="BtnScript" Type="varchar" MaxLength="50" />
+          <Property Name="MenuNo" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sys_dept">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WSID" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="30" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ModifyDate" Type="timestamp" Precision="6" />
+          <Property Name="CreateDate" Type="timestamp" Precision="6" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="Comment" Type="text" />
+        </EntityType>
+        <EntityType Name="sys_dictionarydata">
+          <Key>
+            <PropertyRef Name="DictdataID" />
+          </Key>
+          <Property Name="DictdataID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DictdataTable" Type="varchar" MaxLength="50" />
+          <Property Name="DictdataField" Type="varchar" MaxLength="50" />
+          <Property Name="DictdataName" Type="varchar" MaxLength="50" />
+          <Property Name="DictdataValue" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sys_menu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuParentID" Type="int" />
+          <Property Name="MenuName" Type="varchar" MaxLength="64" />
+          <Property Name="MenuUrl" Type="varchar" MaxLength="200" />
+          <Property Name="MenuPath" Type="varchar" MaxLength="200" />
+          <Property Name="MenuIcon" Type="varchar" MaxLength="200" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="10" />
+          <Property Name="Xh" Type="int" />
+          <Property Name="Comment" Type="text" />
+        </EntityType>
+        <EntityType Name="sys_operatelog">
+          <Key>
+            <PropertyRef Name="OperateID" />
+          </Key>
+          <Property Name="OperateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="DateTime" Type="timestamp" Precision="6" />
+          <Property Name="Action" Type="text" />
+          <Property Name="TableName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="sys_region">
+          <Key>
+            <PropertyRef Name="RegionNo" />
+          </Key>
+          <Property Name="RegionNo" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="50" />
+          <Property Name="RegionParentNo" Type="varchar" MaxLength="6" />
+          <Property Name="IsValid" Type="int" />
+        </EntityType>
+        <EntityType Name="sys_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="timestamp" Precision="6" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="ModifyDate" Type="timestamp" Precision="6" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateDate" Type="timestamp" Precision="6" />
+          <Property Name="RoleDesc" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="sys_rolemenu">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="MenuID" Type="int" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="timestamp" Precision="6" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateDate" Type="timestamp" Precision="6" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="ModifyDate" Type="timestamp" Precision="6" />
+        </EntityType>
+        <EntityType Name="sys_templates">
+          <Key>
+            <PropertyRef Name="TemplateID" />
+          </Key>
+          <Property Name="TemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TemplateName" Type="varchar" MaxLength="50" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Controls" Type="text" />
+          <Property Name="Describe" Type="text" />
+        </EntityType>
+        <EntityType Name="sys_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LoginPassword" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DeptID" Type="int" />
+          <Property Name="RealName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="30" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="BirthDate" Type="timestamp" Precision="6" Nullable="false" />
+          <Property Name="CreateDate" Type="timestamp" Precision="6" />
+          <Property Name="LastLoginDate" Type="timestamp" Precision="6" />
+          <Property Name="Email" Type="text" />
+          <Property Name="IMEICode" Type="varchar" MaxLength="50" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="WorkingPlace" Type="varchar" MaxLength="128" />
+          <Property Name="Avatar" Type="varchar" MaxLength="128" />
+          <Property Name="Comment" Type="text" />
+          <Property Name="SessionId" Type="varchar" MaxLength="50" />
+          <Property Name="RecTimeStamp" Type="timestamp" Precision="6" />
+        </EntityType>
+        <EntityType Name="sys_userrole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateDate" Type="timestamp" Precision="6" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="ModifyDate" Type="timestamp" Precision="6" />
+          <Property Name="RecTimeStamp" Type="timestamp" Precision="6" />
+        </EntityType>
+        <EntityType Name="sys_usertype">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserTypeName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_comoditiestype”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_comoditiestype">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="int" Nullable="false" />
+          <Property Name="ParentName" Type="varchar" MaxLength="50" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" />
+          <Property Name="TypeCode" Type="varchar" MaxLength="50" />
+          <Property Name="xh" Type="int" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Remark" Type="text" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_customer”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="60" />
+          <Property Name="LinkMan" Type="varchar" MaxLength="20" />
+          <Property Name="LinkManPhone" Type="varchar" MaxLength="30" />
+          <Property Name="Region" Type="varchar" MaxLength="30" />
+          <Property Name="QQ" Type="varchar" MaxLength="20" />
+          <Property Name="Wechat" Type="varchar" MaxLength="20" />
+          <Property Name="FAX" Type="varchar" MaxLength="20" />
+          <Property Name="Phone1" Type="varchar" MaxLength="30" />
+          <Property Name="Phone2" Type="varchar" MaxLength="30" />
+          <Property Name="Address1" Type="varchar" MaxLength="100" />
+          <Property Name="Address2" Type="varchar" MaxLength="100" />
+          <Property Name="DepositAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="RegionName" Type="varchar" MaxLength="152" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="Code" Type="varchar" MaxLength="60" />
+          <Property Name="ModifyDate" Type="varchar" MaxLength="24" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_dept”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_dept">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ModifyDate" Type="varchar" MaxLength="24" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="CreateDate" Type="varchar" MaxLength="24" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="isRole" Type="bigint" />
+          <Property Name="Comment" Type="text" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_menu”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_menu">
+          <Key>
+            <PropertyRef Name="LoginName" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="IsValidName" />
+          </Key>
+          <Property Name="LoginName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="MenuID" Type="int" Nullable="false" />
+          <Property Name="MenuParentID" Type="int" />
+          <Property Name="MenuName" Type="varchar" MaxLength="64" />
+          <Property Name="MenuUrl" Type="varchar" MaxLength="200" />
+          <Property Name="MenuPath" Type="varchar" MaxLength="200" />
+          <Property Name="MenuIcon" Type="varchar" MaxLength="200" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="IsValidName" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="50" />
+          <Property Name="Xh" Type="int" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_region”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_region">
+          <Key>
+            <PropertyRef Name="RegionNo" />
+          </Key>
+          <Property Name="RegionNo" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="50" />
+          <Property Name="RegionParentNo" Type="varchar" MaxLength="6" />
+          <Property Name="RegionValue" Type="varchar" MaxLength="20" />
+          <Property Name="Name" Type="varchar" MaxLength="152" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_role”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="RoleName" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="varchar" MaxLength="24" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="ModifyDate" Type="varchar" MaxLength="24" />
+          <Property Name="ModifyUserID" Type="int" />
+          <Property Name="CreateDate" Type="varchar" MaxLength="24" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="isRole" Type="bigint" />
+          <Property Name="RoleDesc" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.webdms.view_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="LoginName" />
+            <PropertyRef Name="RealName" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="RoleName" />
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LoginName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RealName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="30" />
+          <Property Name="IsValid" Type="bigint" Nullable="false" />
+          <Property Name="DeptName" Type="varchar" MaxLength="30" />
+          <Property Name="RoleName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="DeptID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="sys_userrole_ibfk_1">
+          <End Role="sys_user" Type="Self.sys_user" Multiplicity="1" />
+          <End Role="sys_userrole" Type="Self.sys_userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_user">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="sys_userrole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webdmsModelStoreContainer">
+          <EntitySet Name="bas_comodities" EntityType="Self.bas_comodities" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="bas_comoditiestype" EntityType="Self.bas_comoditiestype" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="bas_customer" EntityType="Self.bas_customer" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="bas_supplier" EntityType="Self.bas_supplier" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_application" EntityType="Self.sys_application" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_button" EntityType="Self.sys_button" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_dept" EntityType="Self.sys_dept" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_dictionarydata" EntityType="Self.sys_dictionarydata" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_menu" EntityType="Self.sys_menu" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_operatelog" EntityType="Self.sys_operatelog" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_region" EntityType="Self.sys_region" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_role" EntityType="Self.sys_role" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_rolemenu" EntityType="Self.sys_rolemenu" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_templates" EntityType="Self.sys_templates" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_user" EntityType="Self.sys_user" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_userrole" EntityType="Self.sys_userrole" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="sys_usertype" EntityType="Self.sys_usertype" Schema="webdms" store:Type="Tables" />
+          <EntitySet Name="view_comoditiestype" EntityType="Self.view_comoditiestype" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_comoditiestype`.`TypeID`, 
+`view_comoditiestype`.`ParentName`, 
+`view_comoditiestype`.`ParentID`, 
+`view_comoditiestype`.`TypeName`, 
+`view_comoditiestype`.`TypeCode`, 
+`view_comoditiestype`.`xh`, 
+`view_comoditiestype`.`IsValid`, 
+`view_comoditiestype`.`Remark`
+FROM `view_comoditiestype` AS `view_comoditiestype`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_customer" EntityType="Self.view_customer" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_customer`.`CustomerID`, 
+`view_customer`.`CustomerName`, 
+`view_customer`.`LinkMan`, 
+`view_customer`.`LinkManPhone`, 
+`view_customer`.`Region`, 
+`view_customer`.`QQ`, 
+`view_customer`.`Wechat`, 
+`view_customer`.`FAX`, 
+`view_customer`.`Phone1`, 
+`view_customer`.`Phone2`, 
+`view_customer`.`Address1`, 
+`view_customer`.`Address2`, 
+`view_customer`.`DepositAmount`, 
+`view_customer`.`IsValid`, 
+`view_customer`.`RegionName`, 
+`view_customer`.`Remark`, 
+`view_customer`.`Code`, 
+`view_customer`.`ModifyDate`
+FROM `view_customer` AS `view_customer`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_dept" EntityType="Self.view_dept" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_dept`.`DeptID`, 
+`view_dept`.`Name`, 
+`view_dept`.`IsValid`, 
+`view_dept`.`ModifyDate`, 
+`view_dept`.`ModifyUserID`, 
+`view_dept`.`CreateDate`, 
+`view_dept`.`CreateUserID`, 
+`view_dept`.`isRole`, 
+`view_dept`.`Comment`
+FROM `view_dept` AS `view_dept`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_menu" EntityType="Self.view_menu" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_menu`.`LoginName`, 
+`view_menu`.`UserID`, 
+`view_menu`.`MenuID`, 
+`view_menu`.`MenuParentID`, 
+`view_menu`.`MenuName`, 
+`view_menu`.`MenuUrl`, 
+`view_menu`.`MenuPath`, 
+`view_menu`.`MenuIcon`, 
+`view_menu`.`IsValid`, 
+`view_menu`.`IsValidName`, 
+`view_menu`.`ApplicationName`, 
+`view_menu`.`Xh`, 
+`view_menu`.`ApplicationNo`
+FROM `view_menu` AS `view_menu`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_region" EntityType="Self.view_region" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_region`.`RegionNo`, 
+`view_region`.`RegionName`, 
+`view_region`.`RegionParentNo`, 
+`view_region`.`RegionValue`, 
+`view_region`.`Name`
+FROM `view_region` AS `view_region`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_role" EntityType="Self.view_role" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_role`.`RoleID`, 
+`view_role`.`RoleName`, 
+`view_role`.`RecTimeStamp`, 
+`view_role`.`IsValid`, 
+`view_role`.`ModifyDate`, 
+`view_role`.`ModifyUserID`, 
+`view_role`.`CreateDate`, 
+`view_role`.`CreateUserID`, 
+`view_role`.`isRole`, 
+`view_role`.`RoleDesc`
+FROM `view_role` AS `view_role`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_user" EntityType="Self.view_user" store:Type="Views" store:Schema="webdms">
+            <DefiningQuery>SELECT
+`view_user`.`UserID`, 
+`view_user`.`LoginName`, 
+`view_user`.`RealName`, 
+`view_user`.`Phone`, 
+`view_user`.`IsValid`, 
+`view_user`.`DeptName`, 
+`view_user`.`RoleName`, 
+`view_user`.`DeptID`
+FROM `view_user` AS `view_user`</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="sys_userrole_ibfk_1" Association="Self.sys_userrole_ibfk_1">
+            <End Role="sys_user" EntitySet="sys_user" />
+            <End Role="sys_userrole" EntitySet="sys_userrole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="webdmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="bas_comodities">
+          <Key>
+            <PropertyRef Name="ComoditiesID" />
+          </Key>
+          <Property Name="ComoditiesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TypeID" Type="Int32" />
+          <Property Name="BrandID" Type="Int32" />
+          <Property Name="SpecificationsID" Type="Int32" />
+          <Property Name="RecPrice" Type="Decimal" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="SalPrice" Type="Decimal" />
+          <Property Name="Barcode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bas_comoditiestype">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="xh" Type="Int32" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bas_customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LinkManPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="QQ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Wechat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FAX" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Phone2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DepositAmount" Type="Decimal" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ModifyDate" Type="DateTime" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bas_supplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SupplierName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LinkManPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="QQ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Wechat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FAX" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Phone2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_application">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationDesc" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ShowInMenu" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sys_button">
+          <Key>
+            <PropertyRef Name="BtnID" />
+          </Key>
+          <Property Name="BtnID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BtnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BtnNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BtnClass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BtnIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BtnScript" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MenuNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sys_dept">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WSID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ModifyDate" Type="DateTime" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_dictionarydata">
+          <Key>
+            <PropertyRef Name="DictdataID" />
+          </Key>
+          <Property Name="DictdataID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DictdataTable" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DictdataField" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DictdataName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DictdataValue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_menu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuParentID" Type="Int32" />
+          <Property Name="MenuName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MenuUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MenuPath" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MenuIcon" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ApplicationNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Xh" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_operatelog">
+          <Key>
+            <PropertyRef Name="OperateID" />
+          </Key>
+          <Property Name="OperateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" />
+          <Property Name="Action" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="TableName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_region">
+          <Key>
+            <PropertyRef Name="RegionNo" />
+          </Key>
+          <Property Name="RegionNo" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionParentNo" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sys_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="ModifyDate" Type="DateTime" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="RoleDesc" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_rolemenu">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="ModifyDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="sys_templates">
+          <Key>
+            <PropertyRef Name="TemplateID" />
+          </Key>
+          <Property Name="TemplateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TemplateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Controls" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Describe" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LoginPassword" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeptID" Type="Int32" />
+          <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="LastLoginDate" Type="DateTime" />
+          <Property Name="Email" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="IMEICode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="WorkingPlace" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Avatar" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="SessionId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RecTimeStamp" Type="DateTime" />
+          <NavigationProperty Name="sys_userrole" Relationship="Self.sys_userrole_ibfk_1" FromRole="sys_user" ToRole="sys_userrole" />
+        </EntityType>
+        <EntityType Name="sys_userrole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="ModifyDate" Type="DateTime" />
+          <Property Name="RecTimeStamp" Type="DateTime" />
+          <NavigationProperty Name="sys_user" Relationship="Self.sys_userrole_ibfk_1" FromRole="sys_userrole" ToRole="sys_user" />
+        </EntityType>
+        <EntityType Name="sys_usertype">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_comoditiestype">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <Property Name="ParentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TypeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="xh" Type="Int32" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LinkManPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="QQ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Wechat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FAX" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Phone2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DepositAmount" Type="Decimal" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="RegionName" Type="String" MaxLength="152" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="ModifyDate" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_dept">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ModifyDate" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="isRole" Type="Int64" />
+          <Property Name="Comment" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_menu">
+          <Key>
+            <PropertyRef Name="LoginName" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="IsValidName" />
+          </Key>
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="MenuParentID" Type="Int32" />
+          <Property Name="MenuName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MenuUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MenuPath" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MenuIcon" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="IsValidName" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Xh" Type="Int32" />
+          <Property Name="ApplicationNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_region">
+          <Key>
+            <PropertyRef Name="RegionNo" />
+          </Key>
+          <Property Name="RegionNo" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionParentNo" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="RegionValue" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="152" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="RoleName" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecTimeStamp" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="ModifyDate" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="ModifyUserID" Type="Int32" />
+          <Property Name="CreateDate" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="isRole" Type="Int64" />
+          <Property Name="RoleDesc" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="LoginName" />
+            <PropertyRef Name="RealName" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="RoleName" />
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="DeptName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="RoleName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeptID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="sys_userrole_ibfk_1">
+          <End Role="sys_user" Type="Self.sys_user" Multiplicity="1" />
+          <End Role="sys_userrole" Type="Self.sys_userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_user">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="sys_userrole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webDmsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="bas_comodities" EntityType="Self.bas_comodities" />
+          <EntitySet Name="bas_comoditiestype" EntityType="Self.bas_comoditiestype" />
+          <EntitySet Name="bas_customer" EntityType="Self.bas_customer" />
+          <EntitySet Name="bas_supplier" EntityType="Self.bas_supplier" />
+          <EntitySet Name="sys_application" EntityType="Self.sys_application" />
+          <EntitySet Name="sys_button" EntityType="Self.sys_button" />
+          <EntitySet Name="sys_dept" EntityType="Self.sys_dept" />
+          <EntitySet Name="sys_dictionarydata" EntityType="Self.sys_dictionarydata" />
+          <EntitySet Name="sys_menu" EntityType="Self.sys_menu" />
+          <EntitySet Name="sys_operatelog" EntityType="Self.sys_operatelog" />
+          <EntitySet Name="sys_region" EntityType="Self.sys_region" />
+          <EntitySet Name="sys_role" EntityType="Self.sys_role" />
+          <EntitySet Name="sys_rolemenu" EntityType="Self.sys_rolemenu" />
+          <EntitySet Name="sys_templates" EntityType="Self.sys_templates" />
+          <EntitySet Name="sys_user" EntityType="Self.sys_user" />
+          <EntitySet Name="sys_userrole" EntityType="Self.sys_userrole" />
+          <EntitySet Name="sys_usertype" EntityType="Self.sys_usertype" />
+          <EntitySet Name="view_comoditiestype" EntityType="Self.view_comoditiestype" />
+          <EntitySet Name="view_customer" EntityType="Self.view_customer" />
+          <EntitySet Name="view_dept" EntityType="Self.view_dept" />
+          <EntitySet Name="view_menu" EntityType="Self.view_menu" />
+          <EntitySet Name="view_region" EntityType="Self.view_region" />
+          <EntitySet Name="view_role" EntityType="Self.view_role" />
+          <EntitySet Name="view_user" EntityType="Self.view_user" />
+          <AssociationSet Name="sys_userrole_ibfk_1" Association="Self.sys_userrole_ibfk_1">
+            <End Role="sys_user" EntitySet="sys_user" />
+            <End Role="sys_userrole" EntitySet="sys_userrole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="webdmsModelStoreContainer" CdmEntityContainer="webDmsEntities">
+          <EntitySetMapping Name="bas_comodities">
+            <EntityTypeMapping TypeName="webdmsModel.bas_comodities">
+              <MappingFragment StoreEntitySet="bas_comodities">
+                <ScalarProperty Name="ComoditiesID" ColumnName="ComoditiesID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ShorName" ColumnName="ShorName" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="SpecificationsID" ColumnName="SpecificationsID" />
+                <ScalarProperty Name="RecPrice" ColumnName="RecPrice" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="SalPrice" ColumnName="SalPrice" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bas_comoditiestype">
+            <EntityTypeMapping TypeName="webdmsModel.bas_comoditiestype">
+              <MappingFragment StoreEntitySet="bas_comoditiestype">
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="xh" ColumnName="xh" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bas_customer">
+            <EntityTypeMapping TypeName="webdmsModel.bas_customer">
+              <MappingFragment StoreEntitySet="bas_customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="LinkManPhone" ColumnName="LinkManPhone" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Wechat" ColumnName="Wechat" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="DepositAmount" ColumnName="DepositAmount" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bas_supplier">
+            <EntityTypeMapping TypeName="webdmsModel.bas_supplier">
+              <MappingFragment StoreEntitySet="bas_supplier">
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="LinkManPhone" ColumnName="LinkManPhone" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Wechat" ColumnName="Wechat" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_application">
+            <EntityTypeMapping TypeName="webdmsModel.sys_application">
+              <MappingFragment StoreEntitySet="sys_application">
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationDesc" ColumnName="ApplicationDesc" />
+                <ScalarProperty Name="ShowInMenu" ColumnName="ShowInMenu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_button">
+            <EntityTypeMapping TypeName="webdmsModel.sys_button">
+              <MappingFragment StoreEntitySet="sys_button">
+                <ScalarProperty Name="BtnID" ColumnName="BtnID" />
+                <ScalarProperty Name="BtnName" ColumnName="BtnName" />
+                <ScalarProperty Name="BtnNo" ColumnName="BtnNo" />
+                <ScalarProperty Name="BtnClass" ColumnName="BtnClass" />
+                <ScalarProperty Name="BtnIcon" ColumnName="BtnIcon" />
+                <ScalarProperty Name="BtnScript" ColumnName="BtnScript" />
+                <ScalarProperty Name="MenuNo" ColumnName="MenuNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_dept">
+            <EntityTypeMapping TypeName="webdmsModel.sys_dept">
+              <MappingFragment StoreEntitySet="sys_dept">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="WSID" ColumnName="WSID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_dictionarydata">
+            <EntityTypeMapping TypeName="webdmsModel.sys_dictionarydata">
+              <MappingFragment StoreEntitySet="sys_dictionarydata">
+                <ScalarProperty Name="DictdataID" ColumnName="DictdataID" />
+                <ScalarProperty Name="DictdataTable" ColumnName="DictdataTable" />
+                <ScalarProperty Name="DictdataField" ColumnName="DictdataField" />
+                <ScalarProperty Name="DictdataName" ColumnName="DictdataName" />
+                <ScalarProperty Name="DictdataValue" ColumnName="DictdataValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_menu">
+            <EntityTypeMapping TypeName="webdmsModel.sys_menu">
+              <MappingFragment StoreEntitySet="sys_menu">
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="MenuParentID" ColumnName="MenuParentID" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="MenuUrl" ColumnName="MenuUrl" />
+                <ScalarProperty Name="MenuPath" ColumnName="MenuPath" />
+                <ScalarProperty Name="MenuIcon" ColumnName="MenuIcon" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+                <ScalarProperty Name="Xh" ColumnName="Xh" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_operatelog">
+            <EntityTypeMapping TypeName="webdmsModel.sys_operatelog">
+              <MappingFragment StoreEntitySet="sys_operatelog">
+                <ScalarProperty Name="OperateID" ColumnName="OperateID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_region">
+            <EntityTypeMapping TypeName="webdmsModel.sys_region">
+              <MappingFragment StoreEntitySet="sys_region">
+                <ScalarProperty Name="RegionNo" ColumnName="RegionNo" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="RegionParentNo" ColumnName="RegionParentNo" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_role">
+            <EntityTypeMapping TypeName="webdmsModel.sys_role">
+              <MappingFragment StoreEntitySet="sys_role">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_rolemenu">
+            <EntityTypeMapping TypeName="webdmsModel.sys_rolemenu">
+              <MappingFragment StoreEntitySet="sys_rolemenu">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_templates">
+            <EntityTypeMapping TypeName="webdmsModel.sys_templates">
+              <MappingFragment StoreEntitySet="sys_templates">
+                <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Controls" ColumnName="Controls" />
+                <ScalarProperty Name="Describe" ColumnName="Describe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_user">
+            <EntityTypeMapping TypeName="webdmsModel.sys_user">
+              <MappingFragment StoreEntitySet="sys_user">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IMEICode" ColumnName="IMEICode" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="WorkingPlace" ColumnName="WorkingPlace" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_userrole">
+            <EntityTypeMapping TypeName="webdmsModel.sys_userrole">
+              <MappingFragment StoreEntitySet="sys_userrole">
+                <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_usertype">
+            <EntityTypeMapping TypeName="webdmsModel.sys_usertype">
+              <MappingFragment StoreEntitySet="sys_usertype">
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="UserTypeName" ColumnName="UserTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_comoditiestype">
+            <EntityTypeMapping TypeName="webdmsModel.view_comoditiestype">
+              <MappingFragment StoreEntitySet="view_comoditiestype">
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="ParentName" ColumnName="ParentName" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="xh" ColumnName="xh" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_customer">
+            <EntityTypeMapping TypeName="webdmsModel.view_customer">
+              <MappingFragment StoreEntitySet="view_customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="LinkManPhone" ColumnName="LinkManPhone" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Wechat" ColumnName="Wechat" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="DepositAmount" ColumnName="DepositAmount" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_dept">
+            <EntityTypeMapping TypeName="webdmsModel.view_dept">
+              <MappingFragment StoreEntitySet="view_dept">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_menu">
+            <EntityTypeMapping TypeName="webdmsModel.view_menu">
+              <MappingFragment StoreEntitySet="view_menu">
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="MenuParentID" ColumnName="MenuParentID" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="MenuUrl" ColumnName="MenuUrl" />
+                <ScalarProperty Name="MenuPath" ColumnName="MenuPath" />
+                <ScalarProperty Name="MenuIcon" ColumnName="MenuIcon" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsValidName" ColumnName="IsValidName" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="Xh" ColumnName="Xh" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_region">
+            <EntityTypeMapping TypeName="webdmsModel.view_region">
+              <MappingFragment StoreEntitySet="view_region">
+                <ScalarProperty Name="RegionNo" ColumnName="RegionNo" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="RegionParentNo" ColumnName="RegionParentNo" />
+                <ScalarProperty Name="RegionValue" ColumnName="RegionValue" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_role">
+            <EntityTypeMapping TypeName="webdmsModel.view_role">
+              <MappingFragment StoreEntitySet="view_role">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RecTimeStamp" ColumnName="RecTimeStamp" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="ModifyUserID" ColumnName="ModifyUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_user">
+            <EntityTypeMapping TypeName="webdmsModel.view_user">
+              <MappingFragment StoreEntitySet="view_user">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <DesignerProperty Name="DDLGenerationTemplate" Value="$(VSEFTools)\DBGen\SSDLToMySQL.tt" />
+        <DesignerProperty Name="SynchronizePropertyFacets" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
