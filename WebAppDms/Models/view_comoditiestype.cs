@@ -18,6 +18,7 @@ namespace WebAppDms.Models
         public string ParentName { get; set; }
         public Nullable<int> ParentID { get; set; }
         public string TypeName { get; set; }
+        public Nullable<long> isRole { get; set; }
         public string TypeCode { get; set; }
         public Nullable<int> xh { get; set; }
         public Nullable<int> IsValid { get; set; }
