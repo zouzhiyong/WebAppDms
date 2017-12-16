@@ -16,9 +16,9 @@
           <Property Name="TypeID" Type="int" />
           <Property Name="BrandID" Type="int" />
           <Property Name="SpecificationsID" Type="int" />
-          <Property Name="RecPrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="RecPrice" Type="decimal" Precision="19" Scale="2" />
           <Property Name="UnitID" Type="int" />
-          <Property Name="SalPrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SalPrice" Type="decimal" Precision="19" Scale="2" />
           <Property Name="Barcode" Type="varchar" MaxLength="64" />
           <Property Name="Remark" Type="varchar" MaxLength="50" />
           <Property Name="IsValid" Type="int" />
@@ -548,9 +548,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="TypeID" Type="Int32" />
           <Property Name="BrandID" Type="Int32" />
           <Property Name="SpecificationsID" Type="Int32" />
-          <Property Name="RecPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="RecPrice" Type="Decimal" Precision="19" Scale="2" />
           <Property Name="UnitID" Type="Int32" />
-          <Property Name="SalPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalPrice" Type="Decimal" Precision="19" Scale="2" />
           <Property Name="Barcode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int32" />
