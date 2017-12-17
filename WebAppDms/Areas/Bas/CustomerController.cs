@@ -194,7 +194,7 @@ namespace WebAppDms.Areas.Bas
             string orfilename = file.Headers.ContentDisposition.FileName.TrimStart('"').TrimEnd('"');
                     FileInfo fileinfo = new FileInfo(file.LocalFileName);
             //最大文件大小 
-            int maxSize = 10000000;
+            int maxSize = 500000;
                     if (fileinfo.Length <= 0)
                     {
                         hash["error"] = 1;
