@@ -231,6 +231,7 @@
     <Compile Include="Areas\Bas\ComoditieController.cs" />
     <Compile Include="Areas\Bas\ComoditieTypeController.cs" />
     <Compile Include="Areas\Bas\CustomerController.cs" />
+    <Compile Include="Areas\Dms\PurallController.cs" />
     <Compile Include="Areas\Login\LoginController.cs" />
     <Compile Include="Areas\Sys\DeptController.cs" />
     <Compile Include="Areas\Sys\MenuController.cs" />
