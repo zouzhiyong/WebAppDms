@@ -13,7 +13,17 @@ namespace WebAppDms.Areas.Dms
     {
         public HttpResponseMessage FindDmsPurallComoditie(string str)
         {
-            var list = db.bas_comodities.Where<bas_comodities>(p => p.FullName.Contains(str) || p.ShorName.Contains(str) || p.Code.Contains(str)).Select(s=>s).Take(10).ToList();
+            var list = db.bas_comodities.Where<bas_comodities>(p => p.FullName.Contains(str) || p.ShorName.Contains(str) || p.Code.Contains(str)).Select(s=>new {
+                Barcode=s.Barcode,
+                Code=s.Code,
+                FullName=s.FullName,
+                ShorName=s.ShorName,
+                UnitID=s.UnitID,
+                UnitList = new object[] {
+                    new { label = "箱", value = 1 },
+                    new { label = "瓶", value = 0 }
+                }.ToList()
+            }).Take(10).ToList();
 
             return Json(true, "", list);
         }
