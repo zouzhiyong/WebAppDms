@@ -20,27 +20,27 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysMoudleTable(dynamic obj)
         {
-            DBHelper<sys_menu> dbhelp = new DBHelper<sys_menu>();
+            DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
 
-            int MenuID = obj.MenuID;
+            string Code = obj.Code;
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.MenuParentID == MenuID, s => s.MenuID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.ParentCode == Code, s => s.FID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
-       
+
         /// <summary>
         /// 表单数据保存
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public HttpResponseMessage SaveSysMoudleForm(sys_menu obj)
+        public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
-            DBHelper<sys_menu> dbhelp = new DBHelper<sys_menu>();
-            var result = obj.MenuID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
+            DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
+            var result = obj.Code == "00" ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
         }
@@ -53,21 +53,21 @@ namespace WebAppDms.Areas.Sys
         {
             string userId = "3";// HttpContext.Current.Session["userId"].ToString();
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == userId && p.MenuParentID == 0).Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == userId && p.ParentCode == "00").Select(s => new
             {
                 path = "/",
-                name = s.MenuName,
+                name = s.Name,
                 component = "",
-                Xh = s.Xh,
-                MenuID = s.MenuID,
-                iconCls = s.MenuIcon,
-                children = db.view_menu.Where<view_menu>(p1 => p1.MenuParentID == s.MenuID).Select(s1 => new
+                Xh = s.Sequence,
+                MenuID = s.Code,
+                iconCls = s.ICON,
+                children = db.view_menu.Where<view_menu>(p1 => p1.ParentCode == s.Code).Select(s1 => new
                 {
-                    path = "/" + s1.MenuPath,
-                    name = s1.MenuName,
-                    component = s1.MenuPath,
-                    Xh = s1.Xh,
-                    MenuID = s1.MenuID
+                    path = "/" + s1.URL,
+                    name = s1.Name,
+                    component = s1.URL,
+                    Xh = s1.Sequence,
+                    MenuID = s1.Code
                 }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList()
             }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList();
 
@@ -81,18 +81,20 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysModuleTree()
         {
-            var list = db.view_menu.Where<view_menu>(p => p.MenuParentID == 0).Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.ParentCode == "00").Select(s => new
             {
-                label = s.MenuName,
-                Xh = s.Xh,
-                MenuID = s.MenuID,
-                children = db.view_menu.Where<view_menu>(p1 => p1.MenuParentID == s.MenuID).Select(s1 => new
+                label = s.Name,
+                Sequence = s.Sequence,
+                FID = s.FID,
+                Code= s.Code,
+                children = db.view_menu.Where<view_menu>(p1 => p1.ParentCode == s.Code).Select(s1 => new
                 {
-                    label = s1.MenuName,
-                    Xh = s1.Xh,
-                    MenuID = s1.MenuID,
-                }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList()
-            }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList();
+                    label = s1.Name,
+                    Sequence = s1.Sequence,
+                    FID = s1.FID,
+                    Code = s.Code,
+                }).OrderBy(o => o.Sequence).ThenBy(o => o.FID).ToList()
+            }).OrderBy(o => o.Sequence).ThenBy(o => o.FID).ToList();
 
 
             return Json(true, "", list);
@@ -105,67 +107,66 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysMoudleForm(dynamic obj)
         {
-            int MenuID = obj == null ? 0 : obj.MenuID;
+            int FID = obj == null ? 0 : obj.FID;
 
 
-            if (MenuID == 0)
+            if (FID == 0)
             {
                 var list = new
                 {
-                    MenuID = 0,
-                    MenuParentID = 0,
-                    MenuParentIDList = new object[] { new { label = "未对应上级", value = 0 } }.
-                        Concat(db.sys_menu.Where(w1 => w1.MenuParentID == 0).Select(s1 => new
+                    Code = "",
+                    ParentCode = obj.ParentCode,
+                    ParentCodeList = new object[] { new { label = "未对应上级", value = "00" } }.
+                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "00").Select(s1 => new
                         {
-                            label = s1.MenuName,
-                            value = s1.MenuID
+                            label = s1.Name,
+                            value = s1.Code
                         })),
-                    MenuName = "",
-                    MenuPath = "",
-                    MenuIcon = "",
+                    Name = "",
+                    URL = "",
+                    ICON = "",
                     IsValid = 1,
                     IsValidList = new object[] {
                     new { label = "有效", value = 1 },
                     new { label = "无效", value = 0 }
                 }.ToList(),
-                    ApplicationNo = "",
-                    ApplicationNoList = db.sys_application.Select(s2 => new
-                    {
-                        label = s2.ApplicationName,
-                        value = s2.ApplicationNo
-                    }).ToList(),
-                    Xh = 0
-
+                    PlatformType = 1,
+                    PlatformTypeList = new object[] {
+                    new { label = "WEB", value = 1 },
+                    new { label = "APP", value = 2 },
+                    new { label = "Wechat", value = 3 }
+                }.ToList(),
+                    Sequence = 0
                 };
                 return Json(true, "", list);
             }
             else
             {
-                var list = db.sys_menu.Where(w => w.MenuID == MenuID).Select(s => new
+                var list = db.t_sys_menumodule.Where(w => w.FID == FID).Select(s => new
                 {
-                    MenuID = s.MenuID,
-                    MenuParentID = s.MenuParentID,
-                    MenuParentIDList = new object[] { new { label = "未对应上级", value = 0 } }.
-                        Concat(db.sys_menu.Where(w1 => w1.MenuParentID == 0).Select(s1 => new
+                    Code = s.Code,
+                    ParentCode = s.ParentCode,
+                    ParentCodeList = new object[] { new { label = "未对应上级", value = "00" } }.
+                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "00").Select(s1 => new
                         {
-                            label = s1.MenuName,
-                            value = s1.MenuID
+                            label = s1.Name,
+                            value = s1.Code
                         })),
-                    MenuName = s.MenuName,
-                    MenuPath = s.MenuPath,
-                    MenuIcon = s.MenuIcon,
-                    IsValid = s.IsValid == null ? 1 : s.IsValid,
+                    Name = s.Name,
+                    URL = s.URL,
+                    ICON = s.ICON,
+                    IsValid = s.IsValid,
                     IsValidList = new object[] {
                     new { label = "有效", value = 1 },
                     new { label = "无效", value = 0 }
                 }.ToList(),
-                    ApplicationNo = s.ApplicationNo,
-                    ApplicationNoList = db.sys_application.Select(s2 => new
-                    {
-                        label = s2.ApplicationName,
-                        value = s2.ApplicationNo
-                    }).ToList(),
-                    Xh = s.Xh
+                    PlatformType = 1,
+                    PlatformTypeList = new object[] {
+                    new { label = "WEB", value = 1 },
+                    new { label = "APP", value = 2 },
+                    new { label = "Wechat", value = 3 }
+                }.ToList(),
+                    Sequence = s.Sequence
 
                 }).FirstOrDefault();
 
@@ -179,9 +180,9 @@ namespace WebAppDms.Areas.Sys
         /// <param name="obj"></param>
         /// <returns></returns>
         [HttpPost]
-        public HttpResponseMessage DeleteSysMoudleRow(sys_menu obj)
+        public HttpResponseMessage DeleteSysMoudleRow(t_sys_menumodule obj)
         {
-            var result = new DBHelper<sys_menu>().Remove(obj);
+            var result = new DBHelper<t_sys_menumodule>().Remove(obj);
 
             return Json(true, result == 1 ? "删除成功！" : "删除失败");
         }

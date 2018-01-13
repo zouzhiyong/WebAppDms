@@ -12,24 +12,26 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_menu
+    public partial class t_warehouse
     {
-        public long UserID { get; set; }
         public System.DateTime TimeStamp { get; set; }
-        public long FID { get; set; }
+        public long WarehouseID { get; set; }
+        public int CorpID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string ParentCode { get; set; }
-        public long IsMenu { get; set; }
-        public int PlatformType { get; set; }
-        public int Level { get; set; }
-        public int Sequence { get; set; }
-        public string URL { get; set; }
-        public string ICON { get; set; }
+        public string Address { get; set; }
+        public string Contact { get; set; }
+        public string Tel { get; set; }
+        public string Phone { get; set; }
+        public long IsBin { get; set; }
+        public long IsRequireReceive { get; set; }
+        public long IsRequireShipment { get; set; }
         public long IsValid { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
-        public Nullable<int> CreateUserID { get; set; }
+        public System.DateTime CreateTime { get; set; }
+        public int CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
+        public Nullable<System.DateTime> CloseTime { get; set; }
+        public string CloseUser { get; set; }
     }
 }

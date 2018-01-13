@@ -50,6 +50,7 @@ namespace WebAppDms.Controllers
                 return false;
             }
             //string _sessionUser = HttpContext.Current.Session[strUser].ToString();
+
             Areas.Login.LoginController.UserInfo sessionUser = (Areas.Login.LoginController.UserInfo)(HttpContext.Current.Session[strUser]);
             if (strUser == sessionUser.UserName && strPwd == sessionUser.Password)
             {
@@ -60,5 +61,7 @@ namespace WebAppDms.Controllers
                 return false;
             }
         }
+
+       
     }
 }

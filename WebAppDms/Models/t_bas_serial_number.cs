@@ -12,24 +12,28 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_menu
+    public partial class t_bas_serial_number
     {
-        public long UserID { get; set; }
         public System.DateTime TimeStamp { get; set; }
-        public long FID { get; set; }
+        public long SerialID { get; set; }
+        public int CorpID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string ParentCode { get; set; }
-        public long IsMenu { get; set; }
-        public int PlatformType { get; set; }
-        public int Level { get; set; }
-        public int Sequence { get; set; }
-        public string URL { get; set; }
-        public string ICON { get; set; }
-        public long IsValid { get; set; }
+        public string IsManual { get; set; }
+        public string MaintainMethod { get; set; }
+        public string Prefix { get; set; }
+        public int StartingNumber { get; set; }
+        public long EndingNumber { get; set; }
+        public Nullable<int> WarningNumber { get; set; }
+        public int IncrementByNumber { get; set; }
+        public Nullable<int> YearLength { get; set; }
+        public Nullable<System.DateTime> LastDateUsed { get; set; }
+        public string LastNumberUsed { get; set; }
+        public Nullable<long> IsValid { get; set; }
+        public string Remark { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<int> CreateUserID { get; set; }
-        public Nullable<System.DateTime> UpdateTime { get; set; }
+        public string UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
     }
 }

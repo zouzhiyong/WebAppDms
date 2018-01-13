@@ -12,24 +12,28 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_menu
+    public partial class t_purchase_invoice
     {
-        public long UserID { get; set; }
         public System.DateTime TimeStamp { get; set; }
-        public long FID { get; set; }
+        public long InvoiceID { get; set; }
+        public int CorpID { get; set; }
         public string Code { get; set; }
-        public string Name { get; set; }
-        public string ParentCode { get; set; }
-        public long IsMenu { get; set; }
-        public int PlatformType { get; set; }
-        public int Level { get; set; }
-        public int Sequence { get; set; }
-        public string URL { get; set; }
-        public string ICON { get; set; }
-        public long IsValid { get; set; }
+        public System.DateTime InvoiceDate { get; set; }
+        public Nullable<System.DateTime> PostDate { get; set; }
+        public System.DateTime DueDate { get; set; }
+        public long InvoiceType { get; set; }
+        public int SupplierID { get; set; }
+        public string InvoiceNumber { get; set; }
+        public decimal Amount { get; set; }
+        public decimal OperAmount { get; set; }
+        public decimal BalanceAmount { get; set; }
+        public Nullable<long> Status { get; set; }
+        public string Remark { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<int> CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
+        public Nullable<System.DateTime> ConfirmTime { get; set; }
+        public Nullable<int> ConfirmUserID { get; set; }
     }
 }

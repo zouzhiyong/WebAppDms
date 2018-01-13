@@ -12,9 +12,8 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_menu
+    public partial class t_sys_menumodule
     {
-        public long UserID { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public long FID { get; set; }
         public string Code { get; set; }
