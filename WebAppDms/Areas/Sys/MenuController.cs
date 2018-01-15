@@ -92,7 +92,7 @@ namespace WebAppDms.Areas.Sys
                     label = s1.Name,
                     Sequence = s1.Sequence,
                     FID = s1.FID,
-                    Code = s.Code,
+                    Code = s1.Code,
                 }).OrderBy(o => o.Sequence).ThenBy(o => o.FID).ToList()
             }).OrderBy(o => o.Sequence).ThenBy(o => o.FID).ToList();
 
