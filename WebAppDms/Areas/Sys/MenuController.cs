@@ -40,7 +40,7 @@ namespace WebAppDms.Areas.Sys
         public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
-            var result = obj.Code == "00" ? dbhelp.Add(obj) : dbhelp.Update(obj);
+            var result = obj.Code == "&" ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
         }
@@ -53,7 +53,7 @@ namespace WebAppDms.Areas.Sys
         {
             string userId = "3";// HttpContext.Current.Session["userId"].ToString();
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == userId && p.ParentCode == "00").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == userId && p.ParentCode == "&").Select(s => new
             {
                 path = "/",
                 name = s.Name,
@@ -81,7 +81,7 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysModuleTree()
         {
-            var list = db.view_menu.Where<view_menu>(p => p.ParentCode == "00").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.ParentCode == "&").Select(s => new
             {
                 label = s.Name,
                 Sequence = s.Sequence,
@@ -108,16 +108,18 @@ namespace WebAppDms.Areas.Sys
         public HttpResponseMessage FindSysMoudleForm(dynamic obj)
         {
             int FID = obj == null ? 0 : obj.FID;
+            string ParentCode = obj.ParentCode;
 
+            var maxCode = db.t_sys_menumodule.Where(w0 => w0.ParentCode == ParentCode).OrderByDescending(o=>o.Code).Select(s0 => new { Code = s0.Code }).FirstOrDefault();
 
             if (FID == 0)
             {
                 var list = new
                 {
-                    Code = "",
-                    ParentCode = obj.ParentCode,
-                    ParentCodeList = new object[] { new { label = "未对应上级", value = "00" } }.
-                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "00").Select(s1 => new
+                    Code = string.Format("{0:d"+ maxCode.Code.ToString().Length + "}", (int.Parse(maxCode.Code) + 1)),
+                    ParentCode = ParentCode,
+                    ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
+                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&").Select(s1 => new
                         {
                             label = s1.Name,
                             value = s1.Code
@@ -146,8 +148,8 @@ namespace WebAppDms.Areas.Sys
                 {
                     Code = s.Code,
                     ParentCode = s.ParentCode,
-                    ParentCodeList = new object[] { new { label = "未对应上级", value = "00" } }.
-                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "00").Select(s1 => new
+                    ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
+                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&").Select(s1 => new
                         {
                             label = s1.Name,
                             value = s1.Code

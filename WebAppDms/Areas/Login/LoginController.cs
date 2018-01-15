@@ -45,7 +45,7 @@ namespace WebAppDms.Areas.Login
 
             var homeOjb = new object[] { new { path = "/", iconCls = "fa fa-home", leaf = true, children = new object[] { new { path = "/index", MenuPath = "index", meta = new { name = "主页", button = new string[] { }.ToList() } } } } };
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == UserInfo.UserID.ToString() && p.ParentCode == "00").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == UserInfo.UserID.ToString() && p.ParentCode == "&").Select(s => new
             {
                 path = "/",
                 name = "",
