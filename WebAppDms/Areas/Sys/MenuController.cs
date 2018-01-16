@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using WebAppDms.Controllers;
 using WebAppDms.Models;
@@ -40,7 +41,19 @@ namespace WebAppDms.Areas.Sys
         public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
-            var result = obj.Code == "&" ? dbhelp.Add(obj) : dbhelp.Update(obj);
+            if (obj.FID == 0)
+            {
+                obj.CreateTime = DateTime.Now;
+                obj.CreateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+                obj.UpdateTime = DateTime.Now;
+                obj.UpdateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+            }
+            else
+            {
+                obj.UpdateTime = DateTime.Now;
+                obj.UpdateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+            }
+            var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
         }
@@ -116,6 +129,12 @@ namespace WebAppDms.Areas.Sys
             {
                 var list = new
                 {
+                    FID = 0,
+                    CreateTime="",
+                    CreateUserID="",
+                    UpdateTime="",
+                    UpdateUserID="",
+                    IsMenu=1,
                     Code = string.Format("{0:d"+ maxCode.Code.ToString().Length + "}", (int.Parse(maxCode.Code) + 1)),
                     ParentCode = ParentCode,
                     ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
@@ -128,10 +147,6 @@ namespace WebAppDms.Areas.Sys
                     URL = "",
                     ICON = "",
                     IsValid = 1,
-                    IsValidList = new object[] {
-                    new { label = "有效", value = 1 },
-                    new { label = "无效", value = 0 }
-                }.ToList(),
                     PlatformType = 1,
                     PlatformTypeList = new object[] {
                     new { label = "WEB", value = 1 },
@@ -146,6 +161,12 @@ namespace WebAppDms.Areas.Sys
             {
                 var list = db.t_sys_menumodule.Where(w => w.FID == FID).Select(s => new
                 {
+                    FID=s.FID,
+                    CreateTime = s.CreateTime,
+                    CreateUserID = s.CreateUserID,
+                    UpdateTime = s.UpdateTime,
+                    UpdateUserID = s.UpdateUserID,
+                    IsMenu =s.IsMenu,
                     Code = s.Code,
                     ParentCode = s.ParentCode,
                     ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
@@ -158,10 +179,6 @@ namespace WebAppDms.Areas.Sys
                     URL = s.URL,
                     ICON = s.ICON,
                     IsValid = s.IsValid,
-                    IsValidList = new object[] {
-                    new { label = "有效", value = 1 },
-                    new { label = "无效", value = 0 }
-                }.ToList(),
                     PlatformType = 1,
                     PlatformTypeList = new object[] {
                     new { label = "WEB", value = 1 },
