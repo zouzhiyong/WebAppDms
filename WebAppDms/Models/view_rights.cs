@@ -14,14 +14,14 @@ namespace WebAppDms.Models
     
     public partial class view_rights
     {
-        public Nullable<decimal> RightsID { get; set; }
+        public long RightsID { get; set; }
         public string Name { get; set; }
-        public Nullable<decimal> IsValid { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
+        public long IsValid { get; set; }
+        public System.DateTime CreateTime { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public string CreateUser { get; set; }
         public string UpdateUser { get; set; }
-        public Nullable<long> CorpID { get; set; }
-        public long isRole { get; set; }
+        public int CorpID { get; set; }
+        public Nullable<long> isRole { get; set; }
     }
 }

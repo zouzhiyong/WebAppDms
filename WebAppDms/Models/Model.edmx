@@ -896,6 +896,7 @@
           <Property Name="CreateUserID" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+          <Property Name="Descript" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="t_sys_modulebutton">
           <Key>
@@ -1213,17 +1214,21 @@
 警告 6002: 表/视图“def.dms.view_rights”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_rights">
           <Key>
-            <PropertyRef Name="isRole" />
+            <PropertyRef Name="RightsID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CorpID" />
           </Key>
-          <Property Name="RightsID" Type="ubigint" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="IsValid" Type="ubigint" />
-          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="RightsID" Type="uint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="CreateUser" Type="varchar" MaxLength="50" />
           <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
-          <Property Name="CorpID" Type="bigint" />
-          <Property Name="isRole" Type="bigint" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="isRole" Type="bigint" />
         </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
@@ -2272,6 +2277,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_sys_modulebutton">
           <Key>
@@ -2585,17 +2591,21 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
         </EntityType>
         <EntityType Name="view_rights">
           <Key>
-            <PropertyRef Name="isRole" />
+            <PropertyRef Name="RightsID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CorpID" />
           </Key>
-          <Property Name="RightsID" Type="Decimal" Precision="20" Scale="0" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsValid" Type="Decimal" Precision="20" Scale="0" />
-          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="RightsID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CorpID" Type="Int64" />
-          <Property Name="isRole" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="isRole" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3496,6 +3506,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="t_sys_menumodule">
             <EntityTypeMapping TypeName="webdmsModel.t_sys_menumodule">
               <MappingFragment StoreEntitySet="t_sys_menumodule">
+                <ScalarProperty Name="Descript" ColumnName="Descript" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />

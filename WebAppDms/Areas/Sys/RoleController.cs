@@ -15,80 +15,82 @@ namespace WebAppDms.Areas.Sys
     {
         public HttpResponseMessage FindSysRoleTree()
         {
-            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID==UserSession.userInfo.CorpID).Select(s => new
+            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID == UserSession.userInfo.CorpID).OrderBy(o => o.RightsID).Select(s => new
             {
                 label = s.Name,
-                RoleID = s.RightsID
+                RightsID = s.RightsID
             }).ToList();
 
             return Json(true, "", list);
         }
 
-        //public HttpResponseMessage FindSysRoleMenuTable(sys_rolemenu obj)
-        //{
-        //    var list = db.sys_menu.Where(w => w.IsValid != 0 && w.MenuParentID == 0).Select(s => new
-        //    {
-        //        MenuID = s.MenuID,
-        //        MenuName = s.MenuName,
-        //        MenuIcon = s.MenuIcon,
-        //        Comment = s.Comment,
-        //        MenuRolesData = db.sys_menu.Where(w1 => w1.IsValid != 0 && w1.MenuParentID == s.MenuID && db.sys_rolemenu.Where(w0 => w0.RoleID == obj.RoleID && w0.MenuID == w1.MenuID).Select(s0 => s0.MenuID).ToList().Count > 0).Select(s1 => s1.MenuID).ToList(),
-        //        chilDren = db.sys_menu.Where(w2 => w2.IsValid != 0 && w2.MenuParentID == s.MenuID).Select(s2 => new
-        //        {
-        //            MenuID = s2.MenuID,
-        //            MenuName = s2.MenuName
-        //        }).ToList()
-        //    }).ToList();
+        public HttpResponseMessage FindSysRoleMenuTable(t_sys_rights_detail obj)
+        {
+            var list = db.t_sys_menumodule.Where(w => w.IsValid != 0 && w.ParentCode == "&").Select(s => new
+            {
+                FID = s.FID,
+                Code = s.Code,
+                Name = s.Name,
+                ICON = s.ICON,
+                Descript = s.Descript,
+                MenuRolesData = db.t_sys_menumodule.Where(w1 => w1.IsValid != 0 && w1.ParentCode == s.Code && db.t_sys_rights_detail.Where(w0 => w0.RightsID == obj.RightsID && w0.ModuleID == w1.FID).Select(s0 => s0.RightsID).ToList().Count > 0).Select(s1 => s1.Code).ToList(),
+                chilDren = db.t_sys_menumodule.Where(w2 => w2.IsValid != 0 && w2.ParentCode == s.Code).Select(s2 => new
+                {
+                    Code = s2.Code,
+                    Name = s2.Name
+                }).ToList()
+            }).ToList();
 
-        //    return Json(true, "", list);
-        //}
+            return Json(true, "", list);
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        //public HttpResponseMessage SaveSysRoleMenuForm(dynamic obj)
-        //{
-        //    int RoleID = obj.RoleID;
-        //    var arr = obj.MenuID;
-        //    var temp = db.Set<sys_rolemenu>().Where(w => w.RoleID == RoleID);
-        //    foreach (var item in temp)
-        //    {
-        //        db.Entry<sys_rolemenu>(item).State = EntityState.Deleted;
-        //    }
+        public HttpResponseMessage SaveSysRoleMenuForm(getRightsCode obj)
+        {
+            int RightsID = obj.RightsID;
+            string[] arr = obj.arr;
 
-        //    List<sys_rolemenu> list = new List<sys_rolemenu>();
+            var temp = db.Set<t_sys_rights_detail>().Where(w => w.RightsID == RightsID && w.CorpID == UserSession.userInfo.CorpID);
+            foreach (var item in temp)
+            {
+                db.Entry<t_sys_rights_detail>(item).State = EntityState.Deleted;
+            }
 
+            var fids = db.t_sys_menumodule.Where(w => arr.Contains(w.Code)).Select(s => s.FID).ToList();
 
-        //    foreach (int item in arr)
-        //    {
-        //        var tempObj = new sys_rolemenu()
-        //        {
-        //            RoleID = RoleID,
-        //            MenuID = item,
-        //            RecTimeStamp = DateTime.Now,
-        //            CreateUserID = 1,
-        //            CreateDate = DateTime.Now,
-        //            ModifyUserID = 1,
-        //            ModifyDate = DateTime.Now
-        //        };
-        //        list.Add(tempObj);
+            List<t_sys_rights_detail> list = new List<t_sys_rights_detail>();
 
-        //    }
+            foreach (int item in fids)
+            {
+                var tempObj = new t_sys_rights_detail()
+                {
+                    RightsID = RightsID,
+                    ModuleID = item,
+                    CorpID = UserSession.userInfo.CorpID,
+                    CreateTime = DateTime.Now,
+                    CreateUserID = (int)UserSession.userInfo.UserID,
+                    UpdateTime = DateTime.Now,
+                    UpdateUserID = (int)UserSession.userInfo.UserID
+                };
+                list.Add(tempObj);
+            }
 
-        //    int result = 0;
-        //    for (int i = 0; i < list.Count(); i++)
-        //    {
-        //        if (list[i] == null)
-        //            continue;
-        //        db.Entry<sys_rolemenu>(list[i]).State = EntityState.Added;
-        //    }
+            int result = 0;
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if (list[i] == null)
+                    continue;
+                db.Entry<t_sys_rights_detail>(list[i]).State = EntityState.Added;
+            }
 
-        //    result += db.SaveChanges();
+            result += db.SaveChanges();
 
-        //    return Json(true, result > 0 ? "保存成功！" : "保存失败");
-        //}
+            return Json(true, result > 0 ? "保存成功！" : "保存失败");
+        }
 
         /// <summary>
         /// 
@@ -104,7 +106,7 @@ namespace WebAppDms.Areas.Sys
             int total = 0;
             long CorpID = (long)UserSession.userInfo.CorpID;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x=>x.CorpID == CorpID, s => s.RightsID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.RightsID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -148,7 +150,7 @@ namespace WebAppDms.Areas.Sys
                 {
                     RightsID = s.RightsID,
                     Name = s.Name,
-                    IsValid = s.IsValid,                  
+                    IsValid = s.IsValid,
                 }).FirstOrDefault();
 
                 return Json(true, "", list);
@@ -181,6 +183,13 @@ namespace WebAppDms.Areas.Sys
             var result = obj.RightsID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
+        }
+
+        public class getRightsCode
+        {
+            public string[] arr { get; set; }
+
+            public int RightsID { get; set; }
         }
     }
 }

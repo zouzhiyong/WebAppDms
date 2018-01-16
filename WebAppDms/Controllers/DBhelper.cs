@@ -45,7 +45,7 @@ namespace WebAppDms.Controllers
         /// <summary>
         /// 批量新增实体
         /// </summary>
-        /// <param name="dbdb"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public int AddList(params T[] entities)
         {
