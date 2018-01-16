@@ -12,21 +12,15 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class t_datadict_class_detail
+    public partial class t_sys_buttton
     {
-        public System.DateTime C_TimeStamp { get; set; }
-        public long DClassID { get; set; }
-        public Nullable<int> CorpID { get; set; }
-        public string ClassID { get; set; }
-        public string Code { get; set; }
+        public System.DateTime TimeStamp { get; set; }
+        public long ButtonID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public Nullable<int> ButtonTypeID { get; set; }
+        public string PIC { get; set; }
         public long IsValid { get; set; }
-        public long IsVisibile { get; set; }
-        public string Remark { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
-        public Nullable<int> CreateUserID { get; set; }
-        public Nullable<System.DateTime> UpdateTime { get; set; }
-        public Nullable<int> UpdateUserID { get; set; }
+        public Nullable<int> CreatUserID { get; set; }
     }
 }

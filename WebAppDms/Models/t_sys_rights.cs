@@ -23,6 +23,6 @@ namespace WebAppDms.Models
         public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
-        public Nullable<int> UpdaeUserID { get; set; }
+        public Nullable<int> UpdateUserID { get; set; }
     }
 }

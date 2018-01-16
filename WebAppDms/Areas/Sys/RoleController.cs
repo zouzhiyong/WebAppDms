@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using WebAppDms.Controllers;
 using WebAppDms.Models;
@@ -12,16 +13,16 @@ namespace WebAppDms.Areas.Sys
 {
     public class RoleController : ApiBaseController
     {
-        //public HttpResponseMessage FindSysRoleTree()
-        //{
-        //    var list = db.sys_role.Where<sys_role>(p => p.IsValid != 0).Select(s => new
-        //    {
-        //        label = s.RoleName,
-        //        RoleID = s.RoleID
-        //    }).ToList();
+        public HttpResponseMessage FindSysRoleTree()
+        {
+            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID==UserSession.userInfo.CorpID).Select(s => new
+            {
+                label = s.Name,
+                RoleID = s.RightsID
+            }).ToList();
 
-        //    return Json(true, "", list);
-        //}
+            return Json(true, "", list);
+        }
 
         //public HttpResponseMessage FindSysRoleMenuTable(sys_rolemenu obj)
         //{
@@ -42,11 +43,11 @@ namespace WebAppDms.Areas.Sys
         //    return Json(true, "", list);
         //}
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         //public HttpResponseMessage SaveSysRoleMenuForm(dynamic obj)
         //{
         //    int RoleID = obj.RoleID;
@@ -89,99 +90,97 @@ namespace WebAppDms.Areas.Sys
         //    return Json(true, result > 0 ? "保存成功！" : "保存失败");
         //}
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public HttpResponseMessage FindSysRoleTable(dynamic obj)
-        //{
-        //    DBHelper<view_role> dbhelp = new DBHelper<view_role>();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public HttpResponseMessage FindSysRoleTable(dynamic obj)
+        {
+            DBHelper<view_rights> dbhelp = new DBHelper<view_rights>();
 
-        //    int pageSize = obj.pageSize;
-        //    int currentPage = obj.currentPage;
-        //    int total = 0;
+            int pageSize = obj.pageSize;
+            int currentPage = obj.currentPage;
+            int total = 0;
+            long CorpID = (long)UserSession.userInfo.CorpID;
 
-        //    var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => 1 == 1, s => s.RoleID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x=>x.CorpID == CorpID, s => s.RightsID, true);
 
-        //    return Json(list, currentPage, pageSize, total);
-        //}
+            return Json(list, currentPage, pageSize, total);
+        }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //public HttpResponseMessage DeleteSysRoleRow(sys_role obj)
-        //{
-        //    var result = new DBHelper<sys_role>().Remove(obj);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage DeleteSysRoleRow(t_sys_rights obj)
+        {
+            var result = new DBHelper<t_sys_rights>().Remove(obj);
 
-        //    return Json(true, result == 1 ? "删除成功！" : "删除失败");
-        //}
+            return Json(true, result == 1 ? "删除成功！" : "删除失败");
+        }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public HttpResponseMessage FindSysRoleForm(dynamic obj)
-        //{
-        //    int RoleID = obj == null ? 0 : obj.RoleID;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public HttpResponseMessage FindSysRoleForm(dynamic obj)
+        {
+            int RightsID = obj == null ? 0 : obj.RightsID;
 
 
-        //    if (RoleID == 0)
-        //    {
-        //        var list = new
-        //        {
-        //            RoleID = 0,
-        //            MenuName = "",
-        //            IsValid = 1,
-        //            IsValidList = new object[] {
-        //            new { label = "有效", value = 1 },
-        //            new { label = "无效", value = 0 }
-        //        }.ToList(),
-        //            ModifyUserID = "",
-        //            ModifyDate = DateTime.Now,
-        //            CreateUserID = "",
-        //            CreateDate = DateTime.Now,
-        //            RoleDesc = ""
-        //        };
-        //        return Json(true, "", list);
-        //    }
-        //    else
-        //    {
-        //        var list = db.sys_role.Where(w => w.RoleID == RoleID).Select(s => new
-        //        {
-        //            RoleID = s.RoleID,
-        //            RoleName = s.RoleName,
-        //            IsValid = s.IsValid == null ? 1 : s.IsValid,
-        //            IsValidList = new object[] {
-        //            new { label = "有效", value = 1 },
-        //            new { label = "无效", value = 0 }
-        //        }.ToList(),
-        //            ModifyUserID = "",
-        //            ModifyDate = DateTime.Now,
-        //            CreateUserID = "",
-        //            CreateDate = DateTime.Now,
-        //            RoleDesc = s.RoleDesc
-        //        }).FirstOrDefault();
+            if (RightsID == 0)
+            {
+                var list = new
+                {
+                    RightsID = 0,
+                    Name = "",
+                    IsValid = 1
+                };
+                return Json(true, "", list);
+            }
+            else
+            {
+                var list = db.t_sys_rights.Where(w => w.RightsID == RightsID).Select(s => new
+                {
+                    RightsID = s.RightsID,
+                    Name = s.Name,
+                    IsValid = s.IsValid,                  
+                }).FirstOrDefault();
 
-        //        return Json(true, "", list);
-        //    }
-        //}
+                return Json(true, "", list);
+            }
+        }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public HttpResponseMessage SaveSysRoleForm(sys_role obj)
-        //{
-        //    DBHelper<sys_role> dbhelp = new DBHelper<sys_role>();
-        //    var result = obj.RoleID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public HttpResponseMessage SaveSysRoleForm(t_sys_rights obj)
+        {
+            DBHelper<t_sys_rights> dbhelp = new DBHelper<t_sys_rights>();
 
-        //    return Json(true, result == 1 ? "保存成功！" : "保存失败");
-        //}
+            if (obj.RightsID == 0)
+            {
+                obj.CreateTime = DateTime.Now;
+                obj.CreateUserID = (int)UserSession.userInfo.UserID;
+                obj.UpdateTime = DateTime.Now;
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                obj.CorpID = UserSession.userInfo.CorpID;
+                obj.Code = "";
+            }
+            else
+            {
+                obj.UpdateTime = DateTime.Now;
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+            }
+            var result = obj.RightsID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
+
+            return Json(true, result == 1 ? "保存成功！" : "保存失败");
+        }
     }
 }

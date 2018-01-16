@@ -33,7 +33,7 @@ namespace WebAppDms.Models
         public string Remark { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<int> CreateUserID { get; set; }
-        public string UpdateTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
     }
 }

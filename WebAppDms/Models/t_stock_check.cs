@@ -21,6 +21,7 @@ namespace WebAppDms.Models
         public int RowID { get; set; }
         public int WarehouseID { get; set; }
         public int BinID { get; set; }
+        public int ItemID { get; set; }
         public string Batch { get; set; }
         public int UomID { get; set; }
         public float StockQty { get; set; }

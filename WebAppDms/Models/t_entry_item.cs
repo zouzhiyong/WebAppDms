@@ -23,6 +23,7 @@ namespace WebAppDms.Models
         public System.DateTime PostDate { get; set; }
         public int BillTypeID { get; set; }
         public int WarehouseID { get; set; }
+        public Nullable<int> BinID { get; set; }
         public int ItemID { get; set; }
         public string Batch { get; set; }
         public int UomID { get; set; }

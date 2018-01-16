@@ -12,20 +12,19 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class t_log_userlogin
+    public partial class t_sys_modulebutton
     {
         public System.DateTime TimeStamp { get; set; }
-        public long UserLoginID { get; set; }
+        public long ModButtonID { get; set; }
         public int CorpID { get; set; }
-        public int UserID { get; set; }
-        public System.DateTime LoginTime { get; set; }
-        public Nullable<System.DateTime> LogOutTime { get; set; }
-        public string ComputerIP { get; set; }
-        public string ComputerName { get; set; }
-        public string DeviceMAC { get; set; }
-        public string DeviceIMEI { get; set; }
-        public string APPver { get; set; }
-        public string APPpackage { get; set; }
-        public string Remark { get; set; }
+        public int ModuleID { get; set; }
+        public int ButtonID { get; set; }
+        public string Name { get; set; }
+        public long IsValid { get; set; }
+        public long IsVisible { get; set; }
+        public Nullable<System.DateTime> CreatTime { get; set; }
+        public Nullable<int> CreateUserID { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
+        public Nullable<int> UpdateUserID { get; set; }
     }
 }

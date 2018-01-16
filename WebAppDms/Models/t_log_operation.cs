@@ -24,7 +24,7 @@ namespace WebAppDms.Models
         public int FieldName { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
-        public int ComputerIP { get; set; }
+        public string ComputerIP { get; set; }
         public string ComputerName { get; set; }
         public string DeviceMAC { get; set; }
         public string DeviceIMEI { get; set; }

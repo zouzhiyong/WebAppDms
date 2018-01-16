@@ -81,7 +81,9 @@ namespace WebAppDms.Areas.Login
 
             if (list != null)
             {
-                HttpContext.Current.Session["userId"] = list.UserID;
+                HttpContext.Current.Session["UserInfo"] = list;
+                //HttpContext.Current.Session["userId"] = list.UserID;
+                //HttpContext.Current.Session["corpid"] = list.CorpID;
                 return true;
             }
             else

@@ -9,12 +9,13 @@ using WebAppDms.Controllers;
 using WebAppDms.Models;
 
 namespace WebAppDms.Areas.Sys
-{
+{    
     /// <summary>
     /// 
     /// </summary>
     public class MenuController : ApiBaseController
     {
+        
         /// <summary>
         /// 获取菜单编辑窗口右边表格
         /// </summary>
@@ -44,14 +45,14 @@ namespace WebAppDms.Areas.Sys
             if (obj.FID == 0)
             {
                 obj.CreateTime = DateTime.Now;
-                obj.CreateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+                obj.CreateUserID =(int)UserSession.userInfo.UserID;
                 obj.UpdateTime = DateTime.Now;
-                obj.UpdateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
             }
             else
             {
                 obj.UpdateTime = DateTime.Now;
-                obj.UpdateUserID = int.Parse(HttpContext.Current.Session["userId"].ToString());
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
             }
             var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
@@ -64,9 +65,10 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindMenu()
         {
-            string userId = "3";// HttpContext.Current.Session["userId"].ToString();
+            //string userId = "3";// HttpContext.Current.Session["userId"].ToString();
+            
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == userId && p.ParentCode == "&").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
             {
                 path = "/",
                 name = s.Name,
@@ -74,7 +76,7 @@ namespace WebAppDms.Areas.Sys
                 Xh = s.Sequence,
                 MenuID = s.Code,
                 iconCls = s.ICON,
-                children = db.view_menu.Where<view_menu>(p1 => p1.ParentCode == s.Code).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
@@ -94,13 +96,13 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysModuleTree()
         {
-            var list = db.view_menu.Where<view_menu>(p => p.ParentCode == "&").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p =>p.UserID== UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
             {
                 label = s.Name,
                 Sequence = s.Sequence,
                 FID = s.FID,
                 Code= s.Code,
-                children = db.view_menu.Where<view_menu>(p1 => p1.ParentCode == s.Code).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     label = s1.Name,
                     Sequence = s1.Sequence,
