@@ -36,8 +36,16 @@ namespace WebAppDms.Areas.Sys
                 MenuRolesData = db.t_sys_menumodule.Where(w1 => w1.IsValid != 0 && w1.ParentCode == s.Code && db.t_sys_rights_detail.Where(w0 => w0.RightsID == obj.RightsID && w0.ModuleID == w1.FID).Select(s0 => s0.RightsID).ToList().Count > 0).Select(s1 => s1.Code).ToList(),
                 chilDren = db.t_sys_menumodule.Where(w2 => w2.IsValid != 0 && w2.ParentCode == s.Code).Select(s2 => new
                 {
+                    FID=s2.FID,
                     Code = s2.Code,
-                    Name = s2.Name
+                    Name = s2.Name,
+                    chilDren = db.t_sys_modulebutton.Where(w4 => w4.IsValid != 0 && w4.ModuleID == s2.FID).Join(db.t_sys_buttton.OrderBy(o5 => o5.ButtonID).Where(w5 => w5.IsValid != 0), a => a.ButtonID, b => b.ButtonID, (a, b) => new
+                    {
+                        ModButtonID = a.ModButtonID,
+                        ButtonID = b.ButtonID,
+                        Name = b.Name,
+                        IsVisible = a.IsVisible
+                    }).ToList()
                 }).ToList()
             }).ToList();
 
@@ -53,6 +61,8 @@ namespace WebAppDms.Areas.Sys
         {
             int RightsID = obj.RightsID;
             string[] arr = obj.arr;
+            DateTime dt = DateTime.Now;
+            t_sys_modulebutton[] buttonArr = obj.buttonArr;
 
             var temp = db.Set<t_sys_rights_detail>().Where(w => w.RightsID == RightsID && w.CorpID == UserSession.userInfo.CorpID);
             foreach (var item in temp)
@@ -71,9 +81,9 @@ namespace WebAppDms.Areas.Sys
                     RightsID = RightsID,
                     ModuleID = item,
                     CorpID = UserSession.userInfo.CorpID,
-                    CreateTime = DateTime.Now,
+                    CreateTime = dt,
                     CreateUserID = (int)UserSession.userInfo.UserID,
-                    UpdateTime = DateTime.Now,
+                    UpdateTime = dt,
                     UpdateUserID = (int)UserSession.userInfo.UserID
                 };
                 list.Add(tempObj);
@@ -85,6 +95,30 @@ namespace WebAppDms.Areas.Sys
                 if (list[i] == null)
                     continue;
                 db.Entry<t_sys_rights_detail>(list[i]).State = EntityState.Added;
+            }
+
+            //获取菜单对应按钮的ID数组
+            List<long> listModuleButtonID = new List<long>();
+            foreach (t_sys_modulebutton item in buttonArr)
+            {
+                listModuleButtonID.Add(item.ModButtonID);
+            }
+
+            //查出所有满足要求的数据
+            var listModuleButton = db.t_sys_modulebutton.Where(w => listModuleButtonID.Contains(w.ModButtonID)).Select(s => s).ToList();
+
+            foreach (t_sys_modulebutton item in listModuleButton)
+            {
+                item.UpdateTime = dt;
+                item.UpdateUserID = (int)UserSession.userInfo.UserID;
+                foreach(var _item in buttonArr)
+                {
+                    if (_item.ModButtonID == item.ModButtonID)
+                    {
+                        item.IsVisible = _item.IsVisible;
+                    }
+                }
+                db.Entry<t_sys_modulebutton>(item).State = EntityState.Modified;
             }
 
             result += db.SaveChanges();
@@ -188,7 +222,7 @@ namespace WebAppDms.Areas.Sys
         public class getRightsCode
         {
             public string[] arr { get; set; }
-
+            public t_sys_modulebutton[] buttonArr { get; set; }
             public int RightsID { get; set; }
         }
     }

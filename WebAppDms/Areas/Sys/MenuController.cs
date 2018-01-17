@@ -41,17 +41,18 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
+            DateTime dt = DateTime.Now;
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
             if (obj.FID == 0)
             {
-                obj.CreateTime = DateTime.Now;
+                obj.CreateTime = dt;
                 obj.CreateUserID =(int)UserSession.userInfo.UserID;
-                obj.UpdateTime = DateTime.Now;
+                obj.UpdateTime = dt;
                 obj.UpdateUserID = (int)UserSession.userInfo.UserID;
             }
             else
             {
-                obj.UpdateTime = DateTime.Now;
+                obj.UpdateTime = dt;
                 obj.UpdateUserID = (int)UserSession.userInfo.UserID;
             }
             var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);

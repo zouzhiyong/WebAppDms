@@ -849,7 +849,7 @@
           <Property Name="ButtonID" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ButtonTypeID" Type="int" />
-          <Property Name="PIC" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PIC" Type="varchar" MaxLength="255" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" />
           <Property Name="CreatUserID" Type="int" />
@@ -907,7 +907,7 @@
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="ModuleID" Type="int" Nullable="false" />
           <Property Name="ButtonID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="IsVisible" Type="uint" Nullable="false" />
           <Property Name="CreatTime" Type="datetime" Precision="0" />
@@ -2230,7 +2230,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="ButtonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ButtonTypeID" Type="Int32" />
-          <Property Name="PIC" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="CreatUserID" Type="Int32" />
@@ -2288,7 +2288,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="ModuleID" Type="Int32" Nullable="false" />
           <Property Name="ButtonID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="IsVisible" Type="Int64" Nullable="false" />
           <Property Name="CreatTime" Type="DateTime" Precision="0" />
