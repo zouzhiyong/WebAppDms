@@ -174,7 +174,13 @@ namespace WebAppDms.Areas.Sys
                 {
                     RightsID = 0,
                     Name = "",
-                    IsValid = 1
+                    IsValid = 1,
+                    Code = "",
+                    CorpID = 0,
+                    CreateTime = "",
+                    CreateUserID = 0,
+                    UpdateTime = "",
+                    UpdateUserID = 0
                 };
                 return Json(true, "", list);
             }
@@ -185,6 +191,12 @@ namespace WebAppDms.Areas.Sys
                     RightsID = s.RightsID,
                     Name = s.Name,
                     IsValid = s.IsValid,
+                    Code=s.Code,
+                    CorpID=s.CorpID,
+                    CreateTime=s.CreateTime,
+                    CreateUserID=s.CreateUserID,
+                    UpdateTime=s.UpdateTime,
+                    UpdateUserID=s.UpdateUserID
                 }).FirstOrDefault();
 
                 return Json(true, "", list);
@@ -200,18 +212,19 @@ namespace WebAppDms.Areas.Sys
         {
             DBHelper<t_sys_rights> dbhelp = new DBHelper<t_sys_rights>();
 
+            DateTime dt = DateTime.Now;
             if (obj.RightsID == 0)
             {
-                obj.CreateTime = DateTime.Now;
+                obj.CreateTime = dt;
                 obj.CreateUserID = (int)UserSession.userInfo.UserID;
-                obj.UpdateTime = DateTime.Now;
+                obj.UpdateTime = dt;
                 obj.UpdateUserID = (int)UserSession.userInfo.UserID;
                 obj.CorpID = UserSession.userInfo.CorpID;
                 obj.Code = "";
             }
             else
             {
-                obj.UpdateTime = DateTime.Now;
+                obj.UpdateTime = dt;
                 obj.UpdateUserID = (int)UserSession.userInfo.UserID;
             }
             var result = obj.RightsID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
