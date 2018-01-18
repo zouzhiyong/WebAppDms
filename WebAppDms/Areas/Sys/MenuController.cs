@@ -54,6 +54,7 @@ namespace WebAppDms.Areas.Sys
             {
                 obj.UpdateTime = dt;
                 obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                //obj.FID = db.t_sys_menumodule.Where(w => w.TimeStamp == obj.TimeStamp && w.FID == obj.FID).Count()>0?obj.FID:-1;
             }
             var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
@@ -69,7 +70,7 @@ namespace WebAppDms.Areas.Sys
             //string userId = "3";// HttpContext.Current.Session["userId"].ToString();
             
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&" && p.PlatformType == 9).Select(s => new
             {
                 path = "/",
                 name = s.Name,
@@ -77,7 +78,7 @@ namespace WebAppDms.Areas.Sys
                 Xh = s.Sequence,
                 MenuID = s.Code,
                 iconCls = s.ICON,
-                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code && p1.PlatformType==9).Select(s1 => new
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
@@ -128,17 +129,24 @@ namespace WebAppDms.Areas.Sys
 
             var maxCode = db.t_sys_menumodule.Where(w0 => w0.ParentCode == ParentCode).OrderByDescending(o=>o.Code).Select(s0 => new { Code = s0.Code }).FirstOrDefault();
 
+            var PlatFormTypeList = db.t_datadict_class.Where(w => w.IsValid != 0 && w.Code == "ModuleType").Join(db.t_datadict_class_detail.Where(w => w.IsValid != 0), a => a.ClassID, b => b.ClassID, (a, b) => new
+            {
+                label = b.Name,
+                value = b.DClassID
+            }).OrderBy(o=>o.value);
+
             if (FID == 0)
             {
                 var list = new
                 {
                     FID = 0,
-                    CreateTime="",
-                    CreateUserID="",
-                    UpdateTime="",
-                    UpdateUserID="",
-                    IsMenu=1,
-                    Code = string.Format("{0:d"+ maxCode.Code.ToString().Length + "}", (int.Parse(maxCode.Code) + 1)),
+                    CreateTime = "",
+                    CreateUserID = "",
+                    UpdateTime = "",
+                    UpdateUserID = "",
+                    TimeStamp="",
+                    IsMenu = 1,
+                    Code = string.Format("{0:d" + maxCode.Code.ToString().Length + "}", (int.Parse(maxCode.Code) + 1)),
                     ParentCode = ParentCode,
                     ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
                         Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&").Select(s1 => new
@@ -150,12 +158,8 @@ namespace WebAppDms.Areas.Sys
                     URL = "",
                     ICON = "",
                     IsValid = 1,
-                    PlatformType = 1,
-                    PlatformTypeList = new object[] {
-                    new { label = "WEB", value = 1 },
-                    new { label = "APP", value = 2 },
-                    new { label = "Wechat", value = 3 }
-                }.ToList(),
+                    PlatformType = PlatFormTypeList.FirstOrDefault().value,
+                    PlatformTypeList= PlatFormTypeList, 
                     Sequence = 0
                 };
                 return Json(true, "", list);
@@ -169,6 +173,7 @@ namespace WebAppDms.Areas.Sys
                     CreateUserID = s.CreateUserID,
                     UpdateTime = s.UpdateTime,
                     UpdateUserID = s.UpdateUserID,
+                    TimeStamp=s.TimeStamp,
                     IsMenu =s.IsMenu,
                     Code = s.Code,
                     ParentCode = s.ParentCode,
@@ -182,12 +187,8 @@ namespace WebAppDms.Areas.Sys
                     URL = s.URL,
                     ICON = s.ICON,
                     IsValid = s.IsValid,
-                    PlatformType = 1,
-                    PlatformTypeList = new object[] {
-                    new { label = "WEB", value = 1 },
-                    new { label = "APP", value = 2 },
-                    new { label = "Wechat", value = 3 }
-                }.ToList(),
+                    PlatformType = s.PlatformType,
+                    PlatformTypeList = PlatFormTypeList,
                     Sequence = s.Sequence
 
                 }).FirstOrDefault();

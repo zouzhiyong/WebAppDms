@@ -17,7 +17,7 @@ namespace WebAppDms.Models
         public System.DateTime C_TimeStamp { get; set; }
         public long DClassID { get; set; }
         public Nullable<int> CorpID { get; set; }
-        public string ClassID { get; set; }
+        public int ClassID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

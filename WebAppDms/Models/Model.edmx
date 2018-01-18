@@ -256,7 +256,7 @@
           <Property Name=" TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DClassID" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" />
-          <Property Name="ClassID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="100" />
@@ -1637,7 +1637,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="C_TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
           <Property Name="DClassID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CorpID" Type="Int32" />
-          <Property Name="ClassID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />

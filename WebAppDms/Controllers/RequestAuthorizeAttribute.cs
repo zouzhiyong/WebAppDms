@@ -17,6 +17,9 @@ namespace WebAppDms.Controllers
             var authorization = actionContext.Request.Headers.Authorization;
             if ((authorization != null) && (authorization.Parameter != null))
             {
+                //var actionName = actionContext.ActionDescriptor.ActionName;
+                //var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+
                 //解密用户ticket,并校验用户名密码是否匹配
                 var encryptTicket = authorization.Parameter;
                 if (ValidateTicket(encryptTicket))
