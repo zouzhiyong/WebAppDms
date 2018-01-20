@@ -75,7 +75,8 @@ namespace WebAppDms.Controllers
             var actionName = actionContext.ActionDescriptor.ActionName;
             var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             webDmsEntities db = new webDmsEntities();
-            var count = db.view_menu.Where(w => w.ControllerName.ToString().ToLower() == controllerName.ToLower() && w.UserID == UserSession.userInfo.UserID).Count();
+            t_bas_user userInfo = (t_bas_user)(HttpContext.Current.Session["UserInfo"]);
+            var count = db.view_menu.Where(w => w.ControllerName.ToString().ToLower() == controllerName.ToLower() && w.UserID == userInfo.UserID).Count();
 
             return count > 0 ? true : false;
         }       

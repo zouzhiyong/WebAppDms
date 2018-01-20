@@ -29,7 +29,7 @@ namespace WebAppDms.Areas.Sys
             int currentPage = obj.currentPage;
             int total = 0;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.ParentCode == Code, s => s.FID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.ParentCode == Code, s => s.Sequence, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -155,6 +155,7 @@ namespace WebAppDms.Areas.Sys
                             value = s1.Code
                         })),
                     Name = "",
+                    ControllerName="",
                     URL = "",
                     ICON = "",
                     IsValid = 1,
@@ -184,6 +185,7 @@ namespace WebAppDms.Areas.Sys
                             value = s1.Code
                         })),
                     Name = s.Name,
+                    ControllerName=s.ControllerName,
                     URL = s.URL,
                     ICON = s.ICON,
                     IsValid = s.IsValid,

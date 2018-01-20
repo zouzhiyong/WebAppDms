@@ -230,6 +230,7 @@
     <Compile Include="App_Start\WebApiExceptionFilterAttribute.cs" />
     <Compile Include="Areas\Bas\ComoditieController.cs" />
     <Compile Include="Areas\Bas\ComoditieTypeController.cs" />
+    <Compile Include="Areas\Bas\CompanyController.cs" />
     <Compile Include="Areas\Bas\CustomerController.cs" />
     <Compile Include="Areas\Dms\PurallController.cs" />
     <Compile Include="Areas\Login\LoginController.cs" />
