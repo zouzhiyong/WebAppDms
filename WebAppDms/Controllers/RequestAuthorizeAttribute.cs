@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Security;
+using WebAppDms.Models;
 
 namespace WebAppDms.Controllers
 {
@@ -17,19 +18,23 @@ namespace WebAppDms.Controllers
             var authorization = actionContext.Request.Headers.Authorization;
             if ((authorization != null) && (authorization.Parameter != null))
             {
-                //var actionName = actionContext.ActionDescriptor.ActionName;
-                //var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-
-                //解密用户ticket,并校验用户名密码是否匹配
-                var encryptTicket = authorization.Parameter;
-                if (ValidateTicket(encryptTicket))
+                if (!ValidateController(actionContext))
                 {
-                    base.IsAuthorized(actionContext);
+                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.OK, new { result = false, message = "您没有访问权限", direct = "" });
                 }
                 else
                 {
-                    HandleUnauthorizedRequest(actionContext);
-                }
+                    //解密用户ticket,并校验用户名密码是否匹配
+                    var encryptTicket = authorization.Parameter;
+                    if (ValidateTicket(encryptTicket))
+                    {
+                        base.IsAuthorized(actionContext);
+                    }
+                    else
+                    {
+                        HandleUnauthorizedRequest(actionContext);
+                    }
+                }                
             }
             //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
             else
@@ -65,6 +70,14 @@ namespace WebAppDms.Controllers
             }
         }
 
-       
+        private bool ValidateController(System.Web.Http.Controllers.HttpActionContext actionContext)
+        {
+            var actionName = actionContext.ActionDescriptor.ActionName;
+            var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            webDmsEntities db = new webDmsEntities();
+            var count = db.view_menu.Where(w => w.ControllerName.ToString().ToLower() == controllerName.ToLower() && w.UserID == UserSession.userInfo.UserID).Count();
+
+            return count > 0 ? true : false;
+        }       
     }
 }

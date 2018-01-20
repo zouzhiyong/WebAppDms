@@ -896,6 +896,7 @@
           <Property Name="CreateUserID" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+          <Property Name="ControllerName" Type="varchar" MaxLength="100" />
           <Property Name="Descript" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="t_sys_modulebutton">
@@ -1197,6 +1198,7 @@
           <Property Name="FID" Type="uint" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ControllerName" Type="varchar" MaxLength="100" />
           <Property Name="ParentCode" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IsMenu" Type="uint" Nullable="false" />
           <Property Name="PlatformType" Type="int" Nullable="false" />
@@ -1294,6 +1296,7 @@
 `view_menu`.`FID`, 
 `view_menu`.`Code`, 
 `view_menu`.`Name`, 
+`view_menu`.`ControllerName`, 
 `view_menu`.`ParentCode`, 
 `view_menu`.`IsMenu`, 
 `view_menu`.`PlatformType`, 
@@ -2278,6 +2281,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ControllerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_sys_modulebutton">
           <Key>
@@ -2588,6 +2592,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="ControllerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="view_rights">
           <Key>
@@ -3506,6 +3511,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="t_sys_menumodule">
             <EntityTypeMapping TypeName="webdmsModel.t_sys_menumodule">
               <MappingFragment StoreEntitySet="t_sys_menumodule">
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="Descript" ColumnName="Descript" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -3806,6 +3812,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="view_menu">
             <EntityTypeMapping TypeName="webdmsModel.view_menu">
               <MappingFragment StoreEntitySet="view_menu">
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />

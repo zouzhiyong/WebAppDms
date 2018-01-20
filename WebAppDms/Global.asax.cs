@@ -19,11 +19,13 @@ namespace WebAppDms
         protected void Application_Start(object sender, EventArgs e)
         {
             //AreaRegistration.RegisterAllAreas();
+            //WebApiConfig.Register(GlobalConfiguration.Configuration);
             GlobalConfiguration.Configure(WebApiConfig.Register);
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             //RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
-            GlobalConfiguration.Configuration.Filters.Add(new WebApiExceptionFilterAttribute());
+            //GlobalConfiguration.Configuration.Filters.Add(new WebApiExceptionFilterAttribute());
+
         }
 
         protected void Session_Start(object sender, EventArgs e)
