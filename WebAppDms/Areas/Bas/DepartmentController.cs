@@ -52,7 +52,7 @@ namespace WebAppDms.Areas.Bas
                     Code = "",
                     Name = "",
                     IsValid = 1,
-                    ParentCode = "",
+                    ParentCode = "&",
                     ParentCodeList = ParentCodeList,
                     Sequence = "",
                     CorpID = "",

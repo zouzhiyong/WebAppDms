@@ -16,10 +16,6 @@ namespace WebAppDms.Areas.Sys
     public class MenuController : ApiBaseController
     {
 
-        /// <summary>
-        /// 获取菜单编辑窗口右边表格
-        /// </summary>
-        /// <returns></returns>
         public HttpResponseMessage FindSysMoudleTable(dynamic obj)
         {
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
@@ -34,11 +30,7 @@ namespace WebAppDms.Areas.Sys
             return Json(list, currentPage, pageSize, total);
         }
 
-        /// <summary>
-        /// 表单数据保存
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+
         public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
             try
@@ -68,10 +60,6 @@ namespace WebAppDms.Areas.Sys
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public HttpResponseMessage FindMenu()
         {
             //string userId = "3";// HttpContext.Current.Session["userId"].ToString();
@@ -99,10 +87,6 @@ namespace WebAppDms.Areas.Sys
             return Json(true, "", list);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public HttpResponseMessage FindSysModuleTree()
         {
             var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
@@ -124,11 +108,6 @@ namespace WebAppDms.Areas.Sys
             return Json(true, "", list);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         public HttpResponseMessage FindSysMoudleForm(t_sys_menumodule obj)
         {
             long FID = obj.FID;
@@ -201,11 +180,6 @@ namespace WebAppDms.Areas.Sys
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         [HttpPost]
         public HttpResponseMessage DeleteSysMoudleRow(t_sys_menumodule obj)
         {
