@@ -163,9 +163,9 @@ namespace WebAppDms.Areas.Sys
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public HttpResponseMessage FindSysRoleForm(dynamic obj)
+        public HttpResponseMessage FindSysRoleForm(t_sys_rights obj)
         {
-            int RightsID = obj == null ? 0 : obj.RightsID;
+            long RightsID = obj.RightsID;
 
 
             if (RightsID == 0)

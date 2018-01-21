@@ -122,9 +122,9 @@ namespace WebAppDms.Areas.Sys
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public HttpResponseMessage FindSysMoudleForm(dynamic obj)
+        public HttpResponseMessage FindSysMoudleForm(t_sys_menumodule obj)
         {
-            int FID = obj == null ? 0 : obj.FID;
+            long FID = obj.FID;
             string ParentCode = obj.ParentCode;
 
             var maxCode = db.t_sys_menumodule.Where(w0 => w0.ParentCode == ParentCode).OrderByDescending(o=>o.Code).Select(s0 => new { Code = s0.Code }).FirstOrDefault();

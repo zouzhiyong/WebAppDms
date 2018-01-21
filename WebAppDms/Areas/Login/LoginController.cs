@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,6 +16,8 @@ namespace WebAppDms.Areas.Login
     /// </summary>
     public class LoginController : ApiController
     {
+        string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();
+        string VirtualPath = ConfigurationManager.AppSettings["VirtualPath"].ToString();
         ////[Authorize]
         //public HttpResponseMessage Login(getLogin gl)
         //{
@@ -41,7 +44,13 @@ namespace WebAppDms.Areas.Login
                             DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", loginData.strUser, loginData.strPwd),
                             FormsAuthentication.FormsCookiePath);
             webDmsEntities db = new webDmsEntities();
-            var UserInfo = db.t_bas_user.Where(w => w.Code == loginData.strUser).FirstOrDefault();
+            var UserInfo = db.t_bas_user.Where(w => w.Code == loginData.strUser).Select(s => new
+            {
+                UserID = s.UserID,
+                Name = s.Name,
+                Photo = s.Photo,
+                TradeMark = db.t_bas_company.Where(w => w.CorpID == s.CorpID).Select(s0 => s0.TradeMark).FirstOrDefault()
+            }).FirstOrDefault();
 
             var homeOjb = new object[] { new { path = "/", iconCls = "fa fa-home", leaf = true, children = new object[] { new { path = "/index", MenuPath = "index", meta = new { name = "主页", button = new string[] { }.ToList() } } } } };
 
@@ -67,7 +76,8 @@ namespace WebAppDms.Areas.Login
             var tempList = homeOjb.Concat(list).ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = loginData.strUser, Password = loginData.strPwd, user = new { name = UserInfo.Name, avatar = UserInfo.Phone }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
+            string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + UserInfo.TradeMark; //获取当前项目所在目录       
+            var oUser = new UserInfo { bRes = true, UserName = loginData.strUser, Password = loginData.strPwd, user = new { name = UserInfo.Name, avatar = UserInfo.Photo, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
             //将身份信息保存在session中，验证当前请求是否是有效请求
             HttpContext.Current.Session[loginData.strUser] = oUser;
             return oUser;
