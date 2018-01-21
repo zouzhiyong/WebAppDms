@@ -232,6 +232,7 @@
     <Compile Include="Areas\Bas\ComoditieTypeController.cs" />
     <Compile Include="Areas\Bas\CompanyController.cs" />
     <Compile Include="Areas\Bas\CustomerController.cs" />
+    <Compile Include="Areas\Bas\DepartmentController.cs" />
     <Compile Include="Areas\Dms\PurallController.cs" />
     <Compile Include="Areas\Login\LoginController.cs" />
     <Compile Include="Areas\Sys\DeptController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Common\LoggingProviderSection.cs" />
     <Compile Include="Common\LoggingService.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
+    <Compile Include="Controllers\AutoIncrement.cs" />
     <Compile Include="Controllers\DBhelper.cs" />
     <Compile Include="Controllers\RequestAuthorizeAttribute.cs" />
     <Compile Include="Controllers\UserSession.cs" />
@@ -269,6 +271,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_bas_company.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_bas_department.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_bas_payment.cs">
@@ -431,6 +436,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_warehouse_shipment_detail.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_department.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_menu.cs">

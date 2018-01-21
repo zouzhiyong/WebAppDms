@@ -27,6 +27,7 @@ namespace WebAppDms.Models
     
         public virtual DbSet<t_bas_area> t_bas_area { get; set; }
         public virtual DbSet<t_bas_company> t_bas_company { get; set; }
+        public virtual DbSet<t_bas_department> t_bas_department { get; set; }
         public virtual DbSet<t_bas_payment> t_bas_payment { get; set; }
         public virtual DbSet<t_bas_position> t_bas_position { get; set; }
         public virtual DbSet<t_bas_region> t_bas_region { get; set; }
@@ -83,5 +84,6 @@ namespace WebAppDms.Models
         public virtual DbSet<t_warehouse_shipment_detail> t_warehouse_shipment_detail { get; set; }
         public virtual DbSet<view_menu> view_menu { get; set; }
         public virtual DbSet<view_rights> view_rights { get; set; }
+        public virtual DbSet<view_department> view_department { get; set; }
     }
 }

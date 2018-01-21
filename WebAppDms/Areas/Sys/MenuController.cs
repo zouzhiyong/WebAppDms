@@ -9,13 +9,13 @@ using WebAppDms.Controllers;
 using WebAppDms.Models;
 
 namespace WebAppDms.Areas.Sys
-{    
+{
     /// <summary>
     /// 
     /// </summary>
     public class MenuController : ApiBaseController
     {
-        
+
         /// <summary>
         /// 获取菜单编辑窗口右边表格
         /// </summary>
@@ -41,24 +41,31 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage SaveSysMoudleForm(t_sys_menumodule obj)
         {
-            DateTime dt = DateTime.Now;
-            DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
-            if (obj.FID == 0)
+            try
             {
-                obj.CreateTime = dt;
-                obj.CreateUserID =(int)UserSession.userInfo.UserID;
-                obj.UpdateTime = dt;
-                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-            }
-            else
-            {
-                obj.UpdateTime = dt;
-                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-                //obj.FID = db.t_sys_menumodule.Where(w => w.TimeStamp == obj.TimeStamp && w.FID == obj.FID).Count()>0?obj.FID:-1;
-            }
-            var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
+                DateTime dt = DateTime.Now;
+                DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
+                if (obj.FID == 0)
+                {
+                    obj.CreateTime = dt;
+                    obj.CreateUserID = (int)UserSession.userInfo.UserID;
+                    obj.UpdateTime = dt;
+                    obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                }
+                else
+                {
+                    obj.UpdateTime = dt;
+                    obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                    //obj.FID = db.t_sys_menumodule.Where(w => w.TimeStamp == obj.TimeStamp && w.FID == obj.FID).Count()>0?obj.FID:-1;
+                }
+                var result = obj.FID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 
-            return Json(true, result == 1 ? "保存成功！" : "保存失败");
+                return Json(true, "保存成功！");
+            }
+            catch (Exception ex)
+            {
+                return Json(false, "保存失败!" + ex.Message);
+            }
         }
 
         /// <summary>
@@ -68,7 +75,7 @@ namespace WebAppDms.Areas.Sys
         public HttpResponseMessage FindMenu()
         {
             //string userId = "3";// HttpContext.Current.Session["userId"].ToString();
-            
+
 
             var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&" && p.PlatformType == 9).Select(s => new
             {
@@ -78,7 +85,7 @@ namespace WebAppDms.Areas.Sys
                 Xh = s.Sequence,
                 MenuID = s.Code,
                 iconCls = s.ICON,
-                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code && p1.PlatformType==9).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code && p1.PlatformType == 9).Select(s1 => new
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
@@ -98,12 +105,12 @@ namespace WebAppDms.Areas.Sys
         /// <returns></returns>
         public HttpResponseMessage FindSysModuleTree()
         {
-            var list = db.view_menu.Where<view_menu>(p =>p.UserID== UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
             {
                 label = s.Name,
                 Sequence = s.Sequence,
                 FID = s.FID,
-                Code= s.Code,
+                Code = s.Code,
                 children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     label = s1.Name,
@@ -127,13 +134,19 @@ namespace WebAppDms.Areas.Sys
             long FID = obj.FID;
             string ParentCode = obj.ParentCode;
 
-            var maxCode = db.t_sys_menumodule.Where(w0 => w0.ParentCode == ParentCode).OrderByDescending(o=>o.Code).Select(s0 => new { Code = s0.Code }).FirstOrDefault();
+            var maxCode = db.t_sys_menumodule.Where(w0 => w0.ParentCode == ParentCode).OrderByDescending(o => o.Code).Select(s0 => new { Code = s0.Code }).FirstOrDefault();
 
             var PlatFormTypeList = db.t_datadict_class.Where(w => w.IsValid != 0 && w.Code == "ModuleType").Join(db.t_datadict_class_detail.Where(w => w.IsValid != 0), a => a.ClassID, b => b.ClassID, (a, b) => new
             {
                 label = b.Name,
                 value = b.DClassID
-            }).OrderBy(o=>o.value);
+            }).OrderBy(o => o.value);
+
+            var ParentCodeList = db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&" && w1.FID != FID).OrderBy(o => o.FID).Select(s1 => new
+            {
+                label = s1.Name,
+                value = s1.Code
+            });
 
             if (FID == 0)
             {
@@ -144,23 +157,18 @@ namespace WebAppDms.Areas.Sys
                     CreateUserID = "",
                     UpdateTime = "",
                     UpdateUserID = "",
-                    TimeStamp="",
+                    TimeStamp = "",
                     IsMenu = 1,
                     Code = string.Format("{0:d" + maxCode.Code.ToString().Length + "}", (int.Parse(maxCode.Code) + 1)),
                     ParentCode = ParentCode,
-                    ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
-                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&").Select(s1 => new
-                        {
-                            label = s1.Name,
-                            value = s1.Code
-                        })),
+                    ParentCodeList = ParentCodeList,
                     Name = "",
-                    ControllerName="",
+                    ControllerName = "",
                     URL = "",
                     ICON = "",
                     IsValid = 1,
                     PlatformType = PlatFormTypeList.FirstOrDefault().value,
-                    PlatformTypeList= PlatFormTypeList, 
+                    PlatformTypeList = PlatFormTypeList,
                     Sequence = 0
                 };
                 return Json(true, "", list);
@@ -169,30 +177,24 @@ namespace WebAppDms.Areas.Sys
             {
                 var list = db.t_sys_menumodule.Where(w => w.FID == FID).Select(s => new
                 {
-                    FID=s.FID,
+                    FID = s.FID,
                     CreateTime = s.CreateTime,
                     CreateUserID = s.CreateUserID,
                     UpdateTime = s.UpdateTime,
                     UpdateUserID = s.UpdateUserID,
-                    TimeStamp=s.TimeStamp,
-                    IsMenu =s.IsMenu,
+                    TimeStamp = s.TimeStamp,
+                    IsMenu = s.IsMenu,
                     Code = s.Code,
                     ParentCode = s.ParentCode,
-                    ParentCodeList = new object[] { new { label = "未对应上级", value = "&" } }.
-                        Concat(db.t_sys_menumodule.Where(w1 => w1.ParentCode == "&").Select(s1 => new
-                        {
-                            label = s1.Name,
-                            value = s1.Code
-                        })),
+                    ParentCodeList = ParentCodeList,
                     Name = s.Name,
-                    ControllerName=s.ControllerName,
+                    ControllerName = s.ControllerName,
                     URL = s.URL,
                     ICON = s.ICON,
                     IsValid = s.IsValid,
                     PlatformType = s.PlatformType,
                     PlatformTypeList = PlatFormTypeList,
                     Sequence = s.Sequence
-
                 }).FirstOrDefault();
 
                 return Json(true, "", list);

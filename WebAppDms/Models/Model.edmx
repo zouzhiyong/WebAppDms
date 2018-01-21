@@ -41,6 +41,25 @@
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
         </EntityType>
+        <EntityType Name="t_bas_department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Level" Type="int" />
+          <Property Name="Sequence" Type="int" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="t_bas_payment">
           <Key>
             <PropertyRef Name="PaymentID" />
@@ -1178,6 +1197,37 @@
           <Property Name="UpdateUserID" Type="int" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_department”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_department">
+          <Key>
+            <PropertyRef Name="TimeStamp" />
+            <PropertyRef Name="DeptID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ParentCode" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="UpdateTime" />
+            <PropertyRef Name="UpdateUserID" />
+          </Key>
+          <Property Name="TimeStamp" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="DeptID" Type="int" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Level" Type="int" />
+          <Property Name="Sequence" Type="int" />
+          <Property Name="IsValid" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" Nullable="false" />
+          <Property Name="isRole" Type="bigint" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_menu”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_menu">
           <Key>
@@ -1235,6 +1285,7 @@
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_company" EntityType="Self.t_bas_company" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_bas_department" EntityType="Self.t_bas_department" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_payment" EntityType="Self.t_bas_payment" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_position" EntityType="Self.t_bas_position" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_region" EntityType="Self.t_bas_region" Schema="dms" store:Type="Tables" />
@@ -1289,6 +1340,25 @@
           <EntitySet Name="t_warehouse_receipt_detail" EntityType="Self.t_warehouse_receipt_detail" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_warehouse_shipment" EntityType="Self.t_warehouse_shipment" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_warehouse_shipment_detail" EntityType="Self.t_warehouse_shipment_detail" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="view_department" EntityType="Self.view_department" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_department`.`TimeStamp`, 
+`view_department`.`DeptID`, 
+`view_department`.`CorpID`, 
+`view_department`.`Code`, 
+`view_department`.`Name`, 
+`view_department`.`ParentCode`, 
+`view_department`.`Level`, 
+`view_department`.`Sequence`, 
+`view_department`.`IsValid`, 
+`view_department`.`Remark`, 
+`view_department`.`CreateTime`, 
+`view_department`.`CreateUserID`, 
+`view_department`.`UpdateTime`, 
+`view_department`.`UpdateUserID`, 
+`view_department`.`isRole`
+FROM `view_department` AS `view_department`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_menu" EntityType="Self.view_menu" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
 `view_menu`.`UserID`, 
@@ -1332,6 +1402,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
         <EntityContainer Name="webDmsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="t_bas_area" EntityType="webdmsModel.t_bas_area" />
           <EntitySet Name="t_bas_company" EntityType="webdmsModel.t_bas_company" />
+          <EntitySet Name="t_bas_department" EntityType="webdmsModel.t_bas_department" />
           <EntitySet Name="t_bas_payment" EntityType="webdmsModel.t_bas_payment" />
           <EntitySet Name="t_bas_position" EntityType="webdmsModel.t_bas_position" />
           <EntitySet Name="t_bas_region" EntityType="webdmsModel.t_bas_region" />
@@ -1388,6 +1459,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySet Name="t_warehouse_shipment_detail" EntityType="webdmsModel.t_warehouse_shipment_detail" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
+          <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -1424,6 +1496,25 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="t_bas_department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="Sequence" Type="Int32" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateUserID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_bas_payment">
           <Key>
@@ -2280,8 +2371,8 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
-          <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ControllerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_sys_modulebutton">
           <Key>
@@ -2580,6 +2671,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="FID" Type="Int64" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ControllerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ParentCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IsMenu" Type="Int64" Nullable="false" />
           <Property Name="PlatformType" Type="Int32" Nullable="false" />
@@ -2592,7 +2684,6 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
-          <Property Name="ControllerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="view_rights">
           <Key>
@@ -2610,6 +2701,35 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="isRole" Type="Int64" />
+        </EntityType>
+        <EntityType Name="view_department">
+          <Key>
+            <PropertyRef Name="TimeStamp" />
+            <PropertyRef Name="DeptID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ParentCode" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="UpdateTime" />
+            <PropertyRef Name="UpdateUserID" />
+          </Key>
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DeptID" Type="Int32" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="Sequence" Type="Int32" />
+          <Property Name="IsValid" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateUserID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
         </EntityType>
         </Schema>
@@ -2652,6 +2772,26 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_bas_department">
+            <EntityTypeMapping TypeName="webdmsModel.t_bas_department">
+              <MappingFragment StoreEntitySet="t_bas_department">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3511,8 +3651,8 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="t_sys_menumodule">
             <EntityTypeMapping TypeName="webdmsModel.t_sys_menumodule">
               <MappingFragment StoreEntitySet="t_sys_menumodule">
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="Descript" ColumnName="Descript" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -3812,7 +3952,6 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="view_menu">
             <EntityTypeMapping TypeName="webdmsModel.view_menu">
               <MappingFragment StoreEntitySet="view_menu">
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -3825,6 +3964,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="PlatformType" ColumnName="PlatformType" />
                 <ScalarProperty Name="IsMenu" ColumnName="IsMenu" />
                 <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="FID" ColumnName="FID" />
@@ -3845,6 +3985,27 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RightsID" ColumnName="RightsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_department">
+            <EntityTypeMapping TypeName="webdmsModel.view_department">
+              <MappingFragment StoreEntitySet="view_department">
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

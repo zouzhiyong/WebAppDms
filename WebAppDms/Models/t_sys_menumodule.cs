@@ -30,7 +30,7 @@ namespace WebAppDms.Models
         public Nullable<int> CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
-        public string Descript { get; set; }
         public string ControllerName { get; set; }
+        public string Descript { get; set; }
     }
 }

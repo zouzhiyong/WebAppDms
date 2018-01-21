@@ -19,6 +19,7 @@ namespace WebAppDms.Models
         public long FID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
+        public string ControllerName { get; set; }
         public string ParentCode { get; set; }
         public long IsMenu { get; set; }
         public int PlatformType { get; set; }
@@ -31,6 +32,5 @@ namespace WebAppDms.Models
         public Nullable<int> CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
-        public string ControllerName { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -143,5 +144,26 @@ namespace WebAppDms.Controllers
             return list;
         }
 
+        /// <summary>  
+        /// 更新指定字段  
+        /// </summary>  
+        /// <param name="entity">实体</param>  
+        /// <param name="fileds">更新字段数组</param>  
+        public int UpdateEntityFields(T entity, List<string> fileds)
+        {
+            int result = 0;
+            if (entity != null && fileds != null)
+            {
+                db.Set<T>().Attach(entity);
+                var SetEntry = ((IObjectContextAdapter)db).ObjectContext.
+                    ObjectStateManager.GetObjectStateEntry(entity);
+                foreach (var t in fileds)
+                {
+                    SetEntry.SetModifiedProperty(t);
+                }
+                result= db.SaveChanges();
+            }
+            return result;
+        }
     }
 }

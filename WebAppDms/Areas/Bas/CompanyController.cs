@@ -15,7 +15,7 @@ namespace WebAppDms.Areas.Bas
 {
     public class CompanyController : ApiBaseController
     {
-        string VirtualPath= ConfigurationManager.AppSettings["VirtualPath"].ToString();
+        string VirtualPath = ConfigurationManager.AppSettings["VirtualPath"].ToString();
         string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();
 
         public HttpResponseMessage FindBasCompanyForm()
@@ -31,9 +31,9 @@ namespace WebAppDms.Areas.Bas
                 Address2 = s.Address2,
                 Contact = s.Contact,
                 Tel = s.Tel,
-                Phone = s.Phone,                
+                Phone = s.Phone,
                 Fax = s.Fax,
-                TradeMark = "/"+VirtualPath+"/"+UploadImgPath + "/"+s.TradeMark,
+                TradeMark = "/" + VirtualPath + "/" + UploadImgPath + "/" + s.TradeMark,
                 InvAccountPeriod = s.InvAccountPeriod,
                 Remark = s.Remark,
                 CreateTime = s.CreateTime,
@@ -47,27 +47,34 @@ namespace WebAppDms.Areas.Bas
 
         public HttpResponseMessage SaveBasCompanyForm(t_bas_company obj)
         {
-            DBHelper<t_bas_company> dbhelp = new DBHelper<t_bas_company>();
+            try
+            {
+                DBHelper<t_bas_company> dbhelp = new DBHelper<t_bas_company>();
 
-            DateTime dt = DateTime.Now;
+                DateTime dt = DateTime.Now;
 
-            string base64Data = obj.TradeMark;
-            //获取文件储存路径            
-            string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
-            //string newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", System.Globalization.DateTimeFormatInfo.InvariantInfo)+ "."+suffix;
-            string newFileName = "COMPANY_"+UserSession.userInfo.CorpID.ToString("000000000") + "." + suffix;
-            string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath+"/"+ newFileName); //获取当前项目所在目录           
+                string base64Data = obj.TradeMark;
+                //获取文件储存路径            
+                string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
+                                                                                                               //string newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", System.Globalization.DateTimeFormatInfo.InvariantInfo)+ "."+suffix;
+                string newFileName = "COMPANY_" + UserSession.userInfo.CorpID.ToString("000000000") + "." + suffix;
+                string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录           
 
-            //获取图片并保存
-            Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
+                //获取图片并保存
+                Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
 
-            obj.UpdateTime = dt;
-            obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-            obj.TradeMark = newFileName;
+                obj.UpdateTime = dt;
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                obj.TradeMark = newFileName;
 
-            var result = dbhelp.Update(obj);
+                var result = dbhelp.Update(obj);
 
-            return Json(true, result == 1 ? "保存成功！" : "保存失败");
+                return Json(true, "保存成功！");
+            }
+            catch (Exception ex)
+            {
+                return Json(false, "保存失败!" + ex.Message);
+            }
         }
 
         //解析base64编码获取图片
