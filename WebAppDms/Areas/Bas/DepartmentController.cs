@@ -117,6 +117,10 @@ namespace WebAppDms.Areas.Bas
                         obj.UpdateUserID = (int)UserSession.userInfo.UserID;
                     }
 
+                    if(db.t_bas_department.Where(w=>w.Code== obj.Code).ToList().Count() > 0)
+                    {
+                        throw new Exception("编码重复！");
+                    }
 
                     result = result + (obj.DeptID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj));
 
@@ -126,7 +130,7 @@ namespace WebAppDms.Areas.Bas
                 }
                 catch (Exception ex)
                 {
-                    return Json(false, "保存失败!" + ex.Message);
+                    return Json(false, "保存失败！" + ex.Message);
                 }
             }
 

@@ -11,60 +11,61 @@
         <EntityTypeShape EntityType="webdmsModel.t_bas_payment" Width="1.5" PointX="0.75" PointY="5.75" />
         <EntityTypeShape EntityType="webdmsModel.t_bas_position" Width="1.5" PointX="2.75" PointY="5.75" />
         <EntityTypeShape EntityType="webdmsModel.t_bas_region" Width="1.5" PointX="4.75" PointY="5.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_bas_serial_number" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_bas_truck" Width="1.5" PointX="6.75" PointY="6.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_bas_unitofmeasure" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_bas_user" Width="1.5" PointX="8.75" PointY="4.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_customer" Width="1.5" PointX="10.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_customer_itemprice" Width="1.5" PointX="0.75" PointY="10.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_datadict_class" Width="1.5" PointX="2.75" PointY="10.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_datadict_class_detail" Width="1.5" PointX="4.75" PointY="10.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_datadict_fields" Width="1.5" PointX="10.75" PointY="7.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_datadict_tables" Width="1.5" PointX="10.75" PointY="11.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_entry_customer" Width="1.5" PointX="12.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_entry_item" Width="1.5" PointX="12.75" PointY="7.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_entry_supplier" Width="1.5" PointX="6.75" PointY="13.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_inventory_history" Width="1.5" PointX="12.75" PointY="13.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_item" Width="1.5" PointX="14.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_item_cost" Width="1.5" PointX="0.75" PointY="14.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_item_picture" Width="1.5" PointX="14.75" PointY="8.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_item_uom" Width="1.5" PointX="8.75" PointY="14.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_item_warehouse" Width="1.5" PointX="14.75" PointY="12.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_log_operation" Width="1.5" PointX="2.75" PointY="15.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_log_userlogin" Width="1.5" PointX="16.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_purchase_invoice" Width="1.5" PointX="16.75" PointY="5.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_purchase_invoice_detail" Width="1.5" PointX="16.75" PointY="11.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_purchase_order" Width="1.5" PointX="14.75" PointY="16.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_purchase_order_detail" Width="1.5" PointX="16.75" PointY="16.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sales_invoice" Width="1.5" PointX="10.75" PointY="17.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_bas_truck" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_bas_unitofmeasure" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_bas_user" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_customer" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_customer_itemprice" Width="1.5" PointX="6.75" PointY="9.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_datadict_class" Width="1.5" PointX="8.75" PointY="9.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_datadict_class_detail" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_datadict_fields" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_datadict_tables" Width="1.5" PointX="10.75" PointY="5.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_entry_customer" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_entry_item" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_entry_supplier" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_inventory_history" Width="1.5" PointX="6.75" PointY="13.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_item" Width="1.5" PointX="12.75" PointY="13.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_item_cost" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_item_picture" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_item_uom" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_item_warehouse" Width="1.5" PointX="14.75" PointY="8.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_log_operation" Width="1.5" PointX="14.75" PointY="12.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_log_userlogin" Width="1.5" PointX="8.75" PointY="15.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_purchase_invoice" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_purchase_invoice_detail" Width="1.5" PointX="2.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_purchase_order" Width="1.5" PointX="16.75" PointY="6.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_purchase_order_detail" Width="1.5" PointX="16.75" PointY="12.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sales_invoice" Width="1.5" PointX="4.75" PointY="17.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sales_invoice_detail" Width="1.5" PointX="18.75" PointY="0.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sales_order" Width="1.5" PointX="18.75" PointY="5.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sales_order_detail" Width="1.5" PointX="18.75" PointY="11.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_serial_number" Width="1.5" PointX="14.75" PointY="18.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_serial_number_detail" Width="1.5" PointX="16.75" PointY="18.75" />
         <EntityTypeShape EntityType="webdmsModel.t_stock_allocation" Width="1.5" PointX="18.75" PointY="17.75" />
         <EntityTypeShape EntityType="webdmsModel.t_stock_check" Width="1.5" PointX="20.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_stock_order" Width="1.5" PointX="0.75" PointY="20.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_supplier" Width="1.5" PointX="2.75" PointY="20.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_buttton" Width="1.5" PointX="4.75" PointY="20.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_company" Width="1.5" PointX="20.75" PointY="6.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_menumodule" Width="1.5" PointX="6.75" PointY="20.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_modulebutton" Width="1.5" PointX="20.75" PointY="11.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_rights" Width="1.5" PointX="20.75" PointY="15.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_rights_detail" Width="1.5" PointX="20.75" PointY="19.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_role" Width="1.5" PointX="22.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_rolerights" Width="1.5" PointX="22.75" PointY="4.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_user_customer" Width="1.5" PointX="22.75" PointY="8.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_user_item" Width="1.5" PointX="22.75" PointY="12.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_user_supplier" Width="1.5" PointX="12.75" PointY="22.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_user_warehouse" Width="1.5" PointX="14.75" PointY="22.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse" Width="1.5" PointX="22.75" PointY="16.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse_bin" Width="1.5" PointX="22.75" PointY="22.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse_receipt" Width="1.5" PointX="8.75" PointY="23.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse_receipt_detail" Width="1.5" PointX="16.75" PointY="23.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse_shipment" Width="1.5" PointX="18.75" PointY="23.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_warehouse_shipment_detail" Width="1.5" PointX="24.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_menu" Width="1.5" PointX="24.75" PointY="6.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_rights" Width="1.5" PointX="24.75" PointY="12.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_department" Width="1.5" PointX="25.375" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_stock_order" Width="1.5" PointX="20.75" PointY="6.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_supplier" Width="1.5" PointX="6.75" PointY="20.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_buttton" Width="1.5" PointX="8.75" PointY="20.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_company" Width="1.5" PointX="20.75" PointY="11.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_menumodule" Width="1.5" PointX="20.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_modulebutton" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_rights" Width="1.5" PointX="10.75" PointY="21.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_rights_detail" Width="1.5" PointX="22.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_role" Width="1.5" PointX="22.75" PointY="4.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_rolerights" Width="1.5" PointX="22.75" PointY="8.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_user_customer" Width="1.5" PointX="22.75" PointY="12.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_user_item" Width="1.5" PointX="22.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_user_supplier" Width="1.5" PointX="22.75" PointY="20.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_user_warehouse" Width="1.5" PointX="2.75" PointY="23.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse" Width="1.5" PointX="16.75" PointY="23.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse_bin" Width="1.5" PointX="18.75" PointY="23.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse_receipt" Width="1.5" PointX="24.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse_receipt_detail" Width="1.5" PointX="24.75" PointY="5.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse_shipment" Width="1.5" PointX="24.75" PointY="11.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_warehouse_shipment_detail" Width="1.5" PointX="12.75" PointY="24.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_department" Width="1.5" PointX="24.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_menu" Width="1.5" PointX="20.75" PointY="24.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_rights" Width="1.5" PointX="24.75" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

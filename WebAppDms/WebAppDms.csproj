@@ -285,9 +285,6 @@
     <Compile Include="Models\t_bas_region.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_bas_serial_number.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\t_bas_truck.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -370,6 +367,12 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_sales_order_detail.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_serial_number.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_serial_number_detail.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_stock_allocation.cs">

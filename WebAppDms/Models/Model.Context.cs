@@ -31,7 +31,6 @@ namespace WebAppDms.Models
         public virtual DbSet<t_bas_payment> t_bas_payment { get; set; }
         public virtual DbSet<t_bas_position> t_bas_position { get; set; }
         public virtual DbSet<t_bas_region> t_bas_region { get; set; }
-        public virtual DbSet<t_bas_serial_number> t_bas_serial_number { get; set; }
         public virtual DbSet<t_bas_truck> t_bas_truck { get; set; }
         public virtual DbSet<t_bas_unitofmeasure> t_bas_unitofmeasure { get; set; }
         public virtual DbSet<t_bas_user> t_bas_user { get; set; }
@@ -60,6 +59,8 @@ namespace WebAppDms.Models
         public virtual DbSet<t_sales_invoice_detail> t_sales_invoice_detail { get; set; }
         public virtual DbSet<t_sales_order> t_sales_order { get; set; }
         public virtual DbSet<t_sales_order_detail> t_sales_order_detail { get; set; }
+        public virtual DbSet<t_serial_number> t_serial_number { get; set; }
+        public virtual DbSet<t_serial_number_detail> t_serial_number_detail { get; set; }
         public virtual DbSet<t_stock_allocation> t_stock_allocation { get; set; }
         public virtual DbSet<t_stock_check> t_stock_check { get; set; }
         public virtual DbSet<t_stock_order> t_stock_order { get; set; }
@@ -82,8 +83,8 @@ namespace WebAppDms.Models
         public virtual DbSet<t_warehouse_receipt_detail> t_warehouse_receipt_detail { get; set; }
         public virtual DbSet<t_warehouse_shipment> t_warehouse_shipment { get; set; }
         public virtual DbSet<t_warehouse_shipment_detail> t_warehouse_shipment_detail { get; set; }
+        public virtual DbSet<view_department> view_department { get; set; }
         public virtual DbSet<view_menu> view_menu { get; set; }
         public virtual DbSet<view_rights> view_rights { get; set; }
-        public virtual DbSet<view_department> view_department { get; set; }
     }
 }
