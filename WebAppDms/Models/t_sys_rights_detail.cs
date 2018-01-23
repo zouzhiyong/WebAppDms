@@ -18,7 +18,7 @@ namespace WebAppDms.Models
         public int CorpID { get; set; }
         public int RightsID { get; set; }
         public int ModuleID { get; set; }
-        public Nullable<int> ButtonID { get; set; }
+        public int ButtonID { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
         public System.DateTime UpdateTime { get; set; }

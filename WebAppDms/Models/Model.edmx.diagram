@@ -47,7 +47,7 @@
         <EntityTypeShape EntityType="webdmsModel.t_supplier" Width="1.5" PointX="6.75" PointY="20.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sys_buttton" Width="1.5" PointX="8.75" PointY="20.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sys_company" Width="1.5" PointX="20.75" PointY="11.75" />
-        <EntityTypeShape EntityType="webdmsModel.t_sys_menumodule" Width="1.5" PointX="20.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.t_sys_menumodule" Width="1.5" PointX="20.75" PointY="17.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sys_modulebutton" Width="1.5" PointX="0.75" PointY="21.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sys_rights" Width="1.5" PointX="10.75" PointY="21.75" />
         <EntityTypeShape EntityType="webdmsModel.t_sys_rights_detail" Width="1.5" PointX="22.75" PointY="0.75" />

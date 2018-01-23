@@ -73,7 +73,7 @@ namespace WebAppDms.Areas.Login
             var tempList = homeOjb.Concat(list).ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
-            var trademark = db.t_bas_company.Where(w => w.CorpID == tBasUser.CorpID).Select(s0 => s0.TradeMark).FirstOrDefault();
+            string trademark = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID).Join(db.t_bas_company,a=>a.CorpID,b=>b.CorpID,(a,b)=>b.TradeMark).FirstOrDefault();
             string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录       
             var oUser = new UserInfo { bRes = true, UserName = loginData.strUser, Password = loginData.strPwd, user = new { name = tBasUser.Name, avatar = tBasUser.Photo, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
             //将身份信息保存在session中，验证当前请求是否是有效请求

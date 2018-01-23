@@ -67,6 +67,9 @@ namespace WebAppDms.Controllers
                     CodeResult = serial_list.Prefix + dt.ToString("yyMM") + serial_list_detail.LastNumberUsed.ToString().PadLeft(length, '0');
                     break;
                 case "2":
+                    CodeResult = serial_list.Prefix + dt.ToString("yyMM") + serial_list_detail.LastNumberUsed.ToString().PadLeft(length, '0');
+                    break;
+                case "3":
                     CodeResult = serial_list.Prefix + dt.ToString("yyMMdd") + serial_list_detail.LastNumberUsed.ToString().PadLeft(length, '0');
                     break;
                 default:

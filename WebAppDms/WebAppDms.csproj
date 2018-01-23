@@ -238,6 +238,7 @@
     <Compile Include="Areas\Sys\DeptController.cs" />
     <Compile Include="Areas\Sys\MenuController.cs" />
     <Compile Include="Areas\Sys\RoleController.cs" />
+    <Compile Include="Areas\Sys\RoleMenuController.cs" />
     <Compile Include="Areas\Sys\UserController.cs" />
     <Compile Include="Common\Exception\DomainException.cs" />
     <Compile Include="Common\LoggingProvider.cs" />

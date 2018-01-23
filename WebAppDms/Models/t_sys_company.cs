@@ -22,6 +22,7 @@ namespace WebAppDms.Models
         public string Contact { get; set; }
         public string Tel { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> RightsID { get; set; }
         public long UserNumber { get; set; }
         public int UserLoginMethod { get; set; }
         public Nullable<System.DateTime> CanUseTime { get; set; }

@@ -12,127 +12,7 @@ using WebAppDms.Models;
 namespace WebAppDms.Areas.Sys
 {
     public class RoleController : ApiBaseController
-    {
-        public HttpResponseMessage FindSysRoleTree()
-        {
-            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID == UserSession.userInfo.CorpID).OrderBy(o => o.RightsID).Select(s => new
-            {
-                label = s.Name,
-                RightsID = s.RightsID
-            }).ToList();
-
-            return Json(true, "", list);
-        }
-
-        public HttpResponseMessage FindSysRoleMenuTable(t_sys_rights_detail obj)
-        {
-            var list = db.t_sys_menumodule.Where(w => w.IsValid != 0 && w.ParentCode == "&").Select(s => new
-            {
-                FID = s.FID,
-                Code = s.Code,
-                Name = s.Name,
-                ICON = s.ICON,
-                Descript = s.Descript,
-                MenuRolesData = db.t_sys_menumodule.Where(w1 => w1.IsValid != 0 && w1.ParentCode == s.Code && db.t_sys_rights_detail.Where(w0 => w0.RightsID == obj.RightsID && w0.ModuleID == w1.FID).Select(s0 => s0.RightsID).ToList().Count > 0).Select(s1 => s1.Code).ToList(),
-                chilDren = db.t_sys_menumodule.Where(w2 => w2.IsValid != 0 && w2.ParentCode == s.Code).Select(s2 => new
-                {
-                    FID = s2.FID,
-                    Code = s2.Code,
-                    Name = s2.Name,
-                    chilDren = db.t_sys_modulebutton.Where(w4 => w4.IsValid != 0 && w4.ModuleID == s2.FID).Join(db.t_sys_buttton.OrderBy(o5 => o5.ButtonID).Where(w5 => w5.IsValid != 0), a => a.ButtonID, b => b.ButtonID, (a, b) => new
-                    {
-                        ModButtonID = a.ModButtonID,
-                        ButtonID = b.ButtonID,
-                        Name = b.Name,
-                        IsVisible = a.IsVisible
-                    }).ToList()
-                }).ToList()
-            }).ToList();
-
-            return Json(true, "", list);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public HttpResponseMessage SaveSysRoleMenuForm(getRightsCode obj)
-        {
-            try
-            {
-                int RightsID = obj.RightsID;
-                string[] arr = obj.arr;
-                DateTime dt = DateTime.Now;
-                t_sys_modulebutton[] buttonArr = obj.buttonArr;
-
-                var temp = db.Set<t_sys_rights_detail>().Where(w => w.RightsID == RightsID && w.CorpID == UserSession.userInfo.CorpID);
-                foreach (var item in temp)
-                {
-                    db.Entry<t_sys_rights_detail>(item).State = EntityState.Deleted;
-                }
-
-                var fids = db.t_sys_menumodule.Where(w => arr.Contains(w.Code)).Select(s => s.FID).ToList();
-
-                List<t_sys_rights_detail> list = new List<t_sys_rights_detail>();
-
-                foreach (int item in fids)
-                {
-                    var tempObj = new t_sys_rights_detail()
-                    {
-                        RightsID = RightsID,
-                        ModuleID = item,
-                        CorpID = UserSession.userInfo.CorpID,
-                        CreateTime = dt,
-                        CreateUserID = (int)UserSession.userInfo.UserID,
-                        UpdateTime = dt,
-                        UpdateUserID = (int)UserSession.userInfo.UserID
-                    };
-                    list.Add(tempObj);
-                }
-
-                int result = 0;
-                for (int i = 0; i < list.Count(); i++)
-                {
-                    if (list[i] == null)
-                        continue;
-                    db.Entry<t_sys_rights_detail>(list[i]).State = EntityState.Added;
-                }
-
-                //获取菜单对应按钮的ID数组
-                List<long> listModuleButtonID = new List<long>();
-                foreach (t_sys_modulebutton item in buttonArr)
-                {
-                    listModuleButtonID.Add(item.ModButtonID);
-                }
-
-                //查出所有满足要求的数据
-                var listModuleButton = db.t_sys_modulebutton.Where(w => listModuleButtonID.Contains(w.ModButtonID)).Select(s => s).ToList();
-
-                foreach (t_sys_modulebutton item in listModuleButton)
-                {
-                    item.UpdateTime = dt;
-                    item.UpdateUserID = (int)UserSession.userInfo.UserID;
-                    foreach (var _item in buttonArr)
-                    {
-                        if (_item.ModButtonID == item.ModButtonID)
-                        {
-                            item.IsVisible = _item.IsVisible;
-                        }
-                    }
-                    db.Entry<t_sys_modulebutton>(item).State = EntityState.Modified;
-                }
-
-                result += db.SaveChanges();
-
-                return Json(true, "保存成功！");
-            }
-            catch (Exception ex)
-            {
-                return Json(false, "保存失败!" + ex.Message);
-            }
-        }
-
+    {  
         /// <summary>
         /// 
         /// </summary>
@@ -147,7 +27,8 @@ namespace WebAppDms.Areas.Sys
             int total = 0;
             long CorpID = (long)UserSession.userInfo.CorpID;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.RightsID, true);
+            var IsSystem = db.t_sys_rights.Where(w => w.RightsID == UserSession.userInfo.RightsID).Select(s=>s.IsSystem).FirstOrDefault();
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID && x.IsSystem== IsSystem, s => s.RightsID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -182,6 +63,7 @@ namespace WebAppDms.Areas.Sys
                     RightsID = 0,
                     Name = "",
                     IsValid = 1,
+                    IsSystem=0,
                     Code = "",
                     CorpID = 0,
                     CreateTime = "",
@@ -198,6 +80,7 @@ namespace WebAppDms.Areas.Sys
                     RightsID = s.RightsID,
                     Name = s.Name,
                     IsValid = s.IsValid,
+                    IsSystem=s.IsSystem,
                     Code = s.Code,
                     CorpID = s.CorpID,
                     CreateTime = s.CreateTime,
@@ -239,11 +122,6 @@ namespace WebAppDms.Areas.Sys
             return Json(true, result == 1 ? "保存成功！" : "保存失败");
         }
 
-        public class getRightsCode
-        {
-            public string[] arr { get; set; }
-            public t_sys_modulebutton[] buttonArr { get; set; }
-            public int RightsID { get; set; }
-        }
+       
     }
 }

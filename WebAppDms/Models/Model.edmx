@@ -901,6 +901,7 @@
           <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Tel" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RightsID" Type="int" />
           <Property Name="UserNumber" Type="uint" Nullable="false" />
           <Property Name="UserLoginMethod" Type="int" Nullable="false" />
           <Property Name="CanUseTime" Type="datetime" Precision="0" />
@@ -960,6 +961,7 @@
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsSystem" Type="uint" Nullable="false" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateUserID" Type="int" Nullable="false" />
@@ -971,12 +973,13 @@
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="RightsID" />
             <PropertyRef Name="ModuleID" />
+            <PropertyRef Name="ButtonID" />
           </Key>
           <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="RightsID" Type="int" Nullable="false" />
           <Property Name="ModuleID" Type="int" Nullable="false" />
-          <Property Name="ButtonID" Type="int" />
+          <Property Name="ButtonID" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateUserID" Type="int" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
@@ -1277,6 +1280,7 @@
           <Property Name="CreateUserID" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+          <Property Name="Descript" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_rights”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1287,6 +1291,7 @@
             <PropertyRef Name="IsValid" />
             <PropertyRef Name="CreateTime" />
             <PropertyRef Name="CorpID" />
+            <PropertyRef Name="IsSystem" />
           </Key>
           <Property Name="RightsID" Type="uint" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
@@ -1296,6 +1301,7 @@
           <Property Name="CreateUser" Type="varchar" MaxLength="50" />
           <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
           <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="IsSystem" Type="uint" Nullable="false" />
           <Property Name="isRole" Type="bigint" />
         </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
@@ -1395,7 +1401,8 @@ FROM `view_department` AS `view_department`</DefiningQuery>
 `view_menu`.`CreateTime`, 
 `view_menu`.`CreateUserID`, 
 `view_menu`.`UpdateTime`, 
-`view_menu`.`UpdateUserID`
+`view_menu`.`UpdateUserID`, 
+`view_menu`.`Descript`
 FROM `view_menu` AS `view_menu`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_rights" EntityType="Self.view_rights" store:Type="Views" store:Schema="dms">
@@ -1408,6 +1415,7 @@ FROM `view_menu` AS `view_menu`</DefiningQuery>
 `view_rights`.`CreateUser`, 
 `view_rights`.`UpdateUser`, 
 `view_rights`.`CorpID`, 
+`view_rights`.`IsSystem`, 
 `view_rights`.`isRole`
 FROM `view_rights` AS `view_rights`</DefiningQuery>
           </EntitySet>
@@ -2375,6 +2383,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="Contact" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Tel" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RightsID" Type="Int32" />
           <Property Name="UserNumber" Type="Int64" Nullable="false" />
           <Property Name="UserLoginMethod" Type="Int32" Nullable="false" />
           <Property Name="CanUseTime" Type="DateTime" Precision="0" />
@@ -2434,6 +2443,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsSystem" Type="Int64" Nullable="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
@@ -2445,12 +2455,13 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="RightsID" />
             <PropertyRef Name="ModuleID" />
+            <PropertyRef Name="ButtonID" />
           </Key>
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="RightsID" Type="Int32" Nullable="false" />
           <Property Name="ModuleID" Type="Int32" Nullable="false" />
-          <Property Name="ButtonID" Type="Int32" />
+          <Property Name="ButtonID" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
@@ -2747,6 +2758,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="view_rights">
           <Key>
@@ -2755,6 +2767,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
             <PropertyRef Name="IsValid" />
             <PropertyRef Name="CreateTime" />
             <PropertyRef Name="CorpID" />
+            <PropertyRef Name="IsSystem" />
           </Key>
           <Property Name="RightsID" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -2765,6 +2778,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
+          <Property Name="IsSystem" Type="Int64" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3688,6 +3702,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="CanUseTime" ColumnName="CanUseTime" />
                 <ScalarProperty Name="UserLoginMethod" ColumnName="UserLoginMethod" />
                 <ScalarProperty Name="UserNumber" ColumnName="UserNumber" />
+                <ScalarProperty Name="RightsID" ColumnName="RightsID" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Tel" ColumnName="Tel" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
@@ -3749,6 +3764,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
@@ -4024,6 +4040,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="view_menu">
             <EntityTypeMapping TypeName="webdmsModel.view_menu">
               <MappingFragment StoreEntitySet="view_menu">
+                <ScalarProperty Name="Descript" ColumnName="Descript" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -4048,6 +4065,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="view_rights">
             <EntityTypeMapping TypeName="webdmsModel.view_rights">
               <MappingFragment StoreEntitySet="view_rights">
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
                 <ScalarProperty Name="isRole" ColumnName="isRole" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />

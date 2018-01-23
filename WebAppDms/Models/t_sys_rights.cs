@@ -19,6 +19,7 @@ namespace WebAppDms.Models
         public int CorpID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
+        public long IsSystem { get; set; }
         public long IsValid { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
