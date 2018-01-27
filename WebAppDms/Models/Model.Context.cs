@@ -65,7 +65,7 @@ namespace WebAppDms.Models
         public virtual DbSet<t_stock_check> t_stock_check { get; set; }
         public virtual DbSet<t_stock_order> t_stock_order { get; set; }
         public virtual DbSet<t_supplier> t_supplier { get; set; }
-        public virtual DbSet<t_sys_buttton> t_sys_buttton { get; set; }
+        public virtual DbSet<t_sys_button> t_sys_button { get; set; }
         public virtual DbSet<t_sys_company> t_sys_company { get; set; }
         public virtual DbSet<t_sys_menumodule> t_sys_menumodule { get; set; }
         public virtual DbSet<t_sys_modulebutton> t_sys_modulebutton { get; set; }

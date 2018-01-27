@@ -876,7 +876,7 @@
           <Property Name="CloseTime" Type="datetime" Precision="0" />
           <Property Name="CloseUserID" Type="int" />
         </EntityType>
-        <EntityType Name="t_sys_buttton">
+        <EntityType Name="t_sys_button">
           <Key>
             <PropertyRef Name="ButtonID" />
           </Key>
@@ -947,7 +947,7 @@
           <Property Name="Name" Type="varchar" MaxLength="20" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="IsVisible" Type="uint" Nullable="false" />
-          <Property Name="CreatTime" Type="datetime" Precision="0" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
           <Property Name="CreateUserID" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
@@ -1345,7 +1345,7 @@
           <EntitySet Name="t_stock_check" EntityType="Self.t_stock_check" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_stock_order" EntityType="Self.t_stock_order" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_supplier" EntityType="Self.t_supplier" Schema="dms" store:Type="Tables" />
-          <EntitySet Name="t_sys_buttton" EntityType="Self.t_sys_buttton" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_sys_button" EntityType="Self.t_sys_button" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_sys_company" EntityType="Self.t_sys_company" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_sys_menumodule" EntityType="Self.t_sys_menumodule" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_sys_modulebutton" EntityType="Self.t_sys_modulebutton" Schema="dms" store:Type="Tables" />
@@ -1465,7 +1465,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySet Name="t_stock_check" EntityType="webdmsModel.t_stock_check" />
           <EntitySet Name="t_stock_order" EntityType="webdmsModel.t_stock_order" />
           <EntitySet Name="t_supplier" EntityType="webdmsModel.t_supplier" />
-          <EntitySet Name="t_sys_buttton" EntityType="webdmsModel.t_sys_buttton" />
+          <EntitySet Name="t_sys_button" EntityType="webdmsModel.t_sys_button" />
           <EntitySet Name="t_sys_company" EntityType="webdmsModel.t_sys_company" />
           <EntitySet Name="t_sys_menumodule" EntityType="webdmsModel.t_sys_menumodule" />
           <EntitySet Name="t_sys_modulebutton" EntityType="webdmsModel.t_sys_modulebutton" />
@@ -2358,7 +2358,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
         </EntityType>
-        <EntityType Name="t_sys_buttton">
+        <EntityType Name="t_sys_button">
           <Key>
             <PropertyRef Name="ButtonID" />
           </Key>
@@ -2429,7 +2429,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="IsVisible" Type="Int64" Nullable="false" />
-          <Property Name="CreatTime" Type="DateTime" Precision="0" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
@@ -2777,8 +2777,8 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
-          <Property Name="isRole" Type="Int64" />
           <Property Name="IsSystem" Type="Int64" Nullable="false" />
+          <Property Name="isRole" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3676,9 +3676,9 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_sys_buttton">
-            <EntityTypeMapping TypeName="webdmsModel.t_sys_buttton">
-              <MappingFragment StoreEntitySet="t_sys_buttton">
+          <EntitySetMapping Name="t_sys_button">
+            <EntityTypeMapping TypeName="webdmsModel.t_sys_button">
+              <MappingFragment StoreEntitySet="t_sys_button">
                 <ScalarProperty Name="CreatUserID" ColumnName="CreatUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
@@ -3744,7 +3744,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreatTime" ColumnName="CreatTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4065,8 +4065,8 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="view_rights">
             <EntityTypeMapping TypeName="webdmsModel.view_rights">
               <MappingFragment StoreEntitySet="view_rights">
-                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
                 <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />

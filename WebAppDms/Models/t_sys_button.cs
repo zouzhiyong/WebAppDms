@@ -12,7 +12,7 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class t_sys_buttton
+    public partial class t_sys_button
     {
         public System.DateTime TimeStamp { get; set; }
         public long ButtonID { get; set; }

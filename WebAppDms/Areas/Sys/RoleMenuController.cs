@@ -50,7 +50,7 @@ namespace WebAppDms.Areas.Sys
                 Descript2 = s.Descript,
                 isMenuRole = db.t_sys_rights_detail.Where(w => w.RightsID == obj.RightsID && w.ModuleID == s.FID).Count() > 0 ? true : false,
                 ButtonRoles = db.t_sys_rights_detail.Where(w => w.RightsID == obj.RightsID && w.ModuleID == s.FID).Select(s3 => s3.ButtonID).ToList(),
-                chilDren = db.t_sys_modulebutton.Where(w => w.ModuleID == s.FID && w.IsValid != 0 && w.IsVisible != 0).Join(db.t_sys_buttton.OrderBy(o => o.ButtonID).Where(w => w.IsValid != 0), a => a.ButtonID, b => b.ButtonID, (a, b) => new
+                chilDren = db.t_sys_modulebutton.Where(w => w.ModuleID == s.FID && w.IsValid != 0 && w.IsVisible != 0).Join(db.t_sys_button.OrderBy(o => o.ButtonID).Where(w => w.IsValid != 0), a => a.ButtonID, b => b.ButtonID, (a, b) => new
                 {
                     ModButtonID = a.ModButtonID,
                     ButtonID = b.ButtonID,

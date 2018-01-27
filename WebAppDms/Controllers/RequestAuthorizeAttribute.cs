@@ -53,14 +53,14 @@ namespace WebAppDms.Controllers
             var index = strTicket.IndexOf("&");
             string strUser = strTicket.Substring(0, index);
             string strPwd = strTicket.Substring(index + 1);
-            if (HttpContext.Current.Session[strUser] == null)
+            if (UserSession.userInfo == null)
             {
                 return false;
             }
             //string _sessionUser = HttpContext.Current.Session[strUser].ToString();
 
-            Areas.Login.LoginController.UserInfo sessionUser = (Areas.Login.LoginController.UserInfo)(HttpContext.Current.Session[strUser]);
-            if (strUser == sessionUser.UserName && strPwd == sessionUser.Password)
+            //Areas.Login.LoginController.UserInfo sessionUser = (Areas.Login.LoginController.UserInfo)(HttpContext.Current.Session[strUser]);
+            if (strUser == UserSession.userInfo.Code && strPwd == UserSession.userInfo.Password)
             {
                 return true;
             }

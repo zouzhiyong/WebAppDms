@@ -44,8 +44,8 @@ namespace WebAppDms.Areas.Login
             {
                 return new { bRes = false, message = "账号或密码不正确！" };
             }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, loginData.strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", loginData.strUser, loginData.strPwd),
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, tBasUser.Code, DateTime.Now,
+                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", tBasUser.Code, tBasUser.Password),
                             FormsAuthentication.FormsCookiePath);
             webDmsEntities db = new webDmsEntities();
 
@@ -73,11 +73,13 @@ namespace WebAppDms.Areas.Login
             var tempList = homeOjb.Concat(list).ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
-            string trademark = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID).Join(db.t_bas_company,a=>a.CorpID,b=>b.CorpID,(a,b)=>b.TradeMark).FirstOrDefault();
+            var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);
+            string trademark = tSysCompany.Join(db.t_bas_company,a=>a.CorpID,b=>b.CorpID,(a,b)=>b.TradeMark).FirstOrDefault();
             string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录       
-            var oUser = new UserInfo { bRes = true, UserName = loginData.strUser, Password = loginData.strPwd, user = new { name = tBasUser.Name, avatar = tBasUser.Photo, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[loginData.strUser] = oUser;
+            var oUser = new UserInfo { bRes = true, user = new { name = tBasUser.Name, avatar = tBasUser.Photo, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
+            //将经销商权限保存在session中
+            HttpContext.Current.Session["CompanyRightsID"] = tSysCompany.FirstOrDefault().RightsID;
+            //HttpContext.Current.Session[loginData.strUser] = oUser;
             return oUser;
         }
 
@@ -88,10 +90,11 @@ namespace WebAppDms.Areas.Login
             string password = Sha1Encrypt(strPwd);            
 
             var list = db.t_bas_user.FirstOrDefault(p => p.Code == strUser && p.Password == password);
+
             userinfo = list;
 
             if (list != null)
-            {
+            {                
                 HttpContext.Current.Session["UserInfo"] = list;
                 return true;
             }

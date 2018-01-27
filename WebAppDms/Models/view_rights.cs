@@ -22,7 +22,7 @@ namespace WebAppDms.Models
         public string CreateUser { get; set; }
         public string UpdateUser { get; set; }
         public int CorpID { get; set; }
-        public Nullable<long> isRole { get; set; }
         public long IsSystem { get; set; }
+        public Nullable<long> isRole { get; set; }
     }
 }

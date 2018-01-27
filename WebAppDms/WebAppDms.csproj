@@ -388,7 +388,7 @@
     <Compile Include="Models\t_supplier.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_sys_buttton.cs">
+    <Compile Include="Models\t_sys_button.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_sys_company.cs">
