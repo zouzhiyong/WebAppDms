@@ -13,7 +13,7 @@ namespace WebAppDms.Areas.Sys
     {
         public HttpResponseMessage FindSysRoleMenuTree()
         {
-            var IsSystem = db.t_sys_rights.Where(w => w.RightsID == UserSession.userInfo.RightsID).Select(s => s.IsSystem).FirstOrDefault();
+            var IsSystem = UserSession.IsSystem;
             var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID == UserSession.userInfo.CorpID && p.IsSystem == IsSystem).OrderBy(o => o.RightsID).Select(s => new
             {
                 label = s.Name,
@@ -56,7 +56,7 @@ namespace WebAppDms.Areas.Sys
                     ButtonID = b.ButtonID,
                     Name = b.Name
                 }).ToList()
-            }).ToList();
+            }).Where(w=>w.FID1!=0 && w.FID2!=0).ToList();
      
 
             return Json(true, "", list);

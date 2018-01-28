@@ -27,7 +27,7 @@ namespace WebAppDms.Areas.Sys
             int total = 0;
             long CorpID = (long)UserSession.userInfo.CorpID;
 
-            var IsSystem = db.t_sys_rights.Where(w => w.RightsID == UserSession.userInfo.RightsID).Select(s=>s.IsSystem).FirstOrDefault();
+            var IsSystem = UserSession.IsSystem;
             var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID && x.IsSystem== IsSystem, s => s.RightsID, true);
 
             return Json(list, currentPage, pageSize, total);

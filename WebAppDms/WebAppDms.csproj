@@ -233,6 +233,7 @@
     <Compile Include="Areas\Bas\CompanyController.cs" />
     <Compile Include="Areas\Bas\CustomerController.cs" />
     <Compile Include="Areas\Bas\DepartmentController.cs" />
+    <Compile Include="Areas\Bas\UserController.cs" />
     <Compile Include="Areas\Dms\PurallController.cs" />
     <Compile Include="Areas\Login\LoginController.cs" />
     <Compile Include="Areas\Sys\DeptController.cs" />
@@ -449,6 +450,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_rights.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_user.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

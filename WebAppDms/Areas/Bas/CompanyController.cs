@@ -61,11 +61,12 @@ namespace WebAppDms.Areas.Bas
                 string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录           
 
                 //获取图片并保存
-                Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
+                BaseToImg.Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
+                obj.TradeMark = newFileName;
+
 
                 obj.UpdateTime = dt;
-                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-                obj.TradeMark = newFileName;
+                obj.UpdateUserID = (int)UserSession.userInfo.UserID;                
 
                 var result = dbhelp.Update(obj);
 
@@ -77,11 +78,5 @@ namespace WebAppDms.Areas.Bas
             }
         }
 
-        //解析base64编码获取图片
-        private Bitmap Base64ToImg(string base64Code)
-        {
-            MemoryStream stream = new MemoryStream(Convert.FromBase64String(base64Code));
-            return new Bitmap(stream);
-        }
     }
 }

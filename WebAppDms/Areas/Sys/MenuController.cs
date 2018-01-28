@@ -169,9 +169,10 @@ namespace WebAppDms.Areas.Sys
             }).OrderBy(o => o.value);
 
             //判断是否系统用户
-            bool IsSystem = db.t_sys_rights.Where(w => w.RightsID == UserSession.userInfo.RightsID).Select(p => p.IsSystem).FirstOrDefault() == 1;
+            bool IsSystem = UserSession.IsSystem== 1;
             var MenuModule = IsSystem ? db.t_sys_menumodule.ToList() : db.t_sys_menumodule.Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.FID, b => b.ModuleID, (a, b) => a).Distinct().ToList();
             var Buttons = IsSystem ? db.t_sys_button.Where(w => w.IsValid != 0).ToList() : db.t_sys_button.Where(w => w.IsValid != 0).Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.ButtonID, b => b.ButtonID, (a, b) => a).Distinct().ToList();
+            var CheckedButtons = IsSystem ? db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0).Select(s0 => s0.ButtonID).ToList() : db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0 && w.CorpID == UserSession.userInfo.CorpID).Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.ButtonID, b => b.ButtonID, (a, b) =>a.ButtonID).Distinct().ToList();
 
             var ParentCodeList = MenuModule.Where(w1 => w1.ParentCode == "&" && w1.FID != FID).OrderBy(o => o.FID).Select(s1 => new
             {
@@ -202,7 +203,7 @@ namespace WebAppDms.Areas.Sys
                     PlatformTypeList = PlatFormTypeList,
                     Sequence = 0,
                     Buttons = Buttons,
-                    CheckedButtons = db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0).Select(s0 => s0.ButtonID).ToList()
+                    CheckedButtons = CheckedButtons
                 };
                 return Json(true, "", list);
             }
@@ -229,7 +230,7 @@ namespace WebAppDms.Areas.Sys
                     PlatformTypeList = PlatFormTypeList,
                     Sequence = s.Sequence,
                     Buttons = Buttons,
-                    CheckedButtons = db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0).Select(s0 => s0.ButtonID).ToList()
+                    CheckedButtons = CheckedButtons
                 }).FirstOrDefault();
 
                 return Json(true, "", list);

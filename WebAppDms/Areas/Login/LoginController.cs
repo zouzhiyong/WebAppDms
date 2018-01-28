@@ -59,7 +59,7 @@ namespace WebAppDms.Areas.Login
                 Xh = s.Sequence,
                 MenuID = s.Code,
                 iconCls = s.ICON,
-                children = db.view_menu.Where<view_menu>(p1 => p1.ParentCode == s.Code).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID.ToString() == tBasUser.UserID.ToString() && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
@@ -73,13 +73,13 @@ namespace WebAppDms.Areas.Login
             var tempList = homeOjb.Concat(list).ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
-            var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);
+            var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);            
             string trademark = tSysCompany.Join(db.t_bas_company,a=>a.CorpID,b=>b.CorpID,(a,b)=>b.TradeMark).FirstOrDefault();
-            string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录       
-            var oUser = new UserInfo { bRes = true, user = new { name = tBasUser.Name, avatar = tBasUser.Photo, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
+            string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录 
+            string avatar = "/" + VirtualPath + "/" + UploadImgPath + "/" + tBasUser.Photo; //获取当前项目所在目录 
+            var oUser = new UserInfo { bRes = true, user = new { name = tBasUser.Name, avatar = avatar, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
             //将经销商权限保存在session中
-            HttpContext.Current.Session["CompanyRightsID"] = tSysCompany.FirstOrDefault().RightsID;
-            //HttpContext.Current.Session[loginData.strUser] = oUser;
+            HttpContext.Current.Session["CompanyRightsID"] = tSysCompany.FirstOrDefault().RightsID;            
             return oUser;
         }
 

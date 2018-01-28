@@ -184,6 +184,7 @@
           <Property Name="CreateUserID" Type="int" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+          <Property Name="IMEICode" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="t_customer">
           <Key>
@@ -254,7 +255,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="100" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
-          <Property Name="IsVisibile" Type="uint" Nullable="false" />
+          <Property Name="IsVisible" Type="uint" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" Precision="0" />
           <Property Name="CreateUserID" Type="int" />
@@ -1304,6 +1305,32 @@
           <Property Name="IsSystem" Type="uint" Nullable="false" />
           <Property Name="isRole" Type="bigint" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="IsLockedout" />
+            <PropertyRef Name="isRole" />
+          </Key>
+          <Property Name="UserID" Type="uint" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeptID" Type="int" />
+          <Property Name="DeptName" Type="varchar" MaxLength="50" />
+          <Property Name="RightsName" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="IsLockedout" Type="uint" Nullable="false" />
+          <Property Name="EmpCategoryName" Type="varchar" MaxLength="50" />
+          <Property Name="LastActiveTIme" Type="datetime" Precision="0" />
+          <Property Name="LastLoginDate" Type="datetime" Precision="0" />
+          <Property Name="isRole" Type="int" Nullable="false" />
+          <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_company" EntityType="Self.t_bas_company" Schema="dms" store:Type="Tables" />
@@ -1419,6 +1446,24 @@ FROM `view_menu` AS `view_menu`</DefiningQuery>
 `view_rights`.`isRole`
 FROM `view_rights` AS `view_rights`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_user" EntityType="Self.view_user" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_user`.`UserID`, 
+`view_user`.`Code`, 
+`view_user`.`UserName`, 
+`view_user`.`DeptID`, 
+`view_user`.`DeptName`, 
+`view_user`.`RightsName`, 
+`view_user`.`Phone`, 
+`view_user`.`IsValid`, 
+`view_user`.`IsLockedout`, 
+`view_user`.`EmpCategoryName`, 
+`view_user`.`LastActiveTIme`, 
+`view_user`.`LastLoginDate`, 
+`view_user`.`isRole`, 
+`view_user`.`UpdateUser`
+FROM `view_user` AS `view_user`</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1486,6 +1531,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
+          <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -1666,6 +1712,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="IMEICode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_customer">
           <Key>
@@ -1736,7 +1783,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
-          <Property Name="IsVisibile" Type="Int64" Nullable="false" />
+          <Property Name="IsVisible" Type="Int64" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" />
@@ -2780,6 +2827,30 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <Property Name="IsSystem" Type="Int64" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
         </EntityType>
+        <EntityType Name="view_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="IsLockedout" />
+            <PropertyRef Name="isRole" />
+          </Key>
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeptID" Type="Int32" />
+          <Property Name="DeptName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RightsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="IsLockedout" Type="Int64" Nullable="false" />
+          <Property Name="EmpCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastActiveTIme" Type="DateTime" Precision="0" />
+          <Property Name="LastLoginDate" Type="DateTime" Precision="0" />
+          <Property Name="isRole" Type="Int32" Nullable="false" />
+          <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2935,6 +3006,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
           <EntitySetMapping Name="t_bas_user">
             <EntityTypeMapping TypeName="webdmsModel.t_bas_user">
               <MappingFragment StoreEntitySet="t_bas_user">
+                <ScalarProperty Name="IMEICode" ColumnName="IMEICode" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -3041,7 +3113,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="IsVisibile" ColumnName="IsVisibile" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4075,6 +4147,26 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RightsID" ColumnName="RightsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_user">
+            <EntityTypeMapping TypeName="webdmsModel.view_user">
+              <MappingFragment StoreEntitySet="view_user">
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="LastActiveTIme" ColumnName="LastActiveTIme" />
+                <ScalarProperty Name="EmpCategoryName" ColumnName="EmpCategoryName" />
+                <ScalarProperty Name="IsLockedout" ColumnName="IsLockedout" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RightsName" ColumnName="RightsName" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -22,7 +22,7 @@ namespace WebAppDms.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public long IsValid { get; set; }
-        public long IsVisibile { get; set; }
+        public long IsVisible { get; set; }
         public string Remark { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<int> CreateUserID { get; set; }

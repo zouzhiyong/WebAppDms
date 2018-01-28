@@ -51,5 +51,6 @@ namespace WebAppDms.Models
         public int CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
+        public string IMEICode { get; set; }
     }
 }
