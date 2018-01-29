@@ -176,7 +176,7 @@ namespace WebAppDms.Areas.Bas
                     QQ = s.QQ,
                     WeiXin = s.WeiXin,
                     Email = s.Email,
-                    Photo = "/" + VirtualPath + "/" + UploadImgPath + "/" + s.Photo,
+                    Photo = s.Photo,
                     IsUseSystem = s.IsUseSystem,
                     IsAppUser = s.IsAppUser,
                     IsValid = s.IsValid,
@@ -211,7 +211,6 @@ namespace WebAppDms.Areas.Bas
                 try
                 {
                     string base64Data = obj.Photo;
-
                     if (obj.UserID == 0)
                     {
                         obj.Photo = "";
@@ -222,29 +221,38 @@ namespace WebAppDms.Areas.Bas
                         {
                             throw new Exception("账号重复！");
                         }
-                        result = result + dbhelp.Add(obj);
-                        
-                        //获取文件储存路径            
-                        string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
-                        string newFileName = "USER_" + obj.UserID.ToString("000000000") + "." + suffix;
-                        string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录     
-                        //获取图片并保存
-                        BaseToImg.Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
-                        obj.Photo = newFileName;
-                        result = result + dbhelp.Update(obj);
+                        result = result + dbhelp.Add(obj);                       
                     }
                     else
                     {
+                        obj.Photo = "";
                         obj.UpdateTime = dt;
                         obj.UpdateUserID = (int)UserSession.userInfo.UserID;
                         if (db.t_bas_user.Where(w => w.Code == obj.Code).ToList().Count() > 1)
                         {
                             throw new Exception("账号重复！");
                         }
-
                         result = result + dbhelp.Update(obj);
                     }
-                    
+
+                    //保存图片并修改数据库图片名称 
+                    try
+                    {
+                        //获取文件储存路径            
+                        string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
+                        string newFileName = "USER_" + obj.UserID.ToString("000000000") + "." + suffix;
+                        string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录 
+                        //获取图片并保存
+                        BaseToImg.Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
+                        obj.Photo = newFileName;
+                    }
+                    catch
+                    {
+                        obj.Photo = base64Data;
+                    }
+                    List<string> fileds = new List<string>();
+                    fileds.Add("Photo");
+                    result = result + dbhelp.UpdateEntityFields(obj, fileds);
 
                     //提交事务
                     transaction.Complete();
