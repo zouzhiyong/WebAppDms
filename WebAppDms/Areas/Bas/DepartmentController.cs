@@ -19,7 +19,7 @@ namespace WebAppDms.Areas.Bas
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
-            long CorpID = (long)UserSession.userInfo.CorpID;
+            long CorpID = (long)((t_bas_user)UserSession.Get("UserInfo")).CorpID;
 
             var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.DeptID, true);
 
@@ -105,16 +105,16 @@ namespace WebAppDms.Areas.Bas
                         string Code = "";
                         result = AutoIncrement.AutoIncrementResult("Department", out Code);
                         obj.CreateTime = dt;
-                        obj.CreateUserID = (int)UserSession.userInfo.UserID;
+                        obj.CreateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
                         obj.UpdateTime = dt;
-                        obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-                        obj.CorpID = UserSession.userInfo.CorpID;
+                        obj.UpdateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
+                        obj.CorpID = ((t_bas_user)UserSession.Get("UserInfo")).CorpID;
                         obj.Code = Code;
                     }
                     else
                     {
                         obj.UpdateTime = dt;
-                        obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                        obj.UpdateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
                     }
 
                     if(db.t_bas_department.Where(w=>w.Code== obj.Code).ToList().Count() > 0)

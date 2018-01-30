@@ -17,10 +17,11 @@ namespace WebAppDms.Areas.Bas
     {
         string VirtualPath = ConfigurationManager.AppSettings["VirtualPath"].ToString();
         string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();
+        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
 
         public HttpResponseMessage FindBasDeptTree()
-        {
-            var list = db.t_bas_department.Where<t_bas_department>(p => p.IsValid != 0 && p.CorpID == UserSession.userInfo.CorpID).OrderBy(o => o.DeptID).Select(s => new
+        {           
+            var list = db.t_bas_department.Where<t_bas_department>(p => p.IsValid != 0 && p.CorpID == userInfo.CorpID).OrderBy(o => o.DeptID).Select(s => new
             {
                 label = s.Name,
                 DeptID = s.DeptID
@@ -37,16 +38,17 @@ namespace WebAppDms.Areas.Bas
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
+            
 
             Expression<Func<view_user, bool>> where = null;
 
             if (DeptID == 0)
             {
-                where = a => true;
+                where = a => a.CorpID == userInfo.CorpID;
             }
             else
             {
-                where = a => a.DeptID == DeptID;
+                where = a => a.DeptID == DeptID && a.CorpID== userInfo.CorpID;
             }
 
             var list = dbhelp.FindPagedList(currentPage, pageSize, out total, where, s => s.UserID, true);
@@ -59,7 +61,7 @@ namespace WebAppDms.Areas.Bas
             long DeptID = obj.DeptID;
             long UserID = obj.UserID;
 
-            var DeptIDList = db.t_bas_department.Where(w => w.IsValid != 0 && w.CorpID == UserSession.userInfo.CorpID).OrderBy(o=>o.DeptID).Select(s => new
+            var DeptIDList = db.t_bas_department.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID).OrderBy(o=>o.DeptID).Select(s => new
             {
                 label = s.Name,
                 value = s.DeptID
@@ -78,7 +80,7 @@ namespace WebAppDms.Areas.Bas
                 value = s.PositionID
             });
 
-            var RightsIDList = db.t_sys_rights.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.IsValid != 0 && w.IsSystem == UserSession.IsSystem).Select(s => new
+            var RightsIDList = db.t_sys_rights.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
             {
                 label = s.Name,
                 value = s.RightsID
@@ -101,7 +103,7 @@ namespace WebAppDms.Areas.Bas
                 var list = new
                 {
                     UserID = 0,
-                    CorpID = UserSession.userInfo.CorpID,
+                    CorpID = userInfo.CorpID,
                     Code = "",
                     Name = "",
                     UserCategoryID = 0,
@@ -151,7 +153,7 @@ namespace WebAppDms.Areas.Bas
                 var list = db.t_bas_user.Where(w => w.DeptID == DeptID && w.UserID==obj.UserID).Select(s => new
                 {
                     UserID = s.UserID,
-                    CorpID = UserSession.userInfo.CorpID,
+                    CorpID = userInfo.CorpID,
                     Code = s.Code,
                     Name = s.Name,
                     UserCategoryID = s.UserCategoryID,
@@ -215,8 +217,8 @@ namespace WebAppDms.Areas.Bas
                     {
                         obj.Photo = "";
                         obj.CreateTime = dt;
-                        obj.CreateUserID = (int)UserSession.userInfo.UserID;                      
-                        obj.CorpID = UserSession.userInfo.CorpID;
+                        obj.CreateUserID = (int)userInfo.UserID;                      
+                        obj.CorpID = userInfo.CorpID;
                         if (db.t_bas_user.Where(w => w.Code == obj.Code).ToList().Count() > 0)
                         {
                             throw new Exception("账号重复！");
@@ -227,7 +229,7 @@ namespace WebAppDms.Areas.Bas
                     {
                         obj.Photo = "";
                         obj.UpdateTime = dt;
-                        obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                        obj.UpdateUserID = (int)userInfo.UserID;
                         if (db.t_bas_user.Where(w => w.Code == obj.Code).ToList().Count() > 1)
                         {
                             throw new Exception("账号重复！");

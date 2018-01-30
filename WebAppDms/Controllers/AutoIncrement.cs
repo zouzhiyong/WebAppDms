@@ -15,8 +15,8 @@ namespace WebAppDms.Controllers
             webDmsEntities db = new webDmsEntities();
             DBHelper<t_serial_number_detail> db_serial_detail = new DBHelper<t_serial_number_detail>();
 
-            var CorpID = UserSession.userInfo.CorpID;
-            var UserID = UserSession.userInfo.UserID;
+            var CorpID = ((t_bas_user)UserSession.Get("UserInfo")).CorpID;
+            var UserID = ((t_bas_user)UserSession.Get("UserInfo")).UserID;
             var serial_list = db.t_serial_number.Where(w => w.Code == Code).FirstOrDefault();
             int length = serial_list.EndingNumber.ToString().Length;
             long SerialID = serial_list.SerialID;

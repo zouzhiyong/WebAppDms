@@ -11,7 +11,7 @@ using WebAppDms.Models;
 namespace WebAppDms.Controllers
 {
     public class RequestAuthorizeAttribute : AuthorizeAttribute
-    {
+    {        
         public override void OnAuthorization(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             //从http请求的头里面获取身份验证信息，验证是否是请求发起方的ticket
@@ -46,6 +46,7 @@ namespace WebAppDms.Controllers
         //校验用户名密码（正式环境中应该是数据库校验）
         private bool ValidateTicket(string encryptTicket)
         {
+            t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
             //解密Ticket
             var strTicket = FormsAuthentication.Decrypt(encryptTicket).UserData;
 
@@ -53,14 +54,14 @@ namespace WebAppDms.Controllers
             var index = strTicket.IndexOf("&");
             string strUser = strTicket.Substring(0, index);
             string strPwd = strTicket.Substring(index + 1);
-            if (UserSession.userInfo == null)
+            if (userInfo == null)
             {
                 return false;
             }
             //string _sessionUser = HttpContext.Current.Session[strUser].ToString();
 
             //Areas.Login.LoginController.UserInfo sessionUser = (Areas.Login.LoginController.UserInfo)(HttpContext.Current.Session[strUser]);
-            if (strUser == UserSession.userInfo.Code && strPwd == UserSession.userInfo.Password)
+            if (strUser == userInfo.Code && strPwd == userInfo.Password)
             {
                 return true;
             }
@@ -72,10 +73,10 @@ namespace WebAppDms.Controllers
 
         private bool ValidateController(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
+            t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
             var actionName = actionContext.ActionDescriptor.ActionName;
             var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             webDmsEntities db = new webDmsEntities();
-            t_bas_user userInfo = (t_bas_user)(HttpContext.Current.Session["UserInfo"]);
             var count = db.view_menu.Where(w => w.ControllerName.ToString().ToLower() == controllerName.ToLower() && w.UserID == userInfo.UserID).Count();
 
             return count > 0 ? true : false;

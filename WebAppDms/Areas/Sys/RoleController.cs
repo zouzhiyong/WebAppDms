@@ -12,7 +12,8 @@ using WebAppDms.Models;
 namespace WebAppDms.Areas.Sys
 {
     public class RoleController : ApiBaseController
-    {  
+    {
+        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
         /// <summary>
         /// 
         /// </summary>
@@ -25,10 +26,10 @@ namespace WebAppDms.Areas.Sys
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
-            long CorpID = (long)UserSession.userInfo.CorpID;
+            long CorpID = (long)userInfo.CorpID;
 
-            var IsSystem = UserSession.IsSystem;
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID && x.IsSystem== IsSystem, s => s.RightsID, true);
+            //var IsSystem = UserSession.IsSystem;
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.RightsID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -75,7 +76,7 @@ namespace WebAppDms.Areas.Sys
             }
             else
             {
-                var list = db.t_sys_rights.Where(w => w.RightsID == RightsID).Select(s => new
+                var list = db.t_sys_rights.Where(w => w.RightsID == RightsID && w.CorpID== userInfo.CorpID).Select(s => new
                 {
                     RightsID = s.RightsID,
                     Name = s.Name,
@@ -106,16 +107,16 @@ namespace WebAppDms.Areas.Sys
             if (obj.RightsID == 0)
             {
                 obj.CreateTime = dt;
-                obj.CreateUserID = (int)UserSession.userInfo.UserID;
+                obj.CreateUserID = (int)userInfo.UserID;
                 obj.UpdateTime = dt;
-                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
-                obj.CorpID = UserSession.userInfo.CorpID;
+                obj.UpdateUserID = (int)userInfo.UserID;
+                obj.CorpID = userInfo.CorpID;
                 obj.Code = "";
             }
             else
             {
                 obj.UpdateTime = dt;
-                obj.UpdateUserID = (int)UserSession.userInfo.UserID;
+                obj.UpdateUserID = (int)userInfo.UserID;
             }
             var result = obj.RightsID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
 

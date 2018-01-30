@@ -11,10 +11,11 @@ namespace WebAppDms.Areas.Sys
 {
     public class RoleMenuController : ApiBaseController
     {
+        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
         public HttpResponseMessage FindSysRoleMenuTree()
         {
-            var IsSystem = UserSession.IsSystem;
-            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID == UserSession.userInfo.CorpID && p.IsSystem == IsSystem).OrderBy(o => o.RightsID).Select(s => new
+            //var IsSystem = UserSession.IsSystem;
+            var list = db.t_sys_rights.Where<t_sys_rights>(p => p.IsValid != 0 && p.CorpID == userInfo.CorpID).OrderBy(o => o.RightsID).Select(s => new
             {
                 label = s.Name,
                 RightsID = s.RightsID
@@ -35,7 +36,7 @@ namespace WebAppDms.Areas.Sys
                 Sequence = a.Sequence,
                 Descript = a.Descript,
                 RightsID = b.RightsID,
-            }).Join(db.t_sys_company.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.IsValid != 0), a => a.RightsID, b => b.RightsID, (a, b) => a);
+            }).Join(db.t_sys_company.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0), a => a.RightsID, b => b.RightsID, (a, b) => a);
 
             var list = viewMenu.Where(w => w.ParentCode != "&").OrderBy(o => o.Sequence).Select(s => new
             {

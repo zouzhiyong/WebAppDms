@@ -16,7 +16,7 @@ namespace WebAppDms.Areas.Sys
     /// </summary>
     public class MenuController : ApiBaseController
     {
-
+        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
         public HttpResponseMessage FindSysMoudleTable(dynamic obj)
         {
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();
@@ -49,9 +49,9 @@ namespace WebAppDms.Areas.Sys
                     {
                         FID = obj.FID,
                         CreateTime = dt,
-                        CreateUserID = (int)UserSession.userInfo.UserID,
+                        CreateUserID = (int)userInfo.UserID,
                         UpdateTime = dt,
-                        UpdateUserID = (int)UserSession.userInfo.UserID,
+                        UpdateUserID = (int)userInfo.UserID,
                         Code = obj.Code,
                         Name = obj.Name,
                         ParentCode = obj.ParentCode,
@@ -83,11 +83,11 @@ namespace WebAppDms.Areas.Sys
                     {
                         var button = new t_sys_modulebutton();
                         button.ButtonID = item;
-                        button.CorpID = UserSession.userInfo.CorpID;
+                        button.CorpID = userInfo.CorpID;
                         button.CreateTime = dt;
-                        button.CreateUserID = (int)UserSession.userInfo.UserID;
+                        button.CreateUserID = (int)userInfo.UserID;
                         button.UpdateTime = dt;
-                        button.UpdateUserID = (int)UserSession.userInfo.UserID;
+                        button.UpdateUserID = (int)userInfo.UserID;
                         button.IsValid = 1;
                         button.IsVisible = 1;
                         button.ModuleID = (int)menumodule.FID;
@@ -112,7 +112,7 @@ namespace WebAppDms.Areas.Sys
             //string userId = "3";// HttpContext.Current.Session["userId"].ToString();
 
 
-            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&" && p.PlatformType == 9).Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID == userInfo.UserID && p.ParentCode == "&" && p.PlatformType == 9).Select(s => new
             {
                 path = "/",
                 name = s.Name,
@@ -120,7 +120,7 @@ namespace WebAppDms.Areas.Sys
                 Xh = s.Sequence,
                 MenuID = s.Code,
                 iconCls = s.ICON,
-                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code && p1.PlatformType == 9).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == userInfo.UserID && p1.ParentCode == s.Code && p1.PlatformType == 9).Select(s1 => new
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
@@ -136,13 +136,13 @@ namespace WebAppDms.Areas.Sys
 
         public HttpResponseMessage FindSysModuleTree()
         {
-            var list = db.view_menu.Where<view_menu>(p => p.UserID == UserSession.userInfo.UserID && p.ParentCode == "&").Select(s => new
+            var list = db.view_menu.Where<view_menu>(p => p.UserID == userInfo.UserID && p.ParentCode == "&").Select(s => new
             {
                 label = s.Name,
                 Sequence = s.Sequence,
                 FID = s.FID,
                 Code = s.Code,
-                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == UserSession.userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
+                children = db.view_menu.Where<view_menu>(p1 => p1.UserID == userInfo.UserID && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     label = s1.Name,
                     Sequence = s1.Sequence,
@@ -169,10 +169,10 @@ namespace WebAppDms.Areas.Sys
             }).OrderBy(o => o.value);
 
             //判断是否系统用户
-            bool IsSystem = UserSession.IsSystem== 1;
-            var MenuModule = IsSystem ? db.t_sys_menumodule.ToList() : db.t_sys_menumodule.Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.FID, b => b.ModuleID, (a, b) => a).Distinct().ToList();
-            var Buttons = IsSystem ? db.t_sys_button.Where(w => w.IsValid != 0).ToList() : db.t_sys_button.Where(w => w.IsValid != 0).Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.ButtonID, b => b.ButtonID, (a, b) => a).Distinct().ToList();
-            var CheckedButtons = IsSystem ? db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0).Select(s0 => s0.ButtonID).ToList() : db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0 && w.CorpID == UserSession.userInfo.CorpID).Join(db.t_sys_rights_detail.Where(w => w.CorpID == UserSession.userInfo.CorpID && w.RightsID == UserSession.CompanyRightsID), a => a.ButtonID, b => b.ButtonID, (a, b) =>a.ButtonID).Distinct().ToList();
+            bool IsSystem = db.t_sys_rights.Where(w => w.RightsID == userInfo.RightsID).Select(s => s.IsSystem).FirstOrDefault()== 1;
+            var MenuModule = IsSystem ? db.t_sys_menumodule.ToList() : db.t_sys_menumodule.Join(db.t_sys_rights_detail.Where(w => w.CorpID == userInfo.CorpID && w.RightsID == (int)UserSession.Get("CompanyRightsID")), a => a.FID, b => b.ModuleID, (a, b) => a).Distinct().ToList();
+            var Buttons = IsSystem ? db.t_sys_button.Where(w => w.IsValid != 0).ToList() : db.t_sys_button.Where(w => w.IsValid != 0).Join(db.t_sys_rights_detail.Where(w => w.CorpID == userInfo.CorpID && w.RightsID == (int)UserSession.Get("CompanyRightsID")), a => a.ButtonID, b => b.ButtonID, (a, b) => a).Distinct().ToList();
+            var CheckedButtons = IsSystem ? db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0).Select(s0 => s0.ButtonID).ToList() : db.t_sys_modulebutton.Where(w => w.ModuleID == FID && w.IsValid != 0 && w.IsVisible != 0 && w.CorpID == userInfo.CorpID).Join(db.t_sys_rights_detail.Where(w => w.CorpID == userInfo.CorpID && w.RightsID == (int)UserSession.Get("CompanyRightsID")), a => a.ButtonID, b => b.ButtonID, (a, b) =>a.ButtonID).Distinct().ToList();
 
             var ParentCodeList = MenuModule.Where(w1 => w1.ParentCode == "&" && w1.FID != FID).OrderBy(o => o.FID).Select(s1 => new
             {

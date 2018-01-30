@@ -1314,6 +1314,7 @@
             <PropertyRef Name="UserName" />
             <PropertyRef Name="IsValid" />
             <PropertyRef Name="IsLockedout" />
+            <PropertyRef Name="CorpID" />
             <PropertyRef Name="isRole" />
           </Key>
           <Property Name="UserID" Type="uint" Nullable="false" />
@@ -1328,6 +1329,7 @@
           <Property Name="EmpCategoryName" Type="varchar" MaxLength="50" />
           <Property Name="LastActiveTIme" Type="datetime" Precision="0" />
           <Property Name="LastLoginDate" Type="datetime" Precision="0" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="isRole" Type="int" Nullable="false" />
           <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
         </EntityType>
@@ -1460,6 +1462,7 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
 `view_user`.`EmpCategoryName`, 
 `view_user`.`LastActiveTIme`, 
 `view_user`.`LastLoginDate`, 
+`view_user`.`CorpID`, 
 `view_user`.`isRole`, 
 `view_user`.`UpdateUser`
 FROM `view_user` AS `view_user`</DefiningQuery>
@@ -2834,6 +2837,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
             <PropertyRef Name="UserName" />
             <PropertyRef Name="IsValid" />
             <PropertyRef Name="IsLockedout" />
+            <PropertyRef Name="CorpID" />
             <PropertyRef Name="isRole" />
           </Key>
           <Property Name="UserID" Type="Int64" Nullable="false" />
@@ -2848,6 +2852,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="EmpCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastActiveTIme" Type="DateTime" Precision="0" />
           <Property Name="LastLoginDate" Type="DateTime" Precision="0" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int32" Nullable="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -4155,6 +4160,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
               <MappingFragment StoreEntitySet="view_user">
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
                 <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
                 <ScalarProperty Name="LastActiveTIme" ColumnName="LastActiveTIme" />
                 <ScalarProperty Name="EmpCategoryName" ColumnName="EmpCategoryName" />

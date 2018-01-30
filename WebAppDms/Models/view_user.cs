@@ -26,6 +26,7 @@ namespace WebAppDms.Models
         public string EmpCategoryName { get; set; }
         public Nullable<System.DateTime> LastActiveTIme { get; set; }
         public Nullable<System.DateTime> LastLoginDate { get; set; }
+        public int CorpID { get; set; }
         public int isRole { get; set; }
         public string UpdateUser { get; set; }
     }

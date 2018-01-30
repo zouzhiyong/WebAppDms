@@ -9,6 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Security;
+using WebAppDms.Controllers;
 using WebAppDms.Models;
 
 namespace WebAppDms.Areas.Login
@@ -79,7 +80,8 @@ namespace WebAppDms.Areas.Login
             string avatar = "/" + VirtualPath + "/" + UploadImgPath + "/" + tBasUser.Photo; //获取当前项目所在目录 
             var oUser = new UserInfo { bRes = true, user = new { name = tBasUser.Name, avatar = avatar, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
             //将经销商权限保存在session中
-            HttpContext.Current.Session["CompanyRightsID"] = tSysCompany.FirstOrDefault().RightsID;            
+            UserSession.Add("CompanyRightsID", tSysCompany.FirstOrDefault().RightsID);
+            //HttpContext.Current.Session["CompanyRightsID"] = tSysCompany.FirstOrDefault().RightsID;            
             return oUser;
         }
 
@@ -95,7 +97,8 @@ namespace WebAppDms.Areas.Login
 
             if (list != null)
             {                
-                HttpContext.Current.Session["UserInfo"] = list;
+                //HttpContext.Current.Session["UserInfo"] = list;
+                UserSession.Add("UserInfo", list);
                 return true;
             }
             else
