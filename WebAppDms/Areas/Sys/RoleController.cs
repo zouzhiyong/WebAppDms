@@ -13,7 +13,6 @@ namespace WebAppDms.Areas.Sys
 {
     public class RoleController : ApiBaseController
     {
-        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
         /// <summary>
         /// 
         /// </summary>

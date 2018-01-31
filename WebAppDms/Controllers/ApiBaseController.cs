@@ -14,7 +14,7 @@ namespace WebAppDms.Controllers
     [RequestAuthorize]
     [WebApiExceptionFilter]
     public class ApiBaseController : ApiController
-    {
+    {        
         public static HttpResponseMessage Json(Object obj, bool @new = true)
         {
             if (@new)
@@ -40,5 +40,6 @@ namespace WebAppDms.Controllers
         }
 
         public static webDmsEntities db = new webDmsEntities();
+        public t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
     }
 }

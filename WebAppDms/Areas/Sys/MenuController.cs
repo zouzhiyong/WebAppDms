@@ -16,7 +16,6 @@ namespace WebAppDms.Areas.Sys
     /// </summary>
     public class MenuController : ApiBaseController
     {
-        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
         public HttpResponseMessage FindSysMoudleTable(dynamic obj)
         {
             DBHelper<t_sys_menumodule> dbhelp = new DBHelper<t_sys_menumodule>();

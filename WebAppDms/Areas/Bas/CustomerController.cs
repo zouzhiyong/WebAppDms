@@ -15,39 +15,89 @@ namespace WebAppDms.Areas.Bas
 {
     public class CustomerController : ApiBaseController
     {
-        ///// <summary>
-        ///// 查询条件中销售区域获取
-        ///// </summary>
-        ///// <returns></returns>
-        //public HttpResponseMessage FindBasRegionList()
-        //{
-        //    var list = db.sys_region.Where<sys_region>(p => p.RegionParentNo == "0").Select(v => new
-        //    {
-        //        RegionNo = v.RegionNo,
-        //        RegionName = v.RegionName,
-        //        value = v.RegionNo,
-        //        label = v.RegionName,
-        //        RegionParentNo = v.RegionParentNo,
-        //        children = db.sys_region.Where<sys_region>(p => p.RegionParentNo == v.RegionNo).Select(v1 => new
-        //        {
-        //            RegionNo = v1.RegionNo,
-        //            RegionName = v1.RegionName,
-        //            value = v1.RegionNo,
-        //            label = v1.RegionName,
-        //            RegionParentNo = v1.RegionParentNo,
-        //            children = db.sys_region.Where<sys_region>(p => p.RegionParentNo == v1.RegionNo).Select(v2 => new
-        //            {
-        //                RegionNo = v2.RegionNo,
-        //                RegionName = v2.RegionName,
-        //                value = v2.RegionNo,
-        //                label = v2.RegionName,
-        //                RegionParentNo = v2.RegionParentNo,
-        //            }).ToList()
-        //        }).ToList()
-        //    }).ToList();
+        public class Region: t_bas_region
+        {
+            public List<Region> children { get; set; }
+        }
+        public void LoopToAppendChildren(List<Region> all, Region curItem)
+        {
+            var subItems = all.Where(ee => ee.ParentCode == curItem.Code && ee.CorpID == userInfo.CorpID && ee.IsValid != 0).ToList();
+            if (subItems.Count > 0)
+            {
+                curItem.children = new List<Region>();
+                curItem.children.AddRange(subItems);
+                foreach (var subItem in subItems)
+                {
+                    LoopToAppendChildren(all, subItem);//新闻1.1
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 查询条件中销售区域获取
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseMessage FindBasRegionList()
+        {
+            var Regionlist = new List<Region>();
+            var tempList= db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0).ToList();
+            foreach(var item in tempList)
+            {
+                var temObj = new Region();
+                temObj.Code = item.Code;
+                temObj.RegionID = item.RegionID;
+                temObj.CorpID = item.CorpID;
+                temObj.IsValid = item.IsValid;
+                temObj.Name = item.Name;
+                temObj.ParentCode = item.ParentCode;
+                temObj.Sequence = item.Sequence;
+                Regionlist.Add(temObj);
+            }
 
-        //    return Json(true, "", list);
-        //}
+            Region rootRoot = new Region();
+            rootRoot.Code = "&";
+            rootRoot.ParentCode = "";
+            rootRoot.RegionID = 0;
+            rootRoot.Name = "全部";
+
+            LoopToAppendChildren(Regionlist, rootRoot);
+
+
+            //string Code = "&";
+
+            //var tempList = db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0);
+            //var list = tempList.Where(p=> p.ParentCode == Code).Select(s => new
+            //{
+            //    s.RegionID,
+            //    Code = s.Code,
+            //    s.ParentCode,
+            //    s.Name,
+            //    children = tempList.Where(p => p.ParentCode == s.Code).Select(s1 => new
+            //    {
+            //        s1.RegionID,
+            //        Code = s1.Code,
+            //        s1.ParentCode,
+            //        s1.Name,
+            //        children = tempList.Where(p => p.ParentCode == s1.Code).Select(s2 => new
+            //        {
+            //            s2.RegionID,
+            //            Code = s2.Code,
+            //            s2.ParentCode,
+            //            s2.Name,
+            //            children = tempList.Where(p => p.ParentCode == s2.Code).Select(s3 => new
+            //            {
+            //                s3.RegionID,
+            //                Code = s3.Code,
+            //                s3.ParentCode,
+            //                s3.Name,
+            //                children = tempList.Where(p => p.ParentCode == s3.Code).ToList()
+            //            }).ToList()
+            //        }).ToList()
+            //    }).ToList()
+            //}).ToList();
+
+            return Json(true, "", rootRoot);
+        }
         //public HttpResponseMessage FindBasCustomerTable(dynamic obj)
         //{
         //    DBHelper<view_customer> dbhelp = new DBHelper<view_customer>();

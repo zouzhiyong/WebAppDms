@@ -10,8 +10,7 @@ using WebAppDms.Models;
 namespace WebAppDms.Areas.Sys
 {
     public class RoleMenuController : ApiBaseController
-    {
-        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
+    {        
         public HttpResponseMessage FindSysRoleMenuTree()
         {
             //var IsSystem = UserSession.IsSystem;

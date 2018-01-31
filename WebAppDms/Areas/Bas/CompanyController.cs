@@ -21,7 +21,7 @@ namespace WebAppDms.Areas.Bas
 
         public HttpResponseMessage FindBasCompanyForm()
         {
-            int CorpID = ((t_bas_user)UserSession.Get("UserInfo")).CorpID;
+            int CorpID = userInfo.CorpID;
             var list = db.t_bas_company.Where(w => w.CorpID == CorpID).Select(s => new
             {
                 CorpID = s.CorpID,
@@ -60,7 +60,7 @@ namespace WebAppDms.Areas.Bas
                     string base64Data = obj.TradeMark;
                     obj.TradeMark = "";//先置空
                     obj.UpdateTime = dt;
-                    obj.UpdateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
+                    obj.UpdateUserID = (int)userInfo.UserID;
                     result = dbhelp.Update(obj);
 
                     //保存图片并修改数据库图片名称 
@@ -68,7 +68,7 @@ namespace WebAppDms.Areas.Bas
                     {
                         //获取文件储存路径            
                         string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
-                        string newFileName = "COMPANY_" + ((t_bas_user)UserSession.Get("UserInfo")).CorpID.ToString("000000000") + "." + suffix;
+                        string newFileName = "COMPANY_" + userInfo.CorpID.ToString("000000000") + "." + suffix;
                         string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录           
 
                         //获取图片并保存

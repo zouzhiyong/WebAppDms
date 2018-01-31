@@ -19,7 +19,7 @@ namespace WebAppDms.Areas.Bas
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
-            long CorpID = (long)((t_bas_user)UserSession.Get("UserInfo")).CorpID;
+            long CorpID = (long)userInfo.CorpID;
 
             var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.DeptID, true);
 
@@ -38,7 +38,7 @@ namespace WebAppDms.Areas.Bas
         {
             long DeptID = obj.DeptID;
 
-            var ParentCodeList = db.t_bas_department.Where(w1 => w1.ParentCode == "&" && w1.DeptID != DeptID).Select(s1 => new
+            var ParentCodeList = db.t_bas_department.Where(w1 => w1.ParentCode == "&" && w1.DeptID != DeptID && w1.CorpID==userInfo.CorpID).Select(s1 => new
             {
                 label = s1.Name,
                 value = s1.Code
@@ -67,7 +67,7 @@ namespace WebAppDms.Areas.Bas
             }
             else
             {
-                var list = db.t_bas_department.Where(w => w.DeptID == DeptID).Select(s => new
+                var list = db.t_bas_department.Where(w => w.DeptID == DeptID && w.CorpID == userInfo.CorpID).Select(s => new
                 {
                     DeptID = s.DeptID,
                     Code = s.Code,
@@ -105,19 +105,19 @@ namespace WebAppDms.Areas.Bas
                         string Code = "";
                         result = AutoIncrement.AutoIncrementResult("Department", out Code);
                         obj.CreateTime = dt;
-                        obj.CreateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
+                        obj.CreateUserID = (int)userInfo.UserID;
                         obj.UpdateTime = dt;
-                        obj.UpdateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
-                        obj.CorpID = ((t_bas_user)UserSession.Get("UserInfo")).CorpID;
+                        obj.UpdateUserID = (int)userInfo.UserID;
+                        obj.CorpID = userInfo.CorpID;
                         obj.Code = Code;
                     }
                     else
                     {
                         obj.UpdateTime = dt;
-                        obj.UpdateUserID = (int)((t_bas_user)UserSession.Get("UserInfo")).UserID;
+                        obj.UpdateUserID = (int)userInfo.UserID;
                     }
 
-                    if(db.t_bas_department.Where(w=>w.Code== obj.Code).ToList().Count() > 0)
+                    if(db.t_bas_department.Where(w=>w.Code== obj.Code && w.CorpID== userInfo.CorpID).ToList().Count() > 0)
                     {
                         throw new Exception("编码重复！");
                     }

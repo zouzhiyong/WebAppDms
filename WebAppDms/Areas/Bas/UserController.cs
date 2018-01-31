@@ -16,8 +16,7 @@ namespace WebAppDms.Areas.Bas
     public class UserController : ApiBaseController
     {
         string VirtualPath = ConfigurationManager.AppSettings["VirtualPath"].ToString();
-        string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();
-        t_bas_user userInfo = (t_bas_user)UserSession.Get("UserInfo");
+        string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();        
 
         public HttpResponseMessage FindBasDeptTree()
         {           
@@ -112,7 +111,7 @@ namespace WebAppDms.Areas.Bas
                     PositionIDList = PositionIDList,
                     RightsID = 0,
                     RightsIDList = RightsIDList,
-                    DeptID = 0,
+                    DeptID = DeptID,
                     DeptIDList = DeptIDList,
                     ParentEmpID = 0,
                     ParentEmpIDList = ParentEmpIDList,
