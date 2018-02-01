@@ -67,6 +67,7 @@
         <EntityTypeShape EntityType="webdmsModel.view_menu" Width="1.5" PointX="20.75" PointY="24.75" />
         <EntityTypeShape EntityType="webdmsModel.view_rights" Width="1.5" PointX="24.75" PointY="21.75" />
         <EntityTypeShape EntityType="webdmsModel.view_user" Width="1.5" PointX="8.75" PointY="25.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_customer" Width="1.5" PointX="23.375" PointY="25.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

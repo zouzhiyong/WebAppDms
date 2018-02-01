@@ -443,6 +443,9 @@
     <Compile Include="Models\t_warehouse_shipment_detail.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\view_customer.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\view_department.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

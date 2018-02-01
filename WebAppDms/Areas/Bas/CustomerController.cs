@@ -15,7 +15,7 @@ namespace WebAppDms.Areas.Bas
 {
     public class CustomerController : ApiBaseController
     {
-        public class Region: t_bas_region
+        public class Region : t_bas_region
         {
             public List<Region> children { get; set; }
         }
@@ -32,7 +32,7 @@ namespace WebAppDms.Areas.Bas
                 }
             }
         }
-        
+
         /// <summary>
         /// 查询条件中销售区域获取
         /// </summary>
@@ -40,8 +40,8 @@ namespace WebAppDms.Areas.Bas
         public HttpResponseMessage FindBasRegionList()
         {
             var Regionlist = new List<Region>();
-            var tempList= db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0).ToList();
-            foreach(var item in tempList)
+            var tempList = db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0).ToList();
+            foreach (var item in tempList)
             {
                 var temObj = new Region();
                 temObj.Code = item.Code;
@@ -61,57 +61,23 @@ namespace WebAppDms.Areas.Bas
             rootRoot.Name = "全部";
 
             LoopToAppendChildren(Regionlist, rootRoot);
-
-
-            //string Code = "&";
-
-            //var tempList = db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0);
-            //var list = tempList.Where(p=> p.ParentCode == Code).Select(s => new
-            //{
-            //    s.RegionID,
-            //    Code = s.Code,
-            //    s.ParentCode,
-            //    s.Name,
-            //    children = tempList.Where(p => p.ParentCode == s.Code).Select(s1 => new
-            //    {
-            //        s1.RegionID,
-            //        Code = s1.Code,
-            //        s1.ParentCode,
-            //        s1.Name,
-            //        children = tempList.Where(p => p.ParentCode == s1.Code).Select(s2 => new
-            //        {
-            //            s2.RegionID,
-            //            Code = s2.Code,
-            //            s2.ParentCode,
-            //            s2.Name,
-            //            children = tempList.Where(p => p.ParentCode == s2.Code).Select(s3 => new
-            //            {
-            //                s3.RegionID,
-            //                Code = s3.Code,
-            //                s3.ParentCode,
-            //                s3.Name,
-            //                children = tempList.Where(p => p.ParentCode == s3.Code).ToList()
-            //            }).ToList()
-            //        }).ToList()
-            //    }).ToList()
-            //}).ToList();
-
             return Json(true, "", rootRoot);
         }
-        //public HttpResponseMessage FindBasCustomerTable(dynamic obj)
-        //{
-        //    DBHelper<view_customer> dbhelp = new DBHelper<view_customer>();
 
-        //    string Region = obj.Region;
-        //    string CustomerName = obj.CustomerName;
-        //    int pageSize = obj.pageSize;
-        //    int currentPage = obj.currentPage;
-        //    int total = 0;
+        public HttpResponseMessage FindBasCustomerTable(dynamic obj)
+        {
+            DBHelper<view_customer> dbhelp = new DBHelper<view_customer>();
 
-        //    var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => (x.CustomerName.Contains(CustomerName) && x.Region.Contains(Region)), s => s.CustomerID, true);
+            long Region = obj.Region;
+            string CustomerName = obj.Name;
+            int pageSize = obj.pageSize;
+            int currentPage = obj.currentPage;
+            int total = 0;
 
-        //    return Json(list, currentPage, pageSize, total);
-        //}
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => (x.Name.Contains(CustomerName) && (Region == 0 || x.RegionID == Region) && x.CorpID == userInfo.CorpID), s => s.CustID, true);
+
+            return Json(list, currentPage, pageSize, total);
+        }
 
         //[HttpPost]
         //public HttpResponseMessage DeleteBasCustomerRow(bas_customer obj)

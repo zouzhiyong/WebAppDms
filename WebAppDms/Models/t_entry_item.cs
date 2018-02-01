@@ -37,5 +37,7 @@ namespace WebAppDms.Models
         public Nullable<int> CreateUserID { get; set; }
         public long Status { get; set; }
         public string Remark { get; set; }
+        public Nullable<System.DateTime> ProduceDate { get; set; }
+        public Nullable<System.DateTime> ExpireDate { get; set; }
     }
 }

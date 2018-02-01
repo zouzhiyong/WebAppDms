@@ -198,7 +198,7 @@
           <Property Name="ShortName" Type="varchar" MaxLength="20" />
           <Property Name="HelperCode" Type="varchar" MaxLength="20" />
           <Property Name="CustCategoryID" Type="int" Nullable="false" />
-          <Property Name="PaymentID" Type="int" Nullable="false" />
+          <Property Name="PaymentID" Type="int" />
           <Property Name="RegionID" Type="int" />
           <Property Name="AreaID" Type="int" />
           <Property Name="Tel" Type="varchar" MaxLength="20" />
@@ -333,6 +333,8 @@
           <Property Name="BinID" Type="int" />
           <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="Batch" Type="varchar" MaxLength="20" />
+          <Property Name="ProduceDate" Type="datetime" Precision="0" />
+          <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="BillQty" Type="int" Nullable="false" />
           <Property Name="OperQty" Type="int" Nullable="false" />
@@ -421,6 +423,7 @@
           <Property Name="Size" Type="float" />
           <Property Name="LastCost" Type="float" Nullable="false" />
           <Property Name="IsBatch" Type="uint" Nullable="false" />
+          <Property Name="Period" Type="int" />
           <Property Name="IsForSale" Type="uint" Nullable="false" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="IsZeroValue" Type="uint" Nullable="false" />
@@ -1157,6 +1160,9 @@
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="BinID" Type="int" />
+          <Property Name="Batch" Type="varchar" MaxLength="25" />
+          <Property Name="ProduceDate" Type="datetime" Precision="0" />
+          <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="BillQty" Type="float" Nullable="false" />
           <Property Name="ReceiptQty" Type="float" Nullable="false" />
           <Property Name="BalanceQty" Type="float" />
@@ -1203,6 +1209,9 @@
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="BinID" Type="int" />
+          <Property Name="Batch" Type="varchar" MaxLength="25" />
+          <Property Name="ProduceDate" Type="datetime" Precision="0" />
+          <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="BillQty" Type="int" Nullable="false" />
           <Property Name="ShipmentQty" Type="int" Nullable="false" />
           <Property Name="BalanceQty" Type="int" />
@@ -1215,6 +1224,32 @@
           <Property Name="CreateUserID" Type="int" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_customer”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_customer">
+          <Key>
+            <PropertyRef Name="CustID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="IsValid" />
+          </Key>
+          <Property Name="CustID" Type="uint" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HelperCode" Type="varchar" MaxLength="20" />
+          <Property Name="Tel" Type="varchar" MaxLength="20" />
+          <Property Name="Contact" Type="varchar" MaxLength="10" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="CustCategoryName" Type="varchar" MaxLength="50" />
+          <Property Name="RegionID" Type="uint" />
+          <Property Name="regionName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_department”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1392,6 +1427,24 @@
           <EntitySet Name="t_warehouse_receipt_detail" EntityType="Self.t_warehouse_receipt_detail" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_warehouse_shipment" EntityType="Self.t_warehouse_shipment" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_warehouse_shipment_detail" EntityType="Self.t_warehouse_shipment_detail" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="view_customer" EntityType="Self.view_customer" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_customer`.`CustID`, 
+`view_customer`.`CorpID`, 
+`view_customer`.`Code`, 
+`view_customer`.`Name`, 
+`view_customer`.`HelperCode`, 
+`view_customer`.`Tel`, 
+`view_customer`.`Contact`, 
+`view_customer`.`CreateTime`, 
+`view_customer`.`UpdateTime`, 
+`view_customer`.`IsValid`, 
+`view_customer`.`CustCategoryName`, 
+`view_customer`.`RegionID`, 
+`view_customer`.`regionName`, 
+`view_customer`.`EmployeeName`
+FROM `view_customer` AS `view_customer`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_department" EntityType="Self.view_department" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
 `view_department`.`TimeStamp`, 
@@ -1535,6 +1588,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
+          <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -1729,7 +1783,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="ShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CustCategoryID" Type="Int32" Nullable="false" />
-          <Property Name="PaymentID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentID" Type="Int32" />
           <Property Name="RegionID" Type="Int32" />
           <Property Name="AreaID" Type="Int32" />
           <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -1875,6 +1929,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="Status" Type="Int64" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_entry_supplier">
           <Key>
@@ -1961,6 +2017,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
+          <Property Name="Period" Type="Int32" />
         </EntityType>
         <EntityType Name="t_item_cost">
           <Key>
@@ -2698,6 +2755,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_warehouse_shipment">
           <Key>
@@ -2746,6 +2806,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="view_department">
           <Key>
@@ -2855,6 +2918,30 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int32" Nullable="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_customer">
+          <Key>
+            <PropertyRef Name="CustID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="IsValid" />
+          </Key>
+          <Property Name="CustID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="CustCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="regionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionID" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3190,6 +3277,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_entry_item">
             <EntityTypeMapping TypeName="webdmsModel.t_entry_item">
               <MappingFragment StoreEntitySet="t_entry_item">
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -3269,6 +3358,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_item">
             <EntityTypeMapping TypeName="webdmsModel.t_item">
               <MappingFragment StoreEntitySet="t_item">
+                <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
@@ -4024,6 +4114,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_warehouse_receipt_detail">
             <EntityTypeMapping TypeName="webdmsModel.t_warehouse_receipt_detail">
               <MappingFragment StoreEntitySet="t_warehouse_receipt_detail">
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
@@ -4070,6 +4163,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_warehouse_shipment_detail">
             <EntityTypeMapping TypeName="webdmsModel.t_warehouse_shipment_detail">
               <MappingFragment StoreEntitySet="t_warehouse_shipment_detail">
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -4173,6 +4269,26 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_customer">
+            <EntityTypeMapping TypeName="webdmsModel.view_customer">
+              <MappingFragment StoreEntitySet="view_customer">
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="regionName" ColumnName="regionName" />
+                <ScalarProperty Name="CustCategoryName" ColumnName="CustCategoryName" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="HelperCode" ColumnName="HelperCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="CustID" ColumnName="CustID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
