@@ -28,5 +28,7 @@ namespace WebAppDms.Models
         public string regionName { get; set; }
         public string EmployeeName { get; set; }
         public Nullable<long> RegionID { get; set; }
+        public string regionCode { get; set; }
+        public string ParentCode { get; set; }
     }
 }

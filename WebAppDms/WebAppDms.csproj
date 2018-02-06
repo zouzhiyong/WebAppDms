@@ -446,6 +446,9 @@
     <Compile Include="Models\view_customer.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\view_datadict.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\view_department.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

@@ -88,5 +88,6 @@ namespace WebAppDms.Models
         public virtual DbSet<view_rights> view_rights { get; set; }
         public virtual DbSet<view_user> view_user { get; set; }
         public virtual DbSet<view_customer> view_customer { get; set; }
+        public virtual DbSet<view_datadict> view_datadict { get; set; }
     }
 }

@@ -209,6 +209,7 @@
           <Property Name="City" Type="varchar" MaxLength="10" />
           <Property Name="Contact" Type="varchar" MaxLength="10" />
           <Property Name="EmployeeID" Type="int" />
+          <Property Name="Photo" Type="varchar" MaxLength="20" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateUserID" Type="int" Nullable="false" />
@@ -1249,7 +1250,22 @@
           <Property Name="CustCategoryName" Type="varchar" MaxLength="50" />
           <Property Name="RegionID" Type="uint" />
           <Property Name="regionName" Type="varchar" MaxLength="50" />
+          <Property Name="regionCode" Type="varchar" MaxLength="20" />
+          <Property Name="ParentCode" Type="varchar" MaxLength="20" />
           <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_datadict”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_datadict">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="DClassID" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DClassID" Type="uint" Nullable="false" />
+          <Property Name="CorpID" Type="int" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_department”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1442,8 +1458,18 @@
 `view_customer`.`CustCategoryName`, 
 `view_customer`.`RegionID`, 
 `view_customer`.`regionName`, 
+`view_customer`.`regionCode`, 
+`view_customer`.`ParentCode`, 
 `view_customer`.`EmployeeName`
 FROM `view_customer` AS `view_customer`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_datadict" EntityType="Self.view_datadict" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_datadict`.`Code`, 
+`view_datadict`.`Name`, 
+`view_datadict`.`DClassID`, 
+`view_datadict`.`CorpID`
+FROM `view_datadict` AS `view_datadict`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_department" EntityType="Self.view_department" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
@@ -1589,6 +1615,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
           <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
+          <EntitySet Name="view_datadict" EntityType="webdmsModel.view_datadict" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -1801,6 +1828,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_customer_itemprice">
           <Key>
@@ -2942,6 +2970,19 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="regionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RegionID" Type="Int64" />
+          <Property Name="regionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ParentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_datadict">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="DClassID" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DClassID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3142,6 +3183,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_customer">
             <EntityTypeMapping TypeName="webdmsModel.t_customer">
               <MappingFragment StoreEntitySet="t_customer">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
@@ -4275,6 +4317,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="view_customer">
             <EntityTypeMapping TypeName="webdmsModel.view_customer">
               <MappingFragment StoreEntitySet="view_customer">
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="regionCode" ColumnName="regionCode" />
                 <ScalarProperty Name="RegionID" ColumnName="RegionID" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
                 <ScalarProperty Name="regionName" ColumnName="regionName" />
@@ -4289,6 +4333,16 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="CustID" ColumnName="CustID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_datadict">
+            <EntityTypeMapping TypeName="webdmsModel.view_datadict">
+              <MappingFragment StoreEntitySet="view_datadict">
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="DClassID" ColumnName="DClassID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Http;
 using WebAppDms.Controllers;
@@ -15,6 +17,9 @@ namespace WebAppDms.Areas.Bas
 {
     public class CustomerController : ApiBaseController
     {
+        string VirtualPath = ConfigurationManager.AppSettings["VirtualPath"].ToString();
+        string UploadImgPath = ConfigurationManager.AppSettings["UploadImgPath"].ToString();
+
         public class Region : t_bas_region
         {
             public List<Region> children { get; set; }
@@ -33,11 +38,7 @@ namespace WebAppDms.Areas.Bas
             }
         }
 
-        /// <summary>
-        /// 查询条件中销售区域获取
-        /// </summary>
-        /// <returns></returns>
-        public HttpResponseMessage FindBasRegionList()
+        public Region getRegtion()
         {
             var Regionlist = new List<Region>();
             var tempList = db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0).ToList();
@@ -61,7 +62,39 @@ namespace WebAppDms.Areas.Bas
             rootRoot.Name = "全部";
 
             LoopToAppendChildren(Regionlist, rootRoot);
-            return Json(true, "", rootRoot);
+
+            return rootRoot;
+        }
+
+        /// <summary>
+        /// 查询条件中销售区域获取
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseMessage FindBasRegionList()
+        {
+            //var Regionlist = new List<Region>();
+            //var tempList = db.t_bas_region.Where<t_bas_region>(p => p.CorpID == userInfo.CorpID && p.IsValid != 0).ToList();
+            //foreach (var item in tempList)
+            //{
+            //    var temObj = new Region();
+            //    temObj.Code = item.Code;
+            //    temObj.RegionID = item.RegionID;
+            //    temObj.CorpID = item.CorpID;
+            //    temObj.IsValid = item.IsValid;
+            //    temObj.Name = item.Name;
+            //    temObj.ParentCode = item.ParentCode;
+            //    temObj.Sequence = item.Sequence;
+            //    Regionlist.Add(temObj);
+            //}
+
+            //Region rootRoot = new Region();
+            //rootRoot.Code = "&";
+            //rootRoot.ParentCode = "";
+            //rootRoot.RegionID = 0;
+            //rootRoot.Name = "全部";
+
+            //LoopToAppendChildren(Regionlist, rootRoot);
+            return Json(true, "", getRegtion());
         }
 
         public HttpResponseMessage FindBasCustomerTable(dynamic obj)
@@ -69,182 +102,223 @@ namespace WebAppDms.Areas.Bas
             DBHelper<view_customer> dbhelp = new DBHelper<view_customer>();
 
             long Region = obj.Region;
-            string CustomerName = obj.Name;
+            string Name = obj.Name;
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => (x.Name.Contains(CustomerName) && (Region == 0 || x.RegionID == Region) && x.CorpID == userInfo.CorpID), s => s.CustID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => (x.Name.Contains(Name) && (Region == 0 || x.RegionID == Region) && x.CorpID == userInfo.CorpID), s => s.CustID, true);
+
+            foreach (var item in list)
+            {
+                string ResultName = "";
+                List<long> ResultID = new List<long>();
+                List<long> regionIDList = new List<long>();
+                ReginName(item.regionName, regionIDList, item.ParentCode, db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID), out ResultName, out ResultID);
+                item.regionName = ResultName;
+            }
 
             return Json(list, currentPage, pageSize, total);
         }
 
-        //[HttpPost]
-        //public HttpResponseMessage DeleteBasCustomerRow(bas_customer obj)
-        //{
-        //    var result = new DBHelper<bas_customer>().Remove(obj);
+        [HttpPost]
+        public HttpResponseMessage DeleteBasCustomerRow(t_customer obj)
+        {
+            var result = new DBHelper<t_customer>().Remove(obj);
 
-        //    return Json(true, result == 1 ? "删除成功！" : "删除失败");
-        //}
+            return Json(true, result == 1 ? "删除成功！" : "删除失败");
+        }
 
-        //public HttpResponseMessage FindBasCustomerForm(dynamic obj)
-        //{
-        //    int CustomerID = obj == null ? 0 : obj.CustomerID;
+        public HttpResponseMessage FindBasCustomerForm(t_customer obj)
+        {
+            long CustID = obj.CustID;
 
+            var CustCategoryIDList = db.view_datadict.Where(w => (w.CorpID == userInfo.CorpID || w.CorpID == 0) && w.Code == "CustomerCategory").Select(s => new
+            {
+                label = s.Name,
+                value = s.DClassID
+            });
 
-        //    if (CustomerID == 0)
-        //    {
-        //        var list = new
-        //        {
-        //            CustomerID = 0,
-        //            CustomerName = "",
-        //            Code = "",
-        //            LinkMan = "",
-        //            LinkManPhone = "",
-        //            Region = "",
-        //            QQ = "",
-        //            Wechat = "",
-        //            FAX = "",
-        //            Phone1 = "",
-        //            Phone2 = "",
-        //            Address1 = "",
-        //            Address2 = "",
-        //            DepositAmount = "",
-        //            Photo = "",
-        //            ModifyDate = DateTime.Now,
-        //            IsValid = 1,
-        //            IsValidList = new object[] {
-        //            new { label = "正常", value = 1 },
-        //            new { label = "关门", value = 0 }
-        //        }.ToList(),
-        //            Remark = ""
-        //        };
-        //        return Json(true, "", list);
-        //    }
-        //    else
-        //    {
-        //        var list = db.bas_customer.Where(w => w.CustomerID == CustomerID).Select(s => new
-        //        {
-        //            CustomerID = s.CustomerID,
-        //            CustomerName = s.CustomerName,
-        //            Code = s.Code,
-        //            LinkMan = s.LinkMan,
-        //            LinkManPhone = s.LinkManPhone,
-        //            Region = s.Region,
-        //            QQ = s.QQ,
-        //            Wechat = s.Wechat,
-        //            FAX = s.FAX,
-        //            Phone1 = s.Phone1,
-        //            Phone2 = s.Phone2,
-        //            Address1 = s.Address1,
-        //            Address2 = s.Address2,
-        //            DepositAmount = s.DepositAmount,
-        //            Photo=s.Photo,
-        //            ModifyDate = DateTime.Now,
-        //            IsValid = s.IsValid == null ? 1 : s.IsValid,
-        //            IsValidList = new object[] {
-        //            new { label = "正常", value = 1 },
-        //            new { label = "关门", value = 0 }
-        //        }.ToList(),
-        //            Remark = s.Remark
-        //        }).FirstOrDefault();
+            var EmployeeIDList = db.t_bas_user.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID && w.UserCategoryID == 5).Select(s => new
+            {
+                label = s.Name,
+                value = s.UserID
+            });
 
-        //        return Json(true, "", list);
-        //    }
-        //}
+            var RegionIDList = getRegtion().children;
 
-        //public HttpResponseMessage SaveBasCustomerForm(bas_customer obj)
-        //{
-        //    DBHelper<bas_customer> dbhelp = new DBHelper<bas_customer>();
-        //    var result = obj.CustomerID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj);
+            string ResultName = "";
+            List<long> regionIDList = new List<long>();
+            List<long> ResultID = new List<long>();
 
-        //    return Json(true, result == 1 ? "保存成功！" : "保存失败");
-        //}
+            if (CustID == 0)
+            {
+                var list = new
+                {
+                    CustID = 0,
+                    CorpID = userInfo.CorpID,
+                    Address = "",
+                    Name = "",
+                    HelperCode = "",
+                    AreaID = "",
+                    City = "",
+                    CloseTime = "",
+                    CloseUserID = "",
+                    Code = "",
+                    Contact = "",
+                    CreateTime = "",
+                    CreateUserID = "",
+                    CustCategoryID = "",
+                    CustCategoryIDList = CustCategoryIDList,
+                    EmployeeID = "",
+                    EmployeeIDList = EmployeeIDList,
+                    Fax = "",
+                    IsValid = 1,
+                    Phone = "",
+                    Photo = "",
+                    PostCode = "",
+                    RegionID = 0,
+                    ShortName = "",
+                    Tel = "",
+                    UpdateTime = "",
+                    UpdateUserID = "",
+                };
 
+                return Json(true, "", new { list = list, RegionIDList = RegionIDList, RegionIDArr = ResultID });
+            }
+            else
+            {
+                var list = db.t_customer.Where(w => w.CustID == CustID && w.CorpID == userInfo.CorpID).Select(s => new
+                {
+                    s.CorpID,
+                    s.Code,
+                    s.CustID,
+                    s.Address,
+                    s.Name,
+                    s.HelperCode,
+                    s.AreaID,
+                    s.City,
+                    s.CloseTime,
+                    s.CloseUserID,
+                    s.Contact,
+                    s.CreateTime,
+                    s.CreateUserID,
+                    s.CustCategoryID,
+                    CustCategoryIDList = CustCategoryIDList,
+                    s.EmployeeID,
+                    EmployeeIDList = EmployeeIDList,
+                    s.Fax,
+                    s.IsValid,
+                    s.Phone,
+                    s.Photo,
+                    s.PostCode,
+                    s.RegionID,
+                    s.ShortName,
+                    s.Tel,
+                    s.UpdateTime,
+                    s.UpdateUserID
+                }).FirstOrDefault();
 
-        //public async Task<HttpResponseMessage> uploadPost()
-        //{
-        //    // 检查是否是 multipart/form-data
-        //    if (!Request.Content.IsMimeMultipartContent("form-data"))
-        //        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-        //    HttpResponseMessage response = null;
-        //    List<string> files = new List<string>();
-        //    try
-        //    {
-        //        // 设置上传目录
-        //        var provider = new MultipartFormDataStreamProvider(HttpContext.Current.Server.MapPath("~/UpLoad"));
-        //        // 接收数据，并保存文件
-        //        await Request.Content.ReadAsMultipartAsync(provider);
-        //        foreach (MultipartFileData file in provider.FileData)
-        //        {
-        //            files.Add(Path.GetFileName(file.LocalFileName));
-        //        }
-        //        response = Request.CreateResponse(HttpStatusCode.OK, files);
-        //    }
-        //    catch
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.BadRequest);
-        //    }
-        //    return response;
-        //}
+                var tBasRegionTable = db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID);
+                var tBasRegion = tBasRegionTable.Where(w => w.RegionID == list.RegionID).FirstOrDefault();
 
-        //[HttpPost]
-        //public Task<Hashtable> ImgUpload()
-        //{
-        //    // 检查是否是 multipart/form-data 
-        //    if (!Request.Content.IsMimeMultipartContent("form-data"))
-        //        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-        //    //文件保存目录路径 
-        //    string SaveTempPath = "~/UpLoad";
-        //    String dirTempPath = HttpContext.Current.Server.MapPath(SaveTempPath);
-        //    // 设置上传目录 
-        //    var provider = new MultipartFormDataStreamProvider(dirTempPath);
-        //    //var queryp = Request.GetQueryNameValuePairs();//获得查询字符串的键值集合 
-        //    var task = Request.Content.ReadAsMultipartAsync(provider).
-        //        ContinueWith<Hashtable>(o =>
-        //        {
-        //            Hashtable hash = new Hashtable();
-        //            hash["error"] = 1;
-        //            hash["errmsg"] = "上传出错";
-        //            var file = provider.FileData[0];//provider.FormData 
-        //    string orfilename = file.Headers.ContentDisposition.FileName.TrimStart('"').TrimEnd('"');
-        //            FileInfo fileinfo = new FileInfo(file.LocalFileName);
-        //    //最大文件大小 
-        //    int maxSize = 500000;
-        //            if (fileinfo.Length <= 0)
-        //            {
-        //                hash["error"] = 1;
-        //                hash["errmsg"] = "请选择上传文件。";
-        //            }
-        //            else if (fileinfo.Length > maxSize)
-        //            {
-        //                hash["error"] = 1;
-        //                hash["errmsg"] = "上传文件大小超过限制。";
-        //            }
-        //            else
-        //            {
-        //                string fileExt = orfilename.Substring(orfilename.LastIndexOf('.'));
-        //        //定义允许上传的文件扩展名 
-        //        String fileTypes = "gif,jpg,jpeg,png,bmp";
-        //                if (String.IsNullOrEmpty(fileExt) || Array.IndexOf(fileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
-        //                {
-        //                    hash["error"] = 1;
-        //                    hash["errmsg"] = "上传文件扩展名是不允许的扩展名。";
-        //                }
-        //                else
-        //                {
-        //                    String ymd = DateTime.Now.ToString("yyyyMMdd", System.Globalization.DateTimeFormatInfo.InvariantInfo);
-        //                    String newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", System.Globalization.DateTimeFormatInfo.InvariantInfo);
-        //                    fileinfo.CopyTo(Path.Combine(dirTempPath, newFileName + fileExt), true);
-        //                    fileinfo.Delete();
-        //                    hash["error"] = 0;
-        //                    hash["errmsg"] = "上传成功";
-        //                    hash["url"] = newFileName + fileExt;
-        //                }
-        //            }
-        //            return hash;
-        //        });
-        //    return task;
-        //}
+                if (tBasRegion != null)
+                {
+                    regionIDList.Add(tBasRegion.RegionID);
+                    ReginName(tBasRegion.Name, regionIDList, tBasRegion.ParentCode, tBasRegionTable, out ResultName, out ResultID);
+                }
+
+                return Json(true, "", new { list = list, RegionIDList = RegionIDList, RegionIDArr = ResultID });
+            }
+        }
+
+        public HttpResponseMessage SaveBasCustomerForm(t_customer obj)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                DBHelper<t_customer> dbhelp = new DBHelper<t_customer>();
+                DateTime dt = DateTime.Now;
+
+                //事务
+                var result = 0;
+                try
+                {
+                    string base64Data = obj.Photo;
+                    if (obj.CustID == 0)
+                    {
+                        string Code = obj.Code;
+                        if(Code == "")
+                        {
+                            result = AutoIncrement.AutoIncrementResult("Customer", out Code);
+                        }
+                                                
+                        obj.Photo = "";
+                        obj.CreateTime = dt;
+                        obj.CreateUserID = (int)userInfo.UserID;
+                        obj.CorpID = userInfo.CorpID;
+                        obj.Code = Code;
+                        if (db.t_customer.Where(w => w.Code == obj.Code).ToList().Count() > 0)
+                        {
+                            throw new Exception("账号重复！");
+                        }
+                        result = result + dbhelp.Add(obj);
+                    }
+                    else
+                    {
+                        obj.Photo = "";
+                        obj.UpdateTime = dt;
+                        obj.UpdateUserID = (int)userInfo.UserID;
+                        if (db.t_customer.Where(w => w.Code == obj.Code).ToList().Count() > 1)
+                        {
+                            throw new Exception("账号重复！");
+                        }
+                        result = result + dbhelp.Update(obj);
+                    }
+
+                    //保存图片并修改数据库图片名称 
+                    try
+                    {
+                        //获取文件储存路径            
+                        string suffix = base64Data.Split(new char[] { ';' })[0].Substring(base64Data.IndexOf('/') + 1);//获取后缀名
+                        string newFileName = "CUST_" + obj.CustID.ToString("000000000") + "." + suffix;
+                        string strPath = HttpContext.Current.Server.MapPath("~/" + UploadImgPath + "/" + newFileName); //获取当前项目所在目录 
+                        //获取图片并保存
+                        BaseToImg.Base64ToImg(base64Data.Split(',')[1]).Save(strPath);
+                        obj.Photo = newFileName;
+                    }
+                    catch
+                    {
+                        obj.Photo = base64Data;
+                    }
+                    List<string> fileds = new List<string>();
+                    fileds.Add("Photo");
+                    result = result + dbhelp.UpdateEntityFields(obj, fileds);
+
+                    //提交事务
+                    transaction.Complete();
+                    return Json(true, "保存成功！");
+                }
+                catch (Exception ex)
+                {
+                    return Json(false, "保存失败！" + ex.Message);
+                }
+            }
+        }
+
+        private void ReginName(string regionName, List<long> regionIDList, string ParentCode, IQueryable<t_bas_region> tBasRegion, out string ResultName, out List<long> ResultID)
+        {
+            var regionTable = tBasRegion.Where(w => w.Code == ParentCode);
+            ResultName = regionName;
+            ResultID = regionIDList;
+            if (regionTable.Count() > 0)
+            {
+                regionName = regionTable.Select(s => s.Name).FirstOrDefault() + "/" + regionName;
+                ResultName = regionName;
+
+                regionIDList.Insert(0, regionTable.Select(s => s.RegionID).FirstOrDefault());
+                ResultID = regionIDList;
+                ReginName(regionName, regionIDList, regionTable.Select(s => s.ParentCode).FirstOrDefault(), tBasRegion, out ResultName, out ResultID);
+            }
+        }
     }
 }
