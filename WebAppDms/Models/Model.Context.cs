@@ -83,11 +83,12 @@ namespace WebAppDms.Models
         public virtual DbSet<t_warehouse_receipt_detail> t_warehouse_receipt_detail { get; set; }
         public virtual DbSet<t_warehouse_shipment> t_warehouse_shipment { get; set; }
         public virtual DbSet<t_warehouse_shipment_detail> t_warehouse_shipment_detail { get; set; }
+        public virtual DbSet<view_customer> view_customer { get; set; }
+        public virtual DbSet<view_datadict> view_datadict { get; set; }
         public virtual DbSet<view_department> view_department { get; set; }
         public virtual DbSet<view_menu> view_menu { get; set; }
         public virtual DbSet<view_rights> view_rights { get; set; }
         public virtual DbSet<view_user> view_user { get; set; }
-        public virtual DbSet<view_customer> view_customer { get; set; }
-        public virtual DbSet<view_datadict> view_datadict { get; set; }
+        public virtual DbSet<view_warehouse> view_warehouse { get; set; }
     }
 }

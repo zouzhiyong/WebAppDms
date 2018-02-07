@@ -241,6 +241,7 @@ namespace WebAppDms.Areas.Bas
 
                 //事务
                 var result = 0;
+                var Customer = db.t_customer.Where(w => w.Code == obj.Code && w.CorpID==userInfo.CorpID);
                 try
                 {
                     string base64Data = obj.Photo;
@@ -257,7 +258,7 @@ namespace WebAppDms.Areas.Bas
                         obj.CreateUserID = (int)userInfo.UserID;
                         obj.CorpID = userInfo.CorpID;
                         obj.Code = Code;
-                        if (db.t_customer.Where(w => w.Code == obj.Code).ToList().Count() > 0)
+                        if (Customer.ToList().Count() > 0)
                         {
                             throw new Exception("账号重复！");
                         }
@@ -268,7 +269,7 @@ namespace WebAppDms.Areas.Bas
                         obj.Photo = "";
                         obj.UpdateTime = dt;
                         obj.UpdateUserID = (int)userInfo.UserID;
-                        if (db.t_customer.Where(w => w.Code == obj.Code).ToList().Count() > 1)
+                        if (Customer.ToList().Count() > 1)
                         {
                             throw new Exception("账号重复！");
                         }

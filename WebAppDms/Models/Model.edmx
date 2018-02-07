@@ -1107,7 +1107,7 @@
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
           <Property Name="CloseTime" Type="datetime" Precision="0" />
-          <Property Name="CloseUser" Type="varchar" MaxLength="255" />
+          <Property Name="CloseUser" Type="int" />
         </EntityType>
         <EntityType Name="t_warehouse_bin">
           <Key>
@@ -1384,6 +1384,30 @@
           <Property Name="isRole" Type="int" Nullable="false" />
           <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_warehouse”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_warehouse">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="WarehouseID" />
+          </Key>
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="CloseTime" Type="datetime" Precision="0" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="CloseUser" Type="varchar" MaxLength="50" />
+          <Property Name="Tel" Type="varchar" MaxLength="20" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="WarehouseID" Type="uint" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_company" EntityType="Self.t_bas_company" Schema="dms" store:Type="Tables" />
@@ -1546,6 +1570,22 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
 `view_user`.`UpdateUser`
 FROM `view_user` AS `view_user`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_warehouse" EntityType="Self.view_warehouse" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_warehouse`.`Address`, 
+`view_warehouse`.`CloseTime`, 
+`view_warehouse`.`Code`, 
+`view_warehouse`.`CreateTime`, 
+`view_warehouse`.`Contact`, 
+`view_warehouse`.`UpdateTime`, 
+`view_warehouse`.`Name`, 
+`view_warehouse`.`IsValid`, 
+`view_warehouse`.`CloseUser`, 
+`view_warehouse`.`Tel`, 
+`view_warehouse`.`CorpID`, 
+`view_warehouse`.`WarehouseID`
+FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1610,12 +1650,13 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySet Name="t_warehouse_receipt_detail" EntityType="webdmsModel.t_warehouse_receipt_detail" />
           <EntitySet Name="t_warehouse_shipment" EntityType="webdmsModel.t_warehouse_shipment" />
           <EntitySet Name="t_warehouse_shipment_detail" EntityType="webdmsModel.t_warehouse_shipment_detail" />
+          <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
+          <EntitySet Name="view_datadict" EntityType="webdmsModel.view_datadict" />
           <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
-          <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
-          <EntitySet Name="view_datadict" EntityType="webdmsModel.view_datadict" />
+          <EntitySet Name="view_warehouse" EntityType="webdmsModel.view_warehouse" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -1821,6 +1862,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="City" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
@@ -1828,7 +1870,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
-          <Property Name="Photo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="t_customer_itemprice">
           <Key>
@@ -1946,6 +1987,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="BinID" Type="Int32" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
           <Property Name="Batch" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="BillQty" Type="Int32" Nullable="false" />
           <Property Name="OperQty" Type="Int32" Nullable="false" />
@@ -1957,8 +2000,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="Status" Type="Int64" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
-          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_entry_supplier">
           <Key>
@@ -2036,6 +2077,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="Size" Type="Single" />
           <Property Name="LastCost" Type="Single" Nullable="false" />
           <Property Name="IsBatch" Type="Int64" Nullable="false" />
+          <Property Name="Period" Type="Int32" />
           <Property Name="IsForSale" Type="Int64" Nullable="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="IsZeroValue" Type="Int64" Nullable="false" />
@@ -2045,7 +2087,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
-          <Property Name="Period" Type="Int32" />
         </EntityType>
         <EntityType Name="t_item_cost">
           <Key>
@@ -2719,7 +2760,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
-          <Property Name="CloseUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CloseUser" Type="Int32" />
         </EntityType>
         <EntityType Name="t_warehouse_bin">
           <Key>
@@ -2773,6 +2814,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="BinID" Type="Int32" />
+          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="BillQty" Type="Single" Nullable="false" />
           <Property Name="ReceiptQty" Type="Single" Nullable="false" />
           <Property Name="BalanceQty" Type="Single" />
@@ -2783,9 +2827,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
-          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
-          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_warehouse_shipment">
           <Key>
@@ -2822,6 +2863,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="BinID" Type="Int32" />
+          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="BillQty" Type="Int32" Nullable="false" />
           <Property Name="ShipmentQty" Type="Int32" Nullable="false" />
           <Property Name="BalanceQty" Type="Int32" />
@@ -2834,9 +2878,43 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
-          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
-          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="view_customer">
+          <Key>
+            <PropertyRef Name="CustID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="IsValid" />
+          </Key>
+          <Property Name="CustID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="CustCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionID" Type="Int64" />
+          <Property Name="regionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="regionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ParentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_datadict">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="DClassID" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DClassID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" />
         </EntityType>
         <EntityType Name="view_department">
           <Key>
@@ -2947,42 +3025,27 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <Property Name="isRole" Type="Int32" Nullable="false" />
           <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="view_customer">
+        <EntityType Name="view_warehouse">
           <Key>
-            <PropertyRef Name="CustID" />
-            <PropertyRef Name="CorpID" />
             <PropertyRef Name="Code" />
-            <PropertyRef Name="Name" />
             <PropertyRef Name="CreateTime" />
-            <PropertyRef Name="IsValid" />
-          </Key>
-          <Property Name="CustID" Type="Int64" Nullable="false" />
-          <Property Name="CorpID" Type="Int32" Nullable="false" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
-          <Property Name="IsValid" Type="Int64" Nullable="false" />
-          <Property Name="CustCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="regionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RegionID" Type="Int64" />
-          <Property Name="regionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="ParentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="view_datadict">
-          <Key>
-            <PropertyRef Name="Code" />
             <PropertyRef Name="Name" />
-            <PropertyRef Name="DClassID" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="WarehouseID" />
           </Key>
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Contact" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DClassID" Type="Int64" Nullable="false" />
-          <Property Name="CorpID" Type="Int32" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="CloseUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseID" Type="Int64" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3183,7 +3246,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_customer">
             <EntityTypeMapping TypeName="webdmsModel.t_customer">
               <MappingFragment StoreEntitySet="t_customer">
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
@@ -3191,6 +3253,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
                 <ScalarProperty Name="City" ColumnName="City" />
@@ -3319,8 +3382,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_entry_item">
             <EntityTypeMapping TypeName="webdmsModel.t_entry_item">
               <MappingFragment StoreEntitySet="t_entry_item">
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -3332,6 +3393,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="OperQty" ColumnName="OperQty" />
                 <ScalarProperty Name="BillQty" ColumnName="BillQty" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
                 <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
@@ -3400,7 +3463,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_item">
             <EntityTypeMapping TypeName="webdmsModel.t_item">
               <MappingFragment StoreEntitySet="t_item">
-                <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
@@ -3410,6 +3472,7 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="IsZeroValue" ColumnName="IsZeroValue" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="IsForSale" ColumnName="IsForSale" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="IsBatch" ColumnName="IsBatch" />
                 <ScalarProperty Name="LastCost" ColumnName="LastCost" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -4156,9 +4219,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_warehouse_receipt_detail">
             <EntityTypeMapping TypeName="webdmsModel.t_warehouse_receipt_detail">
               <MappingFragment StoreEntitySet="t_warehouse_receipt_detail">
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
@@ -4169,6 +4229,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="BalanceQty" ColumnName="BalanceQty" />
                 <ScalarProperty Name="ReceiptQty" ColumnName="ReceiptQty" />
                 <ScalarProperty Name="BillQty" ColumnName="BillQty" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
@@ -4205,9 +4268,6 @@ FROM `view_user` AS `view_user`</DefiningQuery>
           <EntitySetMapping Name="t_warehouse_shipment_detail">
             <EntityTypeMapping TypeName="webdmsModel.t_warehouse_shipment_detail">
               <MappingFragment StoreEntitySet="t_warehouse_shipment_detail">
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -4220,6 +4280,9 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="BalanceQty" ColumnName="BalanceQty" />
                 <ScalarProperty Name="ShipmentQty" ColumnName="ShipmentQty" />
                 <ScalarProperty Name="BillQty" ColumnName="BillQty" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
@@ -4228,6 +4291,38 @@ FROM `view_user` AS `view_user`</DefiningQuery>
                 <ScalarProperty Name="ShipmentID" ColumnName="ShipmentID" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_customer">
+            <EntityTypeMapping TypeName="webdmsModel.view_customer">
+              <MappingFragment StoreEntitySet="view_customer">
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="regionCode" ColumnName="regionCode" />
+                <ScalarProperty Name="regionName" ColumnName="regionName" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="CustCategoryName" ColumnName="CustCategoryName" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="HelperCode" ColumnName="HelperCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="CustID" ColumnName="CustID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_datadict">
+            <EntityTypeMapping TypeName="webdmsModel.view_datadict">
+              <MappingFragment StoreEntitySet="view_datadict">
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="DClassID" ColumnName="DClassID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4314,35 +4409,21 @@ FROM `view_user` AS `view_user`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="view_customer">
-            <EntityTypeMapping TypeName="webdmsModel.view_customer">
-              <MappingFragment StoreEntitySet="view_customer">
-                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
-                <ScalarProperty Name="regionCode" ColumnName="regionCode" />
-                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="regionName" ColumnName="regionName" />
-                <ScalarProperty Name="CustCategoryName" ColumnName="CustCategoryName" />
-                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <EntitySetMapping Name="view_warehouse">
+            <EntityTypeMapping TypeName="webdmsModel.view_warehouse">
+              <MappingFragment StoreEntitySet="view_warehouse">
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="Tel" ColumnName="Tel" />
-                <ScalarProperty Name="HelperCode" ColumnName="HelperCode" />
+                <ScalarProperty Name="CloseUser" ColumnName="CloseUser" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
-                <ScalarProperty Name="CustID" ColumnName="CustID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_datadict">
-            <EntityTypeMapping TypeName="webdmsModel.view_datadict">
-              <MappingFragment StoreEntitySet="view_datadict">
-                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
-                <ScalarProperty Name="DClassID" ColumnName="DClassID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

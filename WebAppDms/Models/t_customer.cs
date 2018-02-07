@@ -33,6 +33,7 @@ namespace WebAppDms.Models
         public string City { get; set; }
         public string Contact { get; set; }
         public Nullable<int> EmployeeID { get; set; }
+        public string Photo { get; set; }
         public long IsValid { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
@@ -40,6 +41,5 @@ namespace WebAppDms.Models
         public Nullable<int> UpdateUserID { get; set; }
         public Nullable<System.DateTime> CloseTime { get; set; }
         public Nullable<int> CloseUserID { get; set; }
-        public string Photo { get; set; }
     }
 }

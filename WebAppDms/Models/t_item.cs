@@ -38,6 +38,7 @@ namespace WebAppDms.Models
         public Nullable<float> Size { get; set; }
         public float LastCost { get; set; }
         public long IsBatch { get; set; }
+        public Nullable<int> Period { get; set; }
         public long IsForSale { get; set; }
         public long IsValid { get; set; }
         public long IsZeroValue { get; set; }
@@ -47,6 +48,5 @@ namespace WebAppDms.Models
         public Nullable<int> UpdateUserID { get; set; }
         public Nullable<System.DateTime> CloseTime { get; set; }
         public Nullable<int> CloseUserID { get; set; }
-        public Nullable<int> Period { get; set; }
     }
 }

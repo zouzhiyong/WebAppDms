@@ -21,7 +21,7 @@ namespace WebAppDms.Areas.Bas
             int total = 0;
             long CorpID = (long)userInfo.CorpID;
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.DeptID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.CorpID == CorpID, s => s.Sequence, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -55,7 +55,7 @@ namespace WebAppDms.Areas.Bas
                     ParentCode = "&",
                     ParentCodeList = ParentCodeList,
                     Sequence = "",
-                    CorpID = "",
+                    CorpID = userInfo.CorpID,
                     Remark = "",
                     Level = "",
                     CreateTime = "",
@@ -98,6 +98,7 @@ namespace WebAppDms.Areas.Bas
 
                 //事务
                 var result = 0;
+                var Department = db.t_bas_department.Where(w => w.Code == obj.Code && w.CorpID == userInfo.CorpID);
                 try
                 {
                     if (obj.DeptID == 0)
@@ -110,16 +111,21 @@ namespace WebAppDms.Areas.Bas
                         obj.UpdateUserID = (int)userInfo.UserID;
                         obj.CorpID = userInfo.CorpID;
                         obj.Code = Code;
+
+                        if (Department.ToList().Count() > 0)
+                        {
+                            throw new Exception("编码重复！");
+                        }
                     }
                     else
                     {
                         obj.UpdateTime = dt;
                         obj.UpdateUserID = (int)userInfo.UserID;
-                    }
 
-                    if(db.t_bas_department.Where(w=>w.Code== obj.Code && w.CorpID== userInfo.CorpID).ToList().Count() > 0)
-                    {
-                        throw new Exception("编码重复！");
+                        if (Department.ToList().Count() > 1)
+                        {
+                            throw new Exception("编码重复！");
+                        }
                     }
 
                     result = result + (obj.DeptID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj));

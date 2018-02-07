@@ -12,23 +12,19 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_customer
+    public partial class view_warehouse
     {
-        public long CustID { get; set; }
-        public int CorpID { get; set; }
+        public string Address { get; set; }
+        public Nullable<System.DateTime> CloseTime { get; set; }
         public string Code { get; set; }
-        public string Name { get; set; }
-        public string HelperCode { get; set; }
-        public string Tel { get; set; }
-        public string Contact { get; set; }
         public System.DateTime CreateTime { get; set; }
+        public string Contact { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
+        public string Name { get; set; }
         public long IsValid { get; set; }
-        public string CustCategoryName { get; set; }
-        public Nullable<long> RegionID { get; set; }
-        public string regionName { get; set; }
-        public string regionCode { get; set; }
-        public string ParentCode { get; set; }
-        public string EmployeeName { get; set; }
+        public string CloseUser { get; set; }
+        public string Tel { get; set; }
+        public int CorpID { get; set; }
+        public long WarehouseID { get; set; }
     }
 }

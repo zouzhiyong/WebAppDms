@@ -32,6 +32,6 @@ namespace WebAppDms.Models
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
         public Nullable<System.DateTime> CloseTime { get; set; }
-        public string CloseUser { get; set; }
+        public Nullable<int> CloseUser { get; set; }
     }
 }

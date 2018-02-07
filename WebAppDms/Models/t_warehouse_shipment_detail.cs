@@ -22,6 +22,9 @@ namespace WebAppDms.Models
         public int UomID { get; set; }
         public int WarehouseID { get; set; }
         public Nullable<int> BinID { get; set; }
+        public string Batch { get; set; }
+        public Nullable<System.DateTime> ProduceDate { get; set; }
+        public Nullable<System.DateTime> ExpireDate { get; set; }
         public int BillQty { get; set; }
         public int ShipmentQty { get; set; }
         public Nullable<int> BalanceQty { get; set; }
@@ -34,8 +37,5 @@ namespace WebAppDms.Models
         public int CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
-        public string Batch { get; set; }
-        public Nullable<System.DateTime> ProduceDate { get; set; }
-        public Nullable<System.DateTime> ExpireDate { get; set; }
     }
 }
