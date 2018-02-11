@@ -109,14 +109,14 @@ namespace WebAppDms.Areas.Bas
 
             var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => (x.Name.Contains(Name) && (Region == 0 || x.RegionID == Region) && x.CorpID == userInfo.CorpID), s => s.CustID, true);
 
-            foreach (var item in list)
-            {
-                string ResultName = "";
-                List<long> ResultID = new List<long>();
-                List<long> regionIDList = new List<long>();
-                ReginName(item.regionName, regionIDList, item.ParentCode, db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID), out ResultName, out ResultID);
-                item.regionName = ResultName;
-            }
+            //foreach (var item in list)
+            //{
+            //    string ResultName = "";
+            //    List<long> ResultID = new List<long>();
+            //    List<long> regionIDList = new List<long>();
+            //    ReginName(item.regionName, regionIDList, item.ParentCode, db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID), out ResultName, out ResultID);
+            //    item.regionName = ResultName;
+            //}
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -147,8 +147,6 @@ namespace WebAppDms.Areas.Bas
 
             var RegionIDList = getRegtion().children;
 
-            string ResultName = "";
-            List<long> regionIDList = new List<long>();
             List<long> ResultID = new List<long>();
 
             if (CustID == 0)
@@ -219,14 +217,15 @@ namespace WebAppDms.Areas.Bas
                     s.UpdateUserID
                 }).FirstOrDefault();
 
-                var tBasRegionTable = db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID);
-                var tBasRegion = tBasRegionTable.Where(w => w.RegionID == list.RegionID).FirstOrDefault();
+                var tBasRegion = db.t_bas_region.Where(w => w.IsValid != 0 && w.CorpID == userInfo.CorpID && w.RegionID == list.RegionID).FirstOrDefault();
 
                 if (tBasRegion != null)
                 {
-                    regionIDList.Add(tBasRegion.RegionID);
-                    ReginName(tBasRegion.Name, regionIDList, tBasRegion.ParentCode, tBasRegionTable, out ResultName, out ResultID);
-                }
+                    foreach (var item in tBasRegion.RegionAllID.Split(','))
+                    {
+                        ResultID.Add(Convert.ToInt16(item));
+                    }
+                }                
 
                 return Json(true, "", new { list = list, RegionIDList = RegionIDList, RegionIDArr = ResultID });
             }

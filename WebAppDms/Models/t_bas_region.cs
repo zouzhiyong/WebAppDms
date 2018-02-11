@@ -25,5 +25,7 @@ namespace WebAppDms.Models
         public string Remark { get; set; }
         public System.DateTime UpdateTime { get; set; }
         public int UpdateUserID { get; set; }
+        public string RegionAllID { get; set; }
+        public string NameAll { get; set; }
     }
 }
