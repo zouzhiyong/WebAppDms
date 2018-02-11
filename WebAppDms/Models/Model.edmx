@@ -1407,6 +1407,7 @@
           <Property Name="Tel" Type="varchar" MaxLength="20" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="uint" Nullable="false" />
+          <Property Name="isRole" Type="bigint" />
         </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
@@ -1583,7 +1584,8 @@ FROM `view_user` AS `view_user`</DefiningQuery>
 `view_warehouse`.`CloseUser`, 
 `view_warehouse`.`Tel`, 
 `view_warehouse`.`CorpID`, 
-`view_warehouse`.`WarehouseID`
+`view_warehouse`.`WarehouseID`, 
+`view_warehouse`.`isRole`
 FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -3046,6 +3048,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int64" Nullable="false" />
+          <Property Name="isRole" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4412,6 +4415,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySetMapping Name="view_warehouse">
             <EntityTypeMapping TypeName="webdmsModel.view_warehouse">
               <MappingFragment StoreEntitySet="view_warehouse">
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="Tel" ColumnName="Tel" />

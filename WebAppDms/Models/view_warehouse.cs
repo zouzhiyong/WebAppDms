@@ -26,5 +26,6 @@ namespace WebAppDms.Models
         public string Tel { get; set; }
         public int CorpID { get; set; }
         public long WarehouseID { get; set; }
+        public Nullable<long> isRole { get; set; }
     }
 }

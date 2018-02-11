@@ -44,8 +44,6 @@ namespace WebAppDms.Areas.Bas
                 value = s1.Code
             });
 
-            var userView = db.view_user.Where(w => w.CorpID == userInfo.CorpID).Select(s=>s);
-
             if (WarehouseID == 0)
             {
                 var list = new
@@ -61,13 +59,25 @@ namespace WebAppDms.Areas.Bas
                     IsRequireReceive = 0,
                     IsRequireShipment = 0,
                     Contact = "",
+                    Address="",
                     CreateTime = "",
                     CreateUserID = "",
                     UpdateTime = "",
                     UpdateUserID = "",
                     CloseTime = "",
                     CloseUser = "",
-                    userView= userView
+                    userView = db.view_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s1 => new
+                    {
+                        s1.IsValid,
+                        s1.UserID,
+                        WarehouseID = 0,
+                        s1.UserName,
+                        s1.RightsName,
+                        s1.CorpID,
+                        s1.DeptID,
+                        s1.DeptName,
+                        userFlag = false
+                    })
                 };
                 return Json(true, "", list);
             }
@@ -86,26 +96,38 @@ namespace WebAppDms.Areas.Bas
                     IsRequireReceive = s.IsRequireReceive,
                     IsRequireShipment = s.IsRequireShipment,
                     Contact = s.Contact,
+                    Address=s.Address,
                     CreateTime = s.CreateTime,
                     CreateUserID = s.CreateUserID,
                     UpdateTime = s.UpdateTime,
                     UpdateUserID = s.UpdateUserID,
                     CloseTime = s.CloseTime,
                     CloseUser = s.CloseUser,
-                    userView = userView
+                    userView = db.view_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s1 => new
+                    {
+                        s1.IsValid,
+                        s.WarehouseID,
+                        s1.UserID,
+                        s1.UserName,
+                        s1.RightsName,
+                        s1.CorpID,
+                        s1.DeptID,
+                        s1.DeptName,
+                        userFlag = db.t_user_warehouse.Where(w => w.CorpID == userInfo.CorpID && w.WarehouseID == s.WarehouseID && w.UserID == s1.UserID && w.IsValid != 0).Count() > 0
+                    })
                 }).FirstOrDefault();
 
                 return Json(true, "", list);
             }
         }
 
-        public HttpResponseMessage SaveBasWarehouseForm(t_warehouse obj)
+        public HttpResponseMessage SaveBasWarehouseForm(t_warehouse_user obj)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
                 DBHelper<t_warehouse> dbhelp = new DBHelper<t_warehouse>();
                 DateTime dt = DateTime.Now;
-
+                
                 //事务
                 var result = 0;
                 var WareHouse = db.t_warehouse.Where(w => w.Code == obj.Code && w.CorpID == userInfo.CorpID);
@@ -160,7 +182,36 @@ namespace WebAppDms.Areas.Bas
                         }
                     }
 
-                    result = result + (obj.WarehouseID == 0 ? dbhelp.Add(obj) : dbhelp.Update(obj));
+                    t_warehouse tw = new t_warehouse()
+                    {
+                        WarehouseID = obj.WarehouseID,
+                        Code = obj.Code,
+                        Address = obj.Address,
+                        CorpID = obj.CorpID,
+                        Name = obj.Name,
+                        IsValid = obj.IsValid,
+                        Phone = obj.Phone,
+                        Tel = obj.Tel,
+                        IsBin = obj.IsBin,
+                        IsRequireReceive = obj.IsRequireReceive,
+                        IsRequireShipment = obj.IsRequireShipment,
+                        Contact = obj.Contact,
+                        CreateTime = obj.CreateTime,
+                        CreateUserID = obj.CreateUserID,
+                        UpdateTime = obj.UpdateTime,
+                        UpdateUserID = obj.UpdateUserID,
+                        CloseTime = obj.CloseTime,
+                        CloseUser = obj.CloseUser
+                    };
+                    result = result + (obj.WarehouseID == 0 ? dbhelp.Add(tw) : dbhelp.Update(tw));
+
+                    //删除并新增仓库对应用户
+                    foreach (var item in obj.userData)
+                    {
+                        item.WarehouseID = (int)tw.WarehouseID;
+                    }
+                    result = result + new DBHelper<t_user_warehouse>().RemoveList(w => w.WarehouseID == tw.WarehouseID);
+                    result = result + new DBHelper<t_user_warehouse>().AddList(obj.userData);
 
                     //提交事务
                     transaction.Complete();
@@ -172,6 +223,11 @@ namespace WebAppDms.Areas.Bas
                 }
             }
 
+        }
+
+        public class t_warehouse_user : t_warehouse
+        {
+            public t_user_warehouse[] userData { get; set; }
         }
     }
 }
