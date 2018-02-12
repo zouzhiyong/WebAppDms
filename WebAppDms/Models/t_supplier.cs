@@ -21,7 +21,7 @@ namespace WebAppDms.Models
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string HelperCode { get; set; }
-        public int SupplierCategoryID { get; set; }
+        public Nullable<int> SupplierCategoryID { get; set; }
         public string Tel { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }

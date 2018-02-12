@@ -19,7 +19,7 @@ namespace WebAppDms.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public string HelperCode { get; set; }
-        public string Tel { get; set; }
+        public string Phone { get; set; }
         public string Contact { get; set; }
         public System.DateTime CreateTime { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }

@@ -866,7 +866,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortName" Type="varchar" MaxLength="20" />
           <Property Name="HelperCode" Type="varchar" MaxLength="20" />
-          <Property Name="SupplierCategoryID" Type="int" Nullable="false" />
+          <Property Name="SupplierCategoryID" Type="int" />
           <Property Name="Tel" Type="varchar" MaxLength="20" />
           <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="Fax" Type="varchar" MaxLength="20" />
@@ -1244,14 +1244,14 @@
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="HelperCode" Type="varchar" MaxLength="20" />
-          <Property Name="Tel" Type="varchar" MaxLength="20" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="Contact" Type="varchar" MaxLength="10" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="CustCategoryName" Type="varchar" MaxLength="50" />
           <Property Name="RegionID" Type="uint" />
-          <Property Name="regionName" Type="varchar" MaxLength="50" />
+          <Property Name="regionName" Type="varchar" MaxLength="100" />
           <Property Name="regionCode" Type="varchar" MaxLength="20" />
           <Property Name="ParentCode" Type="varchar" MaxLength="20" />
           <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
@@ -1357,6 +1357,40 @@
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="IsSystem" Type="uint" Nullable="false" />
           <Property Name="isRole" Type="bigint" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_supplier”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_supplier">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Contact" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="CloseTime" Type="datetime" Precision="0" />
+          <Property Name="CloseUserID" Type="int" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="PostCode" Type="varchar" MaxLength="10" />
+          <Property Name="ShortName" Type="varchar" MaxLength="20" />
+          <Property Name="SupplierID" Type="uint" Nullable="false" />
+          <Property Name="Tel" Type="varchar" MaxLength="20" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
+          <Property Name="SupplierCategoryID" Type="int" />
+          <Property Name="SupplierCategoryName" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1477,7 +1511,7 @@
 `view_customer`.`Code`, 
 `view_customer`.`Name`, 
 `view_customer`.`HelperCode`, 
-`view_customer`.`Tel`, 
+`view_customer`.`Phone`, 
 `view_customer`.`Contact`, 
 `view_customer`.`CreateTime`, 
 `view_customer`.`UpdateTime`, 
@@ -1553,6 +1587,30 @@ FROM `view_menu` AS `view_menu`</DefiningQuery>
 `view_rights`.`IsSystem`, 
 `view_rights`.`isRole`
 FROM `view_rights` AS `view_rights`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_supplier" EntityType="Self.view_supplier" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_supplier`.`Address`, 
+`view_supplier`.`City`, 
+`view_supplier`.`CloseTime`, 
+`view_supplier`.`CloseUserID`, 
+`view_supplier`.`Code`, 
+`view_supplier`.`Contact`, 
+`view_supplier`.`CorpID`, 
+`view_supplier`.`CreateTime`, 
+`view_supplier`.`CreateUserID`, 
+`view_supplier`.`EmployeeID`, 
+`view_supplier`.`IsValid`, 
+`view_supplier`.`Name`, 
+`view_supplier`.`Phone`, 
+`view_supplier`.`PostCode`, 
+`view_supplier`.`ShortName`, 
+`view_supplier`.`SupplierID`, 
+`view_supplier`.`Tel`, 
+`view_supplier`.`EmployeeName`, 
+`view_supplier`.`SupplierCategoryID`, 
+`view_supplier`.`SupplierCategoryName`
+FROM `view_supplier` AS `view_supplier`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_user" EntityType="Self.view_user" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
@@ -1659,6 +1717,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
+          <EntitySet Name="view_supplier" EntityType="webdmsModel.view_supplier" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
           <EntitySet Name="view_warehouse" EntityType="webdmsModel.view_warehouse" />
         </EntityContainer>
@@ -2523,7 +2582,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SupplierCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="SupplierCategoryID" Type="Int32" />
           <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -2899,14 +2958,14 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HelperCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="CustCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RegionID" Type="Int64" />
-          <Property Name="regionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="regionName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="regionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ParentCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -3004,6 +3063,38 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="IsSystem" Type="Int64" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
+        </EntityType>
+        <EntityType Name="view_supplier">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Contact" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CloseTime" Type="DateTime" Precision="0" />
+          <Property Name="CloseUserID" Type="Int32" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SupplierID" Type="Int64" Nullable="false" />
+          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SupplierCategoryID" Type="Int32" />
+          <Property Name="SupplierCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="view_user">
           <Key>
@@ -4316,7 +4407,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
-                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="HelperCode" ColumnName="HelperCode" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -4394,6 +4485,32 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RightsID" ColumnName="RightsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_supplier">
+            <EntityTypeMapping TypeName="webdmsModel.view_supplier">
+              <MappingFragment StoreEntitySet="view_supplier">
+                <ScalarProperty Name="SupplierCategoryName" ColumnName="SupplierCategoryName" />
+                <ScalarProperty Name="SupplierCategoryID" ColumnName="SupplierCategoryID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
+                <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

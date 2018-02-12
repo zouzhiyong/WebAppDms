@@ -174,7 +174,7 @@ namespace WebAppDms.Areas.Bas
                                 obj.CloseUser = (int)userInfo.UserID;
                             }
 
-                            if (obj.IsValid == 1 && WareHouse.Select(s => s.IsValid).FirstOrDefault() == 0)//如果再次打开清空时间和操作员
+                            if (obj.IsValid != 0 && WareHouse.Select(s => s.IsValid).FirstOrDefault() == 0)//如果再次打开清空时间和操作员
                             {
                                 obj.CloseTime = null;
                                 obj.CloseUser = null;
