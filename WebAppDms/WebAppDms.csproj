@@ -229,10 +229,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebApiExceptionFilterAttribute.cs" />
     <Compile Include="Areas\Bas\ComoditieController.cs" />
-    <Compile Include="Areas\Bas\ComoditieTypeController.cs" />
     <Compile Include="Areas\Bas\CompanyController.cs" />
     <Compile Include="Areas\Bas\CustomerController.cs" />
     <Compile Include="Areas\Bas\DepartmentController.cs" />
+    <Compile Include="Areas\Bas\ItemCategoryController.cs" />
     <Compile Include="Areas\Bas\SupplierController.cs" />
     <Compile Include="Areas\Bas\UserController.cs" />
     <Compile Include="Areas\Bas\WarehouseController.cs" />
@@ -242,7 +242,6 @@
     <Compile Include="Areas\Sys\MenuController.cs" />
     <Compile Include="Areas\Sys\RoleController.cs" />
     <Compile Include="Areas\Sys\RoleMenuController.cs" />
-    <Compile Include="Areas\Sys\UserController.cs" />
     <Compile Include="Common\Exception\DomainException.cs" />
     <Compile Include="Common\LoggingProvider.cs" />
     <Compile Include="Common\LoggingProviderCollection.cs" />
@@ -331,7 +330,13 @@
     <Compile Include="Models\t_item.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\t_item_category.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\t_item_cost.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_item_group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_item_picture.cs">
@@ -452,6 +457,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_department.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_item_category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_menu.cs">

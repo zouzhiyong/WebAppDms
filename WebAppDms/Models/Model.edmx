@@ -437,6 +437,25 @@
           <Property Name="CloseTime" Type="datetime" Precision="0" />
           <Property Name="CloseUserID" Type="int" />
         </EntityType>
+        <EntityType Name="t_item_category">
+          <Key>
+            <PropertyRef Name="ItemCategoryID" />
+          </Key>
+          <Property Name="Timestamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="ItemGroupID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="IsSystem" Type="uint" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateUser" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUser" Type="int" />
+          <Property Name="UPdateTime" Type="datetime" Precision="0" />
+        </EntityType>
         <EntityType Name="t_item_cost">
           <Key>
             <PropertyRef Name="CostID" />
@@ -448,6 +467,24 @@
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="Cost" Type="float" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_item_group">
+          <Key>
+            <PropertyRef Name="ItemGroupID" />
+          </Key>
+          <Property Name="Timestamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="IsSystem" Type="uint" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateUser" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUser" Type="int" />
+          <Property Name="UPdateTime" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="t_item_picture">
           <Key>
@@ -1301,6 +1338,41 @@
           <Property Name="isRole" Type="bigint" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_item_category”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_item_category">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="IsSystem" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="ItemGroupID" />
+            <PropertyRef Name="ItemCategoryID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="GroupName" />
+            <PropertyRef Name="CategoryName" />
+            <PropertyRef Name="Sequence" />
+            <PropertyRef Name="ItemType" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="CreateUser" Type="int" />
+          <Property Name="IsSystem" Type="uint" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="ItemGroupID" Type="int" Nullable="false" />
+          <Property Name="ItemCategoryID" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentName" Type="varchar" MaxLength="50" />
+          <Property Name="GroupName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="UPdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUser" Type="int" />
+          <Property Name="isRole" Type="bigint" />
+          <Property Name="ItemType" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_menu”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_menu">
           <Key>
@@ -1466,7 +1538,9 @@
           <EntitySet Name="t_entry_supplier" EntityType="Self.t_entry_supplier" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_inventory_history" EntityType="Self.t_inventory_history" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item" EntityType="Self.t_item" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_item_category" EntityType="Self.t_item_category" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_cost" EntityType="Self.t_item_cost" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_item_group" EntityType="Self.t_item_group" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_picture" EntityType="Self.t_item_picture" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_uom" EntityType="Self.t_item_uom" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_warehouse" EntityType="Self.t_item_warehouse" Schema="dms" store:Type="Tables" />
@@ -1550,6 +1624,28 @@ FROM `view_datadict` AS `view_datadict`</DefiningQuery>
 `view_department`.`UpdateUserID`, 
 `view_department`.`isRole`
 FROM `view_department` AS `view_department`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_item_category" EntityType="Self.view_item_category" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_item_category`.`Code`, 
+`view_item_category`.`CorpID`, 
+`view_item_category`.`CreateTime`, 
+`view_item_category`.`CreateUser`, 
+`view_item_category`.`IsSystem`, 
+`view_item_category`.`IsValid`, 
+`view_item_category`.`ItemGroupID`, 
+`view_item_category`.`ItemCategoryID`, 
+`view_item_category`.`Name`, 
+`view_item_category`.`ParentName`, 
+`view_item_category`.`GroupName`, 
+`view_item_category`.`CategoryName`, 
+`view_item_category`.`Remark`, 
+`view_item_category`.`Sequence`, 
+`view_item_category`.`UPdateTime`, 
+`view_item_category`.`UpdateUser`, 
+`view_item_category`.`isRole`, 
+`view_item_category`.`ItemType`
+FROM `view_item_category` AS `view_item_category`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_menu" EntityType="Self.view_menu" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
@@ -1674,7 +1770,9 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="t_entry_supplier" EntityType="webdmsModel.t_entry_supplier" />
           <EntitySet Name="t_inventory_history" EntityType="webdmsModel.t_inventory_history" />
           <EntitySet Name="t_item" EntityType="webdmsModel.t_item" />
+          <EntitySet Name="t_item_category" EntityType="webdmsModel.t_item_category" />
           <EntitySet Name="t_item_cost" EntityType="webdmsModel.t_item_cost" />
+          <EntitySet Name="t_item_group" EntityType="webdmsModel.t_item_group" />
           <EntitySet Name="t_item_picture" EntityType="webdmsModel.t_item_picture" />
           <EntitySet Name="t_item_uom" EntityType="webdmsModel.t_item_uom" />
           <EntitySet Name="t_item_warehouse" EntityType="webdmsModel.t_item_warehouse" />
@@ -1715,6 +1813,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
           <EntitySet Name="view_datadict" EntityType="webdmsModel.view_datadict" />
           <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
+          <EntitySet Name="view_item_category" EntityType="webdmsModel.view_item_category" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_supplier" EntityType="webdmsModel.view_supplier" />
@@ -2153,6 +2252,25 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CloseTime" Type="DateTime" Precision="0" />
           <Property Name="CloseUserID" Type="Int32" />
         </EntityType>
+        <EntityType Name="t_item_category">
+          <Key>
+            <PropertyRef Name="ItemCategoryID" />
+          </Key>
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="ItemCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="ItemGroupID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="IsSystem" Type="Int64" Nullable="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUser" Type="Int32" />
+          <Property Name="UPdateTime" Type="DateTime" Precision="0" />
+        </EntityType>
         <EntityType Name="t_item_cost">
           <Key>
             <PropertyRef Name="CostID" />
@@ -2164,6 +2282,24 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="Cost" Type="Single" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="t_item_group">
+          <Key>
+            <PropertyRef Name="ItemGroupID" />
+          </Key>
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="ItemGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="IsSystem" Type="Int64" Nullable="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUser" Type="Int32" />
+          <Property Name="UPdateTime" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_item_picture">
           <Key>
@@ -3010,6 +3146,39 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
         </EntityType>
+        <EntityType Name="view_item_category">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="IsSystem" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="ItemGroupID" />
+            <PropertyRef Name="ItemCategoryID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="GroupName" />
+            <PropertyRef Name="CategoryName" />
+            <PropertyRef Name="Sequence" />
+            <PropertyRef Name="ItemType" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="CreateUser" Type="Int32" />
+          <Property Name="IsSystem" Type="Int64" Nullable="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="ItemGroupID" Type="Int32" Nullable="false" />
+          <Property Name="ItemCategoryID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="UPdateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUser" Type="Int32" />
+          <Property Name="isRole" Type="Int64" />
+          <Property Name="ItemType" Type="Int64" Nullable="false" />
+        </EntityType>
         <EntityType Name="view_menu">
           <Key>
             <PropertyRef Name="UserID" />
@@ -3600,6 +3769,26 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="t_item_category">
+            <EntityTypeMapping TypeName="webdmsModel.t_item_category">
+              <MappingFragment StoreEntitySet="t_item_category">
+                <ScalarProperty Name="UPdateTime" ColumnName="UPdateTime" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="ItemCategoryID" ColumnName="ItemCategoryID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="t_item_cost">
             <EntityTypeMapping TypeName="webdmsModel.t_item_cost">
               <MappingFragment StoreEntitySet="t_item_cost">
@@ -3610,6 +3799,25 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="CostID" ColumnName="CostID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_item_group">
+            <EntityTypeMapping TypeName="webdmsModel.t_item_group">
+              <MappingFragment StoreEntitySet="t_item_group">
+                <ScalarProperty Name="UPdateTime" ColumnName="UPdateTime" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4444,6 +4652,30 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="DeptID" ColumnName="DeptID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_item_category">
+            <EntityTypeMapping TypeName="webdmsModel.view_item_category">
+              <MappingFragment StoreEntitySet="view_item_category">
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UPdateTime" ColumnName="UPdateTime" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="ParentName" ColumnName="ParentName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemCategoryID" ColumnName="ItemCategoryID" />
+                <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

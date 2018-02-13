@@ -45,7 +45,9 @@ namespace WebAppDms.Models
         public virtual DbSet<t_entry_supplier> t_entry_supplier { get; set; }
         public virtual DbSet<t_inventory_history> t_inventory_history { get; set; }
         public virtual DbSet<t_item> t_item { get; set; }
+        public virtual DbSet<t_item_category> t_item_category { get; set; }
         public virtual DbSet<t_item_cost> t_item_cost { get; set; }
+        public virtual DbSet<t_item_group> t_item_group { get; set; }
         public virtual DbSet<t_item_picture> t_item_picture { get; set; }
         public virtual DbSet<t_item_uom> t_item_uom { get; set; }
         public virtual DbSet<t_item_warehouse> t_item_warehouse { get; set; }
@@ -86,6 +88,7 @@ namespace WebAppDms.Models
         public virtual DbSet<view_customer> view_customer { get; set; }
         public virtual DbSet<view_datadict> view_datadict { get; set; }
         public virtual DbSet<view_department> view_department { get; set; }
+        public virtual DbSet<view_item_category> view_item_category { get; set; }
         public virtual DbSet<view_menu> view_menu { get; set; }
         public virtual DbSet<view_rights> view_rights { get; set; }
         public virtual DbSet<view_supplier> view_supplier { get; set; }
