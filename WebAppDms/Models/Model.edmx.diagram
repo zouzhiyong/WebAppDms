@@ -68,12 +68,13 @@
         <EntityTypeShape EntityType="webdmsModel.view_customer" Width="1.5" PointX="24.75" PointY="15.75" />
         <EntityTypeShape EntityType="webdmsModel.view_datadict" Width="1.5" PointX="16.75" PointY="24.75" />
         <EntityTypeShape EntityType="webdmsModel.view_department" Width="1.5" PointX="24.75" PointY="20.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_item_category" Width="1.5" PointX="24.75" PointY="25.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_menu" Width="1.5" PointX="26.75" PointY="0.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_rights" Width="1.5" PointX="26.75" PointY="6.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_supplier" Width="1.5" PointX="26.75" PointY="10.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_user" Width="1.5" PointX="12.75" PointY="26.75" />
-        <EntityTypeShape EntityType="webdmsModel.view_warehouse" Width="1.5" PointX="26.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_item" Width="1.5" PointX="24.75" PointY="25.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_item_category" Width="1.5" PointX="26.75" PointY="0.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_menu" Width="1.5" PointX="26.75" PointY="6.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_rights" Width="1.5" PointX="26.75" PointY="12.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_supplier" Width="1.5" PointX="12.75" PointY="26.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_user" Width="1.5" PointX="26.75" PointY="16.75" />
+        <EntityTypeShape EntityType="webdmsModel.view_warehouse" Width="1.5" PointX="26.75" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

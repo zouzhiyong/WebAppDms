@@ -149,37 +149,39 @@ namespace WebAppDms.Areas.Bas
 
             List<long> ResultID = new List<long>();
 
+            string NullValue = null;
+
             if (CustID == 0)
             {
                 var list = new
                 {
                     CustID = 0,
                     CorpID = userInfo.CorpID,
-                    Address = "",
-                    Name = "",
-                    HelperCode = "",
-                    AreaID = "",
-                    City = "",
-                    CloseTime = "",
-                    CloseUserID = "",
-                    Code = "",
-                    Contact = "",
-                    CreateTime = "",
-                    CreateUserID = "",
-                    CustCategoryID = 0,
+                    Address = NullValue,
+                    Name = NullValue,
+                    HelperCode = NullValue,
+                    AreaID = NullValue,
+                    City = NullValue,
+                    CloseTime = NullValue,
+                    CloseUserID = NullValue,
+                    Code = NullValue,
+                    Contact = NullValue,
+                    CreateTime = NullValue,
+                    CreateUserID = NullValue,
+                    CustCategoryID = NullValue,
                     CustCategoryIDList = CustCategoryIDList,
-                    EmployeeID = 0,
+                    EmployeeID = NullValue,
                     EmployeeIDList = EmployeeIDList,
-                    Fax = "",
+                    Fax = NullValue,
                     IsValid = 1,
-                    Phone = "",
-                    Photo = "",
-                    PostCode = "",
-                    RegionID = 0,
-                    ShortName = "",
-                    Tel = "",
-                    UpdateTime = "",
-                    UpdateUserID = "",
+                    Phone = NullValue,
+                    Photo = NullValue,
+                    PostCode = NullValue,
+                    RegionID = NullValue,
+                    ShortName = NullValue,
+                    Tel = NullValue,
+                    UpdateTime = NullValue,
+                    UpdateUserID = NullValue,
                 };
 
                 return Json(true, "", new { list = list, RegionIDList = RegionIDList, RegionIDArr = ResultID });
@@ -247,7 +249,7 @@ namespace WebAppDms.Areas.Bas
                     if (obj.CustID == 0)
                     {
                         string Code = obj.Code;
-                        if(Code == "")
+                        if(Code == "" || Code==null)
                         {
                             result = AutoIncrement.AutoIncrementResult("Customer", out Code);
                         }

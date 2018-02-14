@@ -233,6 +233,7 @@
     <Compile Include="Areas\Bas\CustomerController.cs" />
     <Compile Include="Areas\Bas\DepartmentController.cs" />
     <Compile Include="Areas\Bas\ItemCategoryController.cs" />
+    <Compile Include="Areas\Bas\ItemController.cs" />
     <Compile Include="Areas\Bas\SupplierController.cs" />
     <Compile Include="Areas\Bas\UserController.cs" />
     <Compile Include="Areas\Bas\WarehouseController.cs" />
@@ -457,6 +458,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_department.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_item.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\view_item_category.cs">

@@ -156,10 +156,10 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserCategoryID" Type="int" Nullable="false" />
           <Property Name="PositionID" Type="int" />
-          <Property Name="RightsID" Type="int" Nullable="false" />
+          <Property Name="RightsID" Type="int" />
           <Property Name="DeptID" Type="int" Nullable="false" />
           <Property Name="ParentEmpID" Type="int" />
-          <Property Name="CertificateID" Type="int" Nullable="false" />
+          <Property Name="CertificateID" Type="int" />
           <Property Name="CertificateNumber" Type="varchar" MaxLength="30" />
           <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="FailedPasswordCount" Type="int" Nullable="false" />
@@ -498,7 +498,7 @@
           <Property Name="Type" Type="uint" Nullable="false" />
           <Property Name="IsTitle" Type="uint" Nullable="false" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
-          <Property Name="CreateTime" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateUserID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="t_item_uom">
@@ -1338,6 +1338,43 @@
           <Property Name="isRole" Type="bigint" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_item”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_item">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="BaseUOM" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="IsBatch" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="ItemGroupID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Barcode" Type="varchar" MaxLength="30" />
+          <Property Name="BaseUOM" Type="int" Nullable="false" />
+          <Property Name="BaseUOMName" Type="varchar" MaxLength="10" />
+          <Property Name="CloseTime" Type="datetime" Precision="0" />
+          <Property Name="CloseUserID" Type="int" />
+          <Property Name="CloseUserName" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateUserName" Type="varchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="IsBatch" Type="uint" Nullable="false" />
+          <Property Name="IsValid" Type="uint" Nullable="false" />
+          <Property Name="ItemGroupID" Type="int" Nullable="false" />
+          <Property Name="ItemGroupName" Type="varchar" MaxLength="50" />
+          <Property Name="ItemCategoryName" Type="varchar" MaxLength="50" />
+          <Property Name="ItemCategoryID" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemID" Type="uint" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_item_category”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_item_category">
           <Key>
@@ -1625,6 +1662,31 @@ FROM `view_datadict` AS `view_datadict`</DefiningQuery>
 `view_department`.`isRole`
 FROM `view_department` AS `view_department`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_item" EntityType="Self.view_item" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_item`.`Code`, 
+`view_item`.`CorpID`, 
+`view_item`.`Barcode`, 
+`view_item`.`BaseUOM`, 
+`view_item`.`BaseUOMName`, 
+`view_item`.`CloseTime`, 
+`view_item`.`CloseUserID`, 
+`view_item`.`CloseUserName`, 
+`view_item`.`UpdateUserName`, 
+`view_item`.`CreateTime`, 
+`view_item`.`CreateUserID`, 
+`view_item`.`IsBatch`, 
+`view_item`.`IsValid`, 
+`view_item`.`ItemGroupID`, 
+`view_item`.`ItemGroupName`, 
+`view_item`.`ItemCategoryName`, 
+`view_item`.`ItemCategoryID`, 
+`view_item`.`Name`, 
+`view_item`.`ItemID`, 
+`view_item`.`UpdateTime`, 
+`view_item`.`UpdateUserID`
+FROM `view_item` AS `view_item`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_item_category" EntityType="Self.view_item_category" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
 `view_item_category`.`Code`, 
@@ -1813,6 +1875,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_customer" EntityType="webdmsModel.view_customer" />
           <EntitySet Name="view_datadict" EntityType="webdmsModel.view_datadict" />
           <EntitySet Name="view_department" EntityType="webdmsModel.view_department" />
+          <EntitySet Name="view_item" EntityType="webdmsModel.view_item" />
           <EntitySet Name="view_item_category" EntityType="webdmsModel.view_item_category" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
@@ -1971,10 +2034,10 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserCategoryID" Type="Int32" Nullable="false" />
           <Property Name="PositionID" Type="Int32" />
-          <Property Name="RightsID" Type="Int32" Nullable="false" />
+          <Property Name="RightsID" Type="Int32" />
           <Property Name="DeptID" Type="Int32" Nullable="false" />
           <Property Name="ParentEmpID" Type="Int32" />
-          <Property Name="CertificateID" Type="Int32" Nullable="false" />
+          <Property Name="CertificateID" Type="Int32" />
           <Property Name="CertificateNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="FailedPasswordCount" Type="Int32" Nullable="false" />
@@ -2313,7 +2376,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Type" Type="Int64" Nullable="false" />
           <Property Name="IsTitle" Type="Int64" Nullable="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
-          <Property Name="CreateTime" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_item_uom">
@@ -3145,6 +3208,41 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
+        </EntityType>
+        <EntityType Name="view_item">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="BaseUOM" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="CreateUserID" />
+            <PropertyRef Name="IsBatch" />
+            <PropertyRef Name="IsValid" />
+            <PropertyRef Name="ItemGroupID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Barcode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BaseUOM" Type="Int32" Nullable="false" />
+          <Property Name="BaseUOMName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CloseTime" Type="DateTime" Precision="0" />
+          <Property Name="CloseUserID" Type="Int32" />
+          <Property Name="CloseUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="IsBatch" Type="Int64" Nullable="false" />
+          <Property Name="IsValid" Type="Int64" Nullable="false" />
+          <Property Name="ItemGroupID" Type="Int32" Nullable="false" />
+          <Property Name="ItemGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemCategoryID" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUserID" Type="Int32" />
         </EntityType>
         <EntityType Name="view_item_category">
           <Key>
@@ -4652,6 +4750,33 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="DeptID" ColumnName="DeptID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_item">
+            <EntityTypeMapping TypeName="webdmsModel.view_item">
+              <MappingFragment StoreEntitySet="view_item">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemCategoryID" ColumnName="ItemCategoryID" />
+                <ScalarProperty Name="ItemCategoryName" ColumnName="ItemCategoryName" />
+                <ScalarProperty Name="ItemGroupName" ColumnName="ItemGroupName" />
+                <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsBatch" ColumnName="IsBatch" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />
+                <ScalarProperty Name="CloseUserName" ColumnName="CloseUserName" />
+                <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
+                <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
+                <ScalarProperty Name="BaseUOMName" ColumnName="BaseUOMName" />
+                <ScalarProperty Name="BaseUOM" ColumnName="BaseUOM" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

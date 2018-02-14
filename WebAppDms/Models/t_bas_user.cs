@@ -21,10 +21,10 @@ namespace WebAppDms.Models
         public string Name { get; set; }
         public int UserCategoryID { get; set; }
         public Nullable<int> PositionID { get; set; }
-        public int RightsID { get; set; }
+        public Nullable<int> RightsID { get; set; }
         public int DeptID { get; set; }
         public Nullable<int> ParentEmpID { get; set; }
-        public int CertificateID { get; set; }
+        public Nullable<int> CertificateID { get; set; }
         public string CertificateNumber { get; set; }
         public string Password { get; set; }
         public int FailedPasswordCount { get; set; }

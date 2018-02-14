@@ -43,34 +43,35 @@ namespace WebAppDms.Areas.Bas
                 value = s.UserID
             });
 
+            string NullValue = null;
+
             if (SupplierID == 0)
             {
                 var list = new
                 {
                     CorpID= userInfo.CorpID,
-                    Code ="",
+                    Code = NullValue,
                     SupplierID=0,
-                    Address="",
-                    Name="",
-                    HelperCode="",
-                    City="",
-                    CloseTime = "",
-                    CloseUserID="",
-                    Contact = "",
-                    CreateTime = "",
-                    CreateUserID="",
-                    SupplierCategoryID=0,
+                    Address= NullValue,
+                    Name= NullValue,
+                    HelperCode= NullValue,
+                    City= NullValue,
+                    CloseTime = NullValue,
+                    CloseUserID= NullValue,
+                    Contact = NullValue,
+                    CreateUserID= NullValue,
+                    SupplierCategoryID= NullValue,
                     SupplierCategoryIDList = SupplierCategoryIDList,
-                    EmployeeID=0,
+                    EmployeeID= NullValue,
                     EmployeeIDList = EmployeeIDList,
-                    Fax = "",
+                    Fax = NullValue,
                     IsValid = 1,
-                    Phone = "",
-                    PostCode = "",
-                    ShortName = "",
-                    Tel = "",
-                    UpdateTime = "",
-                    UpdateUserID=""
+                    Phone = NullValue,
+                    PostCode = NullValue,
+                    ShortName = NullValue,
+                    Tel = NullValue,
+                    UpdateTime = NullValue,
+                    UpdateUserID= NullValue
                 };
 
                 return Json(true, "", list);

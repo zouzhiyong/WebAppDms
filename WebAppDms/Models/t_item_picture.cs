@@ -22,7 +22,7 @@ namespace WebAppDms.Models
         public long Type { get; set; }
         public long IsTitle { get; set; }
         public long IsValid { get; set; }
-        public string CreateTime { get; set; }
+        public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
     }
 }

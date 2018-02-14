@@ -13,28 +13,6 @@ namespace WebAppDms.Areas.Bas
 {
     public class ItemCategoryController : ApiBaseController
     {
-        public HttpResponseMessage FindBasItemGroupList()
-        {
-            var list = db.t_item_group.Where(w => w.CorpID == userInfo.CorpID).Select(s => new
-            {
-                label = s.Name,
-                value = s.ItemGroupID
-            });
-
-            return Json(true, "", list);
-        }
-
-        public HttpResponseMessage FindBasItemCategoryList(t_item_group obj)
-        {
-            var list = db.t_item_category.Where(w => w.CorpID == userInfo.CorpID && w.ItemGroupID == obj.ItemGroupID).Select(s => new
-            {
-                label = s.Name,
-                value = s.ItemCategoryID
-            });
-
-            return Json(true, "", list);
-        }
-
         public HttpResponseMessage FindBasItemCategoryTable(dynamic obj)
         {
             DBHelper<view_item_category> dbhelp = new DBHelper<view_item_category>();
