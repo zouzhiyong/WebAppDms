@@ -237,8 +237,9 @@
     <Compile Include="Areas\Bas\SupplierController.cs" />
     <Compile Include="Areas\Bas\UserController.cs" />
     <Compile Include="Areas\Bas\WarehouseController.cs" />
-    <Compile Include="Areas\Dms\PurallController.cs" />
+    <Compile Include="Areas\Pur\PurallController.cs" />
     <Compile Include="Areas\Login\LoginController.cs" />
+    <Compile Include="Areas\Pur\PurchaserController.cs" />
     <Compile Include="Areas\Sys\DeptController.cs" />
     <Compile Include="Areas\Sys\MenuController.cs" />
     <Compile Include="Areas\Sys\RoleController.cs" />
