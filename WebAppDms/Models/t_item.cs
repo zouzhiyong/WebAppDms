@@ -24,7 +24,7 @@ namespace WebAppDms.Models
         public string Barcode { get; set; }
         public int ItemGroupID { get; set; }
         public Nullable<int> ItemCategoryID { get; set; }
-        public int WarehouseID { get; set; }
+        public Nullable<int> WarehouseID { get; set; }
         public Nullable<float> SaveInventory { get; set; }
         public int BaseUOM { get; set; }
         public Nullable<int> SalesUOM { get; set; }

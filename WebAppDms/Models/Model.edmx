@@ -412,7 +412,7 @@
           <Property Name="Barcode" Type="varchar" MaxLength="30" />
           <Property Name="ItemGroupID" Type="int" Nullable="false" />
           <Property Name="ItemCategoryID" Type="int" />
-          <Property Name="WarehouseID" Type="int" Nullable="false" />
+          <Property Name="WarehouseID" Type="int" />
           <Property Name="SaveInventory" Type="float" />
           <Property Name="BaseUOM" Type="int" Nullable="false" />
           <Property Name="SalesUOM" Type="int" />
@@ -494,7 +494,7 @@
           <Property Name="PicID" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="Picture" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Picture" Type="varchar" MaxLength="100" />
           <Property Name="Type" Type="uint" Nullable="false" />
           <Property Name="IsTitle" Type="uint" Nullable="false" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
@@ -1502,6 +1502,19 @@
           <Property Name="SupplierCategoryName" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_uom”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_uom">
+          <Key>
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="CorpID" />
+          </Key>
+          <Property Name="UomID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="uint" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_user">
           <Key>
@@ -1770,6 +1783,14 @@ FROM `view_rights` AS `view_rights`</DefiningQuery>
 `view_supplier`.`SupplierCategoryName`
 FROM `view_supplier` AS `view_supplier`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_uom" EntityType="Self.view_uom" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_uom`.`UomID`, 
+`view_uom`.`ItemID`, 
+`view_uom`.`CorpID`, 
+`view_uom`.`Name`
+FROM `view_uom` AS `view_uom`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_user" EntityType="Self.view_user" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
 `view_user`.`UserID`, 
@@ -1882,6 +1903,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_supplier" EntityType="webdmsModel.view_supplier" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
           <EntitySet Name="view_warehouse" EntityType="webdmsModel.view_warehouse" />
+          <EntitySet Name="view_uom" EntityType="webdmsModel.view_uom" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -2290,7 +2312,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Barcode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ItemGroupID" Type="Int32" Nullable="false" />
           <Property Name="ItemCategoryID" Type="Int32" />
-          <Property Name="WarehouseID" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseID" Type="Int32" />
           <Property Name="SaveInventory" Type="Single" />
           <Property Name="BaseUOM" Type="Int32" Nullable="false" />
           <Property Name="SalesUOM" Type="Int32" />
@@ -2372,7 +2394,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="PicID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="Picture" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Picture" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="Int64" Nullable="false" />
           <Property Name="IsTitle" Type="Int64" Nullable="false" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
@@ -3411,6 +3433,17 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int64" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
+        </EntityType>
+        <EntityType Name="view_uom">
+          <Key>
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="CorpID" />
+          </Key>
+          <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4908,6 +4941,16 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_uom">
+            <EntityTypeMapping TypeName="webdmsModel.view_uom">
+              <MappingFragment StoreEntitySet="view_uom">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="UomID" ColumnName="UomID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

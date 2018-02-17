@@ -476,6 +476,9 @@
     <Compile Include="Models\view_supplier.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\view_uom.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\view_user.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

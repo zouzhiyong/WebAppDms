@@ -95,6 +95,7 @@ namespace WebAppDms.Areas.Bas
                     value = a.WarehouseID
                 });
 
+
             string NullValue = null;
 
             if (ItemID == 0)
@@ -145,13 +146,18 @@ namespace WebAppDms.Areas.Bas
                     CreateTime = NullValue,
                     CreateUserID = NullValue,
                     UpdateTime = NullValue,
-                    UpdateUserID = NullValue
+                    UpdateUserID = NullValue,
+                    UOM = new object[] { }
                 };
 
                 return Json(true, "", list);
             }
             else
             {
+                long IsValid = 1;
+                float RateQty = 1;
+                var UOM = db.t_item.Where(w => w.ItemID == obj.ItemID && w.CorpID == userInfo.CorpID).Select(s1 => new { ItemID = (int)s1.ItemID, UomID = s1.BaseUOM, IsValid = IsValid, RateQty = RateQty, UomType = 1 }).Concat(db.t_item_uom.Where(w => w.IsValid != 0 && w.ItemID == obj.ItemID && w.CorpID == userInfo.CorpID).Select(s2 => new { ItemID = s2.ItemID, UomID = s2.UomID, IsValid = s2.IsValid, RateQty = s2.RateQty, UomType = 2 })).OrderBy(o => o.UomType);
+
                 var list = db.t_item.Where(w => w.ItemID == ItemID && w.CorpID == userInfo.CorpID).Select(s => new
                 {
                     s.CorpID,
@@ -198,7 +204,8 @@ namespace WebAppDms.Areas.Bas
                     s.CreateTime,
                     s.CreateUserID,
                     s.UpdateTime,
-                    s.UpdateUserID
+                    s.UpdateUserID,
+                    UOM = UOM
                 }).FirstOrDefault();
 
 
@@ -218,7 +225,7 @@ namespace WebAppDms.Areas.Bas
             return Json(true, "", list);
         }
 
-        public HttpResponseMessage SaveBasItemForm(t_item_photo obj)
+        public HttpResponseMessage SaveBasItemForm(t_item_photo_uom obj)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -259,9 +266,10 @@ namespace WebAppDms.Areas.Bas
                     CreateUserID = obj.CreateUserID,
                     UpdateTime = obj.UpdateTime,
                     UpdateUserID = obj.UpdateUserID
-                };                
+                };
 
-                DBHelper<t_item> dbhelp_item = new DBHelper<t_item>();                
+                DBHelper<t_item> dbhelp_item = new DBHelper<t_item>();
+
 
                 //事务
                 var result = 0;
@@ -271,7 +279,7 @@ namespace WebAppDms.Areas.Bas
                     if (objItem.ItemID == 0)
                     {
                         string Code = objItem.Code;
-                        if (Code == "" || Code==null)
+                        if (Code == "" || Code == null)
                         {
                             result = AutoIncrement.AutoIncrementResult("Item", out Code);
                         }
@@ -327,9 +335,23 @@ namespace WebAppDms.Areas.Bas
                     {
                         objItemPicture.Picture = base64Data;
                     }
-
+                    //删除并保存图片
                     result = result + dbhelp_picture.RemoveList(w => w.ItemID == objItem.ItemID && w.Type == 0);
                     result = result + dbhelp_picture.Add(objItemPicture);
+
+                    //删除并保存单位
+                    DBHelper<t_item_uom> dbhelp_item_uom = new DBHelper<t_item_uom>();
+                    foreach (var item in obj.Uom)
+                    {
+                        item.CorpID = userInfo.CorpID;
+                        item.ItemID = (int)objItem.ItemID;
+                        item.CreateTime = dt;
+                        item.CreateUserID = (int)userInfo.UserID;
+                        item.UpdateTime = dt;
+                        item.UpdateUserID = (int)userInfo.UserID;
+                    }
+                    result = result + dbhelp_item_uom.RemoveList(w => w.ItemID == objItem.ItemID);
+                    result = result + dbhelp_item_uom.AddList(obj.Uom);
 
                     //提交事务
                     transaction.Complete();
@@ -342,9 +364,10 @@ namespace WebAppDms.Areas.Bas
             }
         }
 
-        public class t_item_photo : t_item
+        public class t_item_photo_uom : t_item
         {
             public t_item_picture Photo { get; set; }
+            public t_item_uom[] Uom { get; set; }
         }
     }
 }

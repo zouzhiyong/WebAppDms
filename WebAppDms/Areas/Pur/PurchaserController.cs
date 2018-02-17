@@ -44,19 +44,44 @@ namespace WebAppDms.Areas.Pur
                     new { label = "采购退货单", value = 1 }
                 }.ToList();
 
-            var StatusList= new object[] {
+            var StatusList = new object[] {
                     new { label = "打开", value = 0 },
                     new { label = "保存", value = 1 },
                     new { label = "确定", value = 2 },
                     new { label = "完成", value = 3 }
                 }.ToList();
 
-            var IsStockFinishedList= new object[] {
+            var IsStockFinishedList = new object[] {
                     new { label = "未完成", value = 0 },
                     new { label = "已完成", value = 1 }
                 }.ToList();
 
             string NullValue = null;
+
+            List<object> OrderDetailList = new List<object>();
+            var OrderDetail = new
+            {
+                CorpID = NullValue,
+                POID = NullValue,
+                RowID = NullValue,
+                ItemID = NullValue,
+                UomID = NullValue,
+                WarehouseID = NullValue,
+                BinID = NullValue,
+                BillQty = NullValue,
+                OperQty = NullValue,
+                BalanceQty = NullValue,
+                UnitAmount = NullValue,
+                UnitCost = NullValue,
+                Amount = NullValue,
+                ReturnReasonID = NullValue,
+                IsFree = NullValue,
+                IsGift = NullValue,
+                Remark = NullValue,
+                UpdateTime = NullValue,
+                UpdateUserID = NullValue
+            };
+            OrderDetailList.Add(OrderDetail);
 
             if (POID == 0)
             {
@@ -68,7 +93,7 @@ namespace WebAppDms.Areas.Pur
                     PurchaserIDList = PurchaserIDList,
                     Remark = NullValue,
                     Status = 0,
-                    StatusList= StatusList,
+                    StatusList = StatusList,
                     SupplierID = NullValue,
                     SupplierIDList = SupplierIDList,
                     TruckID = NullValue,
@@ -81,13 +106,14 @@ namespace WebAppDms.Areas.Pur
                     Code = NullValue,
                     ConfirmTime = NullValue,
                     ConfirmUserID = NullValue,
-                    CorpID = NullValue,
+                    CorpID = userInfo.CorpID,
                     CreateTime = NullValue,
                     CreateUserID = NullValue,
                     DriverID = NullValue,
                     DriverIDList = DriverIDList,
                     IsStockFinished = 0,
-                    IsStockFinishedList= IsStockFinishedList
+                    IsStockFinishedList = IsStockFinishedList,
+                    OrderDetail = OrderDetailList
                 };
 
                 return Json(true, "", list);
@@ -102,7 +128,7 @@ namespace WebAppDms.Areas.Pur
                     PurchaserIDList = PurchaserIDList,
                     s.Remark,
                     s.Status,
-                    StatusList= StatusList,
+                    StatusList = StatusList,
                     s.SupplierID,
                     SupplierIDList = SupplierIDList,
                     s.TruckID,
@@ -121,13 +147,30 @@ namespace WebAppDms.Areas.Pur
                     s.DriverID,
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
-                    IsStockFinishedList = IsStockFinishedList
+                    IsStockFinishedList = IsStockFinishedList,
+                    OrderDetail = db.t_purchase_order_detail.Where(w => w.POID == obj.POID && w.CorpID == s.CorpID).ToList()
                 }).FirstOrDefault();
 
 
 
                 return Json(true, "", list);
             }
+        }
+
+        public HttpResponseMessage FindPurOrderItem(string str)
+        {
+            var list = db.t_item.Where<t_item>(p => p.Name.Contains(str) || p.ShortName.Contains(str) || p.Code.Contains(str)).Select(s => new
+            {
+                Barcode = s.Barcode,
+                Name = s.Name,
+                Code = s.Code,
+                CodeTemplate = s.Code + " " + s.Name,
+                ShortName = s.ShortName,
+                UomID = s.BaseUOM,
+                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).Select(s1 => new { value = s1.UomID, label = s1.Name }).ToList()
+            }).Take(10).ToList();
+
+            return Json(true, "", list);
         }
     }
 }
