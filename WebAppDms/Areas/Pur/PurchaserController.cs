@@ -37,7 +37,7 @@ namespace WebAppDms.Areas.Pur
             {
                 label = s.Name,
                 value = s.UserID
-            });
+            });            
 
             var BillTypeList = new object[] {
                     new { label = "采购订单", value = 0 },
@@ -78,8 +78,7 @@ namespace WebAppDms.Areas.Pur
                 IsFree = NullValue,
                 IsGift = NullValue,
                 Remark = NullValue,
-                UpdateTime = NullValue,
-                UpdateUserID = NullValue
+                UpdateTime = NullValue
             };
             OrderDetailList.Add(OrderDetail);
 
@@ -108,7 +107,7 @@ namespace WebAppDms.Areas.Pur
                     ConfirmUserID = NullValue,
                     CorpID = userInfo.CorpID,
                     CreateTime = NullValue,
-                    CreateUserID = NullValue,
+                    CreateUserID = userInfo.UserID,                    
                     DriverID = NullValue,
                     DriverIDList = DriverIDList,
                     IsStockFinished = 0,
@@ -159,15 +158,22 @@ namespace WebAppDms.Areas.Pur
 
         public HttpResponseMessage FindPurOrderItem(string str)
         {
+            var WarehouseIDList = db.t_warehouse.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
+            {
+                label = s.Name,
+                value = s.WarehouseID
+            });
+
             var list = db.t_item.Where<t_item>(p => p.Name.Contains(str) || p.ShortName.Contains(str) || p.Code.Contains(str)).Select(s => new
             {
                 Barcode = s.Barcode,
                 Name = s.Name,
                 Code = s.Code,
                 CodeTemplate = s.Code + " " + s.Name,
-                ShortName = s.ShortName,
+                ShortName = s.ShortName,                
                 UomID = s.BaseUOM,
-                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).Select(s1 => new { value = s1.UomID, label = s1.Name }).ToList()
+                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).Select(s1 => new { value = s1.UomID, label = s1.Name }).ToList(),
+                WarehouseIDList= WarehouseIDList
             }).Take(10).ToList();
 
             return Json(true, "", list);
