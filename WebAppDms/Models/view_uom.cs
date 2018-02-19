@@ -15,8 +15,11 @@ namespace WebAppDms.Models
     public partial class view_uom
     {
         public int UomID { get; set; }
-        public long ItemID { get; set; }
+        public int ItemID { get; set; }
         public int CorpID { get; set; }
         public string Name { get; set; }
+        public Nullable<decimal> PurchasePrice { get; set; }
+        public Nullable<decimal> SalesPrice { get; set; }
+        public int UomType { get; set; }
     }
 }

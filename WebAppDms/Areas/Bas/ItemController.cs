@@ -154,9 +154,7 @@ namespace WebAppDms.Areas.Bas
             }
             else
             {
-                long IsValid = 1;
-                float RateQty = 1;
-                var UOM = db.t_item.Where(w => w.ItemID == obj.ItemID && w.CorpID == userInfo.CorpID).Select(s1 => new { ItemID = (int)s1.ItemID, UomID = s1.BaseUOM, IsValid = IsValid, RateQty = RateQty, UomType = 1 }).Concat(db.t_item_uom.Where(w => w.IsValid != 0 && w.ItemID == obj.ItemID && w.CorpID == userInfo.CorpID).Select(s2 => new { ItemID = s2.ItemID, UomID = s2.UomID, IsValid = s2.IsValid, RateQty = s2.RateQty, UomType = 2 })).OrderBy(o => o.UomType);
+                var UOM = db.t_item_uom.Where(w => w.ItemID == obj.ItemID && w.CorpID == userInfo.CorpID).Select(s1 => new { s1.ItemID, s1.UomID, s1.IsValid, s1.RateQty, s1.UomType, s1.PurchasePrice, s1.SalesPrice,s1.IsPurchaseUOM,s1.IsSalesUOM }).OrderByDescending(o => o.UomType);
 
                 var list = db.t_item.Where(w => w.ItemID == ItemID && w.CorpID == userInfo.CorpID).Select(s => new
                 {

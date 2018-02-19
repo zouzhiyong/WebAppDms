@@ -511,12 +511,17 @@
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="UomID" Type="int" Nullable="false" />
+          <Property Name="UomType" Type="int" Nullable="false" />
           <Property Name="RateQty" Type="float" Nullable="false" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SalesPrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="IsValid" Type="uint" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateUserID" Type="int" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
+          <Property Name="IsPurchaseUOM" Type="int" />
+          <Property Name="IsSalesUOM" Type="int" />
         </EntityType>
         <EntityType Name="t_item_warehouse">
           <Key>
@@ -1508,11 +1513,15 @@
             <PropertyRef Name="UomID" />
             <PropertyRef Name="ItemID" />
             <PropertyRef Name="CorpID" />
+            <PropertyRef Name="UomType" />
           </Key>
           <Property Name="UomID" Type="int" Nullable="false" />
-          <Property Name="ItemID" Type="uint" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="10" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SalesPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="UomType" Type="int" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1788,7 +1797,10 @@ FROM `view_supplier` AS `view_supplier`</DefiningQuery>
 `view_uom`.`UomID`, 
 `view_uom`.`ItemID`, 
 `view_uom`.`CorpID`, 
-`view_uom`.`Name`
+`view_uom`.`Name`, 
+`view_uom`.`PurchasePrice`, 
+`view_uom`.`SalesPrice`, 
+`view_uom`.`UomType`
 FROM `view_uom` AS `view_uom`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_user" EntityType="Self.view_user" store:Type="Views" store:Schema="dms">
@@ -1901,9 +1913,9 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_supplier" EntityType="webdmsModel.view_supplier" />
+          <EntitySet Name="view_uom" EntityType="webdmsModel.view_uom" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
           <EntitySet Name="view_warehouse" EntityType="webdmsModel.view_warehouse" />
-          <EntitySet Name="view_uom" EntityType="webdmsModel.view_uom" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -2411,12 +2423,17 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
           <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="UomType" Type="Int32" Nullable="false" />
           <Property Name="RateQty" Type="Single" Nullable="false" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="IsValid" Type="Int64" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="IsPurchaseUOM" Type="Int32" />
+          <Property Name="IsSalesUOM" Type="Int32" />
         </EntityType>
         <EntityType Name="t_item_warehouse">
           <Key>
@@ -3385,6 +3402,21 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="SupplierCategoryID" Type="Int32" />
           <Property Name="SupplierCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="view_uom">
+          <Key>
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="UomType" />
+          </Key>
+          <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="UomType" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="view_user">
           <Key>
             <PropertyRef Name="UserID" />
@@ -3433,17 +3465,6 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int64" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
-        </EntityType>
-        <EntityType Name="view_uom">
-          <Key>
-            <PropertyRef Name="UomID" />
-            <PropertyRef Name="ItemID" />
-            <PropertyRef Name="CorpID" />
-          </Key>
-          <Property Name="UomID" Type="Int32" Nullable="false" />
-          <Property Name="ItemID" Type="Int64" Nullable="false" />
-          <Property Name="CorpID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3971,12 +3992,17 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySetMapping Name="t_item_uom">
             <EntityTypeMapping TypeName="webdmsModel.t_item_uom">
               <MappingFragment StoreEntitySet="t_item_uom">
+                <ScalarProperty Name="IsSalesUOM" ColumnName="IsSalesUOM" />
+                <ScalarProperty Name="IsPurchaseUOM" ColumnName="IsPurchaseUOM" />
                 <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
                 <ScalarProperty Name="RateQty" ColumnName="RateQty" />
+                <ScalarProperty Name="UomType" ColumnName="UomType" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
@@ -4904,6 +4930,19 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="view_uom">
+            <EntityTypeMapping TypeName="webdmsModel.view_uom">
+              <MappingFragment StoreEntitySet="view_uom">
+                <ScalarProperty Name="UomType" ColumnName="UomType" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="UomID" ColumnName="UomID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="view_user">
             <EntityTypeMapping TypeName="webdmsModel.view_user">
               <MappingFragment StoreEntitySet="view_user">
@@ -4941,16 +4980,6 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_uom">
-            <EntityTypeMapping TypeName="webdmsModel.view_uom">
-              <MappingFragment StoreEntitySet="view_uom">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="UomID" ColumnName="UomID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

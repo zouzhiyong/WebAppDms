@@ -18,11 +18,16 @@ namespace WebAppDms.Models
         public int CorpID { get; set; }
         public int ItemID { get; set; }
         public int UomID { get; set; }
+        public int UomType { get; set; }
         public float RateQty { get; set; }
+        public Nullable<decimal> PurchasePrice { get; set; }
+        public Nullable<decimal> SalesPrice { get; set; }
         public long IsValid { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int CreateUserID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<int> UpdateUserID { get; set; }
+        public Nullable<int> IsPurchaseUOM { get; set; }
+        public Nullable<int> IsSalesUOM { get; set; }
     }
 }

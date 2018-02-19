@@ -169,6 +169,7 @@ namespace WebAppDms.Areas.Pur
                 Barcode = s.Barcode,
                 Name = s.Name,
                 Code = s.Code,
+                PurchasePrice=s.PurchasePrice,
                 CodeTemplate = s.Code + " " + s.Name,
                 ShortName = s.ShortName,                
                 UomID = s.BaseUOM,
