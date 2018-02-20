@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Transactions;
 using System.Web.Http;
 using WebAppDms.Controllers;
 using WebAppDms.Models;
@@ -14,6 +15,8 @@ namespace WebAppDms.Areas.Pur
         public HttpResponseMessage FindPurOrderForm(t_purchase_order obj)
         {
             long POID = obj.POID;
+
+            DateTime dt = DateTime.Now;
 
             var PurchaserIDList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0 && w.UserCategoryID == 4).Select(s => new
             {
@@ -37,7 +40,13 @@ namespace WebAppDms.Areas.Pur
             {
                 label = s.Name,
                 value = s.UserID
-            });            
+            });
+
+            var CustList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID).Select(s => new
+            {
+                label = s.Name,
+                value = s.UserID
+            });
 
             var BillTypeList = new object[] {
                     new { label = "采购订单", value = 0 },
@@ -99,7 +108,7 @@ namespace WebAppDms.Areas.Pur
                     TruckIDList = TruckIDList,
                     UpdateTime = NullValue,
                     UpdateUserID = NullValue,
-                    BillDate = NullValue,
+                    BillDate = dt.ToString("yyyy-MM-dd"),
                     BillType = 0,
                     BillTypeList = BillTypeList,
                     Code = NullValue,
@@ -107,7 +116,8 @@ namespace WebAppDms.Areas.Pur
                     ConfirmUserID = NullValue,
                     CorpID = userInfo.CorpID,
                     CreateTime = NullValue,
-                    CreateUserID = userInfo.UserID,                    
+                    CreateUserID = userInfo.UserID,
+                    CustList = CustList,
                     DriverID = NullValue,
                     DriverIDList = DriverIDList,
                     IsStockFinished = 0,
@@ -143,6 +153,7 @@ namespace WebAppDms.Areas.Pur
                     s.CorpID,
                     s.CreateTime,
                     s.CreateUserID,
+                    CustList = CustList,
                     s.DriverID,
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
@@ -168,16 +179,114 @@ namespace WebAppDms.Areas.Pur
             {
                 Barcode = s.Barcode,
                 Name = s.Name,
+                ItemID = s.ItemID,
                 Code = s.Code,
-                PurchasePrice=s.PurchasePrice,
+                PurchasePrice = s.PurchasePrice,
                 CodeTemplate = s.Code + " " + s.Name,
-                ShortName = s.ShortName,                
+                ShortName = s.ShortName,
                 UomID = s.BaseUOM,
-                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).Select(s1 => new { value = s1.UomID, label = s1.Name }).ToList(),
-                WarehouseIDList= WarehouseIDList
+                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).OrderByDescending(o => o.UomType).Select(s1 => new { value = s1.UomID, label = s1.Name, UomType = s1.UomType, PurchasePrice = s1.PurchasePrice, RateQty = s1.RateQty, IsPurchaseUOM = s1.IsPurchaseUOM }).ToList(),
+                WarehouseIDList = WarehouseIDList
             }).Take(10).ToList();
 
             return Json(true, "", list);
+        }
+
+        public HttpResponseMessage SavePurOrderForm(t_purchaseOrder obj)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                DateTime dt = DateTime.Now;
+
+                t_purchase_order objItem = new t_purchase_order()
+                {
+                    POID = obj.POID,
+                    PostDate = obj.PostDate,
+                    PurchaserID = obj.PurchaserID,
+                    Remark = obj.Remark,
+                    Status = obj.Status,
+                    SupplierID = obj.SupplierID,
+                    TruckID = obj.TruckID,
+                    UpdateTime = obj.UpdateTime,
+                    UpdateUserID = obj.UpdateUserID,
+                    BillDate = obj.BillDate,
+                    BillType = obj.BillType,
+                    Code = obj.Code,
+                    ConfirmTime = obj.ConfirmTime,
+                    ConfirmUserID = obj.ConfirmUserID,
+                    CorpID = obj.CorpID,
+                    CreateTime = obj.CreateTime,
+                    CreateUserID = obj.CreateUserID,
+                    DriverID = obj.DriverID,
+                    IsStockFinished = obj.IsStockFinished
+                };
+
+                DBHelper<t_purchase_order> dbhelp_purOrder = new DBHelper<t_purchase_order>();
+
+
+                //事务
+                var result = 0;
+                var Item = db.t_purchase_order.Where(w => w.Code == objItem.Code && w.CorpID == userInfo.CorpID);
+                try
+                {
+                    if (objItem.POID == 0)
+                    {
+                        string Code = objItem.Code;
+                        if (Code == "" || Code == null)
+                        {
+                            result = AutoIncrement.AutoIncrementResult("PurchaseOrder", out Code);
+                        }
+
+                        objItem.CreateTime = dt;
+                        objItem.BillDate = dt;
+                        objItem.CreateUserID = (int)userInfo.UserID;
+                        objItem.CorpID = userInfo.CorpID;
+                        objItem.Code = Code;
+                        objItem.Status = 1;
+                        if (Item.ToList().Count() > 0)
+                        {
+                            throw new Exception("账号重复！");
+                        }
+                        result = result + dbhelp_purOrder.Add(objItem);
+                    }
+                    else
+                    {
+                        objItem.CorpID = userInfo.CorpID;
+                        objItem.UpdateTime = dt;
+                        objItem.UpdateUserID = (int)userInfo.UserID;
+                        if (Item.ToList().Count() > 1)
+                        {
+                            throw new Exception("账号重复！");
+                        }
+                        result = result + dbhelp_purOrder.Update(objItem);
+                    }
+
+                    //删除并保存明细
+                    DBHelper<t_purchase_order_detail> dbhelp_purOderDetail = new DBHelper<t_purchase_order_detail>();
+                    foreach (var item in obj.OrderDetail)
+                    {
+                        item.CorpID = userInfo.CorpID;
+                        item.POID = objItem.POID;
+                        item.UpdateTime = dt;
+                        item.UpdateUserID = (int)userInfo.UserID;
+                    }
+                    result = result + dbhelp_purOderDetail.RemoveList(w => w.POID == objItem.POID);
+                    result = result + dbhelp_purOderDetail.AddList(obj.OrderDetail);
+
+                    //提交事务
+                    transaction.Complete();
+                    return Json(true, "保存成功！", new { POID = objItem.POID, Status = objItem.Status, BillDate = objItem.BillDate, CreateTime=objItem.CreateTime, OrderDetail = obj.OrderDetail, Code=objItem.Code });
+                }
+                catch (Exception ex)
+                {
+                    return Json(false, "保存失败！" + ex.Message);
+                }
+            }
+        }
+
+        public class t_purchaseOrder : t_purchase_order
+        {
+            public t_purchase_order_detail[] OrderDetail { get; set; }
         }
     }
 }

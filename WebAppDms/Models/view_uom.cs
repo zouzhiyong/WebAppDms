@@ -21,5 +21,8 @@ namespace WebAppDms.Models
         public Nullable<decimal> PurchasePrice { get; set; }
         public Nullable<decimal> SalesPrice { get; set; }
         public int UomType { get; set; }
+        public float RateQty { get; set; }
+        public Nullable<int> IsPurchaseUOM { get; set; }
+        public Nullable<int> IsSalesUOM { get; set; }
     }
 }
