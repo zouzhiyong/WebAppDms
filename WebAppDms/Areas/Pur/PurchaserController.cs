@@ -18,6 +18,12 @@ namespace WebAppDms.Areas.Pur
 
             DateTime dt = DateTime.Now;
 
+            var WarehouseIDList = db.t_warehouse.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
+            {
+                label = s.Name,
+                value = s.WarehouseID
+            });
+
             var PurchaserIDList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0 && w.UserCategoryID == 4).Select(s => new
             {
                 label = s.Name,
@@ -87,7 +93,8 @@ namespace WebAppDms.Areas.Pur
                 IsFree = NullValue,
                 IsGift = NullValue,
                 Remark = NullValue,
-                UpdateTime = NullValue
+                UpdateTime = NullValue,
+                UpdateUserID = NullValue
             };
             OrderDetailList.Add(OrderDetail);
 
@@ -109,7 +116,7 @@ namespace WebAppDms.Areas.Pur
                     UpdateTime = NullValue,
                     UpdateUserID = NullValue,
                     BillDate = dt.ToString("yyyy-MM-dd"),
-                    BillType = 0,
+                    BillType = obj.BillType,
                     BillTypeList = BillTypeList,
                     Code = NullValue,
                     ConfirmTime = NullValue,
@@ -158,7 +165,46 @@ namespace WebAppDms.Areas.Pur
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
                     IsStockFinishedList = IsStockFinishedList,
-                    OrderDetail = db.t_purchase_order_detail.Where(w => w.POID == obj.POID && w.CorpID == s.CorpID).ToList()
+                    OrderDetail = db.t_purchase_order_detail.Where(w => w.POID == obj.POID && w.CorpID == s.CorpID).Select(s1 => new
+                    {
+                        CorpID = s1.CorpID,
+                        POID = s1.POID,
+                        RowID = s1.RowID,
+                        ItemID = s1.ItemID,
+                        Code = db.t_item.Where(w => w.ItemID == s1.ItemID).Select(s_item => s_item.Code).FirstOrDefault(),
+                        Name = db.t_item.Where(w => w.ItemID == s1.ItemID).Select(s_item => s_item.Name).FirstOrDefault(),
+                        UomID = s1.UomID,
+                        UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s1.ItemID).OrderByDescending(o => o.UomType).Select(s_uom => new
+                        {
+                            value = s_uom.UomID,
+                            label = s_uom.Name,
+                            UomID = s_uom.UomID,
+                            ItemID = s_uom.ItemID,
+                            CorpID = s_uom.CorpID,
+                            Name = s_uom.Name,
+                            PurchasePrice = s_uom.PurchasePrice,
+                            SalesPrice = s_uom.SalesPrice,
+                            UomType = s_uom.UomType,
+                            RateQty = s_uom.RateQty,
+                            IsPurchaseUOM = s_uom.IsPurchaseUOM,
+                            IsSalesUOM = s_uom.IsSalesUOM
+                        }).ToList(),
+                        WarehouseID = s1.WarehouseID,
+                        BinID = s1.BinID,
+                        BillQty = s1.BillQty,
+                        OperQty = s1.OperQty,
+                        BalanceQty = s1.BalanceQty,
+                        UnitAmount = s1.UnitAmount,
+                        UnitCost = s1.UnitCost,
+                        Amount = s1.Amount,
+                        ReturnReasonID = s1.ReturnReasonID,
+                        IsFree = s1.IsFree,
+                        IsGift = s1.IsGift,
+                        Remark = s1.Remark,
+                        UpdateTime = s1.UpdateTime,
+                        UpdateUserID = s1.UpdateUserID,
+                        WarehouseIDList = WarehouseIDList
+                    }).ToList()
                 }).FirstOrDefault();
 
 
@@ -185,7 +231,21 @@ namespace WebAppDms.Areas.Pur
                 CodeTemplate = s.Code + " " + s.Name,
                 ShortName = s.ShortName,
                 UomID = s.BaseUOM,
-                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).OrderByDescending(o => o.UomType).Select(s1 => new { value = s1.UomID, label = s1.Name, UomType = s1.UomType, PurchasePrice = s1.PurchasePrice, RateQty = s1.RateQty, IsPurchaseUOM = s1.IsPurchaseUOM }).ToList(),
+                UomIDList = db.view_uom.Where(w => w.CorpID == userInfo.CorpID && w.ItemID == s.ItemID).OrderByDescending(o => o.UomType).Select(s1 => new
+                {
+                    value = s1.UomID,
+                    label = s1.Name,
+                    UomID = s1.UomID,
+                    ItemID = s1.ItemID,
+                    CorpID = s1.CorpID,
+                    Name = s1.Name,
+                    PurchasePrice = s1.PurchasePrice,
+                    SalesPrice = s1.SalesPrice,
+                    UomType = s1.UomType,
+                    RateQty = s1.RateQty,
+                    IsPurchaseUOM = s1.IsPurchaseUOM,
+                    IsSalesUOM = s1.IsSalesUOM
+                }).ToList(),
                 WarehouseIDList = WarehouseIDList
             }).Take(10).ToList();
 
@@ -275,7 +335,7 @@ namespace WebAppDms.Areas.Pur
 
                     //提交事务
                     transaction.Complete();
-                    return Json(true, "保存成功！", new { POID = objItem.POID, Status = objItem.Status, BillDate = objItem.BillDate, CreateTime=objItem.CreateTime, OrderDetail = obj.OrderDetail, Code=objItem.Code });
+                    return Json(true, "保存成功！", new { POID = objItem.POID, Status = objItem.Status, BillDate = objItem.BillDate, CreateTime = objItem.CreateTime, OrderDetail = obj.OrderDetail, Code = objItem.Code });
                 }
                 catch (Exception ex)
                 {

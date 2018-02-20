@@ -41,7 +41,7 @@ namespace WebAppDms.Areas.Login
         {
             t_bas_user tBasUser = null;
 
-            if (!ValidateUser(loginData.strUser, loginData.strPwd,out tBasUser))
+            if (!ValidateUser(loginData.strUser, loginData.strPwd, out tBasUser))
             {
                 return new { bRes = false, message = "账号或密码不正确！" };
             }
@@ -74,9 +74,9 @@ namespace WebAppDms.Areas.Login
             var tempList = homeOjb.Concat(list).ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
-            var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);            
-            string trademark = tSysCompany.Join(db.t_bas_company,a=>a.CorpID,b=>b.CorpID,(a,b)=>b.TradeMark).FirstOrDefault();
-            string TradeMark = "/"+VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录 
+            var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);
+            string trademark = tSysCompany.Join(db.t_bas_company, a => a.CorpID, b => b.CorpID, (a, b) => b.TradeMark).FirstOrDefault();
+            string TradeMark = "/" + VirtualPath + "/" + UploadImgPath + "/" + trademark; //获取当前项目所在目录 
             string avatar = "/" + VirtualPath + "/" + UploadImgPath + "/" + tBasUser.Photo; //获取当前项目所在目录 
             var oUser = new UserInfo { bRes = true, user = new { name = tBasUser.Name, avatar = avatar, TradeMark = TradeMark }, Ticket = FormsAuthentication.Encrypt(ticket), menu = tempList };
             //将经销商权限保存在session中
@@ -86,17 +86,17 @@ namespace WebAppDms.Areas.Login
         }
 
         //校验用户名密码（正式环境中应该是数据库校验）
-        private bool ValidateUser(string strUser, string strPwd,out t_bas_user userinfo)
+        private bool ValidateUser(string strUser, string strPwd, out t_bas_user userinfo)
         {
             webDmsEntities db = new webDmsEntities();
-            string password = Sha1Encrypt(strPwd);            
+            string password = Sha1Encrypt(strPwd);
 
             var list = db.t_bas_user.FirstOrDefault(p => p.Code == strUser && p.Password == password);
 
             userinfo = list;
 
             if (list != null)
-            {                
+            {
                 //HttpContext.Current.Session["UserInfo"] = list;
                 UserSession.Add("UserInfo", list);
                 return true;
