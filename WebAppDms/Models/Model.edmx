@@ -1451,6 +1451,65 @@
           <Property Name="Descript" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_purchase”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_purchase">
+          <Key>
+            <PropertyRef Name="POID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="BillDate" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="POID" Type="int" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UpdateUserName" Type="varchar" MaxLength="50" />
+          <Property Name="PurchaserName" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="2" />
+          <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="PostDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_purchase_detail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_purchase_detail">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="POID" />
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="BillQty" />
+            <PropertyRef Name="OperQty" />
+            <PropertyRef Name="UnitAmount" />
+            <PropertyRef Name="UnitCost" />
+            <PropertyRef Name="Amount" />
+          </Key>
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="POID" Type="int" Nullable="false" />
+          <Property Name="RowID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="UomID" Type="int" Nullable="false" />
+          <Property Name="WarehouseID" Type="int" Nullable="false" />
+          <Property Name="BinID" Type="int" />
+          <Property Name="BillQty" Type="int" Nullable="false" />
+          <Property Name="OperQty" Type="int" Nullable="false" />
+          <Property Name="BalanceQty" Type="int" />
+          <Property Name="UnitAmount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="UnitCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="ReturnReasonID" Type="int" />
+          <Property Name="IsFree" Type="uint" />
+          <Property Name="IsGift" Type="uint" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_rights”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="view_rights">
           <Key>
@@ -1758,6 +1817,45 @@ FROM `view_item_category` AS `view_item_category`</DefiningQuery>
 `view_menu`.`Descript`
 FROM `view_menu` AS `view_menu`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_purchase" EntityType="Self.view_purchase" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_purchase`.`POID`, 
+`view_purchase`.`CorpID`, 
+`view_purchase`.`Code`, 
+`view_purchase`.`UpdateUserName`, 
+`view_purchase`.`PurchaserName`, 
+`view_purchase`.`Status`, 
+`view_purchase`.`BillDate`, 
+`view_purchase`.`CreateTime`, 
+`view_purchase`.`UpdateTime`, 
+`view_purchase`.`PostDate`
+FROM `view_purchase` AS `view_purchase`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_purchase_detail" EntityType="Self.view_purchase_detail" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_purchase_detail`.`CorpID`, 
+`view_purchase_detail`.`POID`, 
+`view_purchase_detail`.`RowID`, 
+`view_purchase_detail`.`ItemID`, 
+`view_purchase_detail`.`Code`, 
+`view_purchase_detail`.`Name`, 
+`view_purchase_detail`.`UomID`, 
+`view_purchase_detail`.`WarehouseID`, 
+`view_purchase_detail`.`BinID`, 
+`view_purchase_detail`.`BillQty`, 
+`view_purchase_detail`.`OperQty`, 
+`view_purchase_detail`.`BalanceQty`, 
+`view_purchase_detail`.`UnitAmount`, 
+`view_purchase_detail`.`UnitCost`, 
+`view_purchase_detail`.`Amount`, 
+`view_purchase_detail`.`ReturnReasonID`, 
+`view_purchase_detail`.`IsFree`, 
+`view_purchase_detail`.`IsGift`, 
+`view_purchase_detail`.`Remark`, 
+`view_purchase_detail`.`UpdateTime`, 
+`view_purchase_detail`.`UpdateUserID`
+FROM `view_purchase_detail` AS `view_purchase_detail`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_rights" EntityType="Self.view_rights" store:Type="Views" store:Schema="dms">
             <DefiningQuery>SELECT
 `view_rights`.`RightsID`, 
@@ -1918,6 +2016,8 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_item" EntityType="webdmsModel.view_item" />
           <EntitySet Name="view_item_category" EntityType="webdmsModel.view_item_category" />
           <EntitySet Name="view_menu" EntityType="webdmsModel.view_menu" />
+          <EntitySet Name="view_purchase" EntityType="webdmsModel.view_purchase" />
+          <EntitySet Name="view_purchase_detail" EntityType="webdmsModel.view_purchase_detail" />
           <EntitySet Name="view_rights" EntityType="webdmsModel.view_rights" />
           <EntitySet Name="view_supplier" EntityType="webdmsModel.view_supplier" />
           <EntitySet Name="view_uom" EntityType="webdmsModel.view_uom" />
@@ -3356,6 +3456,61 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
           <Property Name="Descript" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_purchase">
+          <Key>
+            <PropertyRef Name="POID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="BillDate" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="POID" Type="Int32" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PurchaserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="PostDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="view_purchase_detail">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="POID" />
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="BillQty" />
+            <PropertyRef Name="OperQty" />
+            <PropertyRef Name="UnitAmount" />
+            <PropertyRef Name="UnitCost" />
+            <PropertyRef Name="Amount" />
+          </Key>
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="POID" Type="Int32" Nullable="false" />
+          <Property Name="RowID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseID" Type="Int32" Nullable="false" />
+          <Property Name="BinID" Type="Int32" />
+          <Property Name="BillQty" Type="Int32" Nullable="false" />
+          <Property Name="OperQty" Type="Int32" Nullable="false" />
+          <Property Name="BalanceQty" Type="Int32" />
+          <Property Name="UnitAmount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="UnitCost" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="ReturnReasonID" Type="Int32" />
+          <Property Name="IsFree" Type="Int64" />
+          <Property Name="IsGift" Type="Int64" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUserID" Type="Int32" />
         </EntityType>
         <EntityType Name="view_rights">
           <Key>
@@ -4896,6 +5051,49 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="FID" ColumnName="FID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_purchase">
+            <EntityTypeMapping TypeName="webdmsModel.view_purchase">
+              <MappingFragment StoreEntitySet="view_purchase">
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PurchaserName" ColumnName="PurchaserName" />
+                <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="POID" ColumnName="POID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_purchase_detail">
+            <EntityTypeMapping TypeName="webdmsModel.view_purchase_detail">
+              <MappingFragment StoreEntitySet="view_purchase_detail">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsGift" ColumnName="IsGift" />
+                <ScalarProperty Name="IsFree" ColumnName="IsFree" />
+                <ScalarProperty Name="ReturnReasonID" ColumnName="ReturnReasonID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+                <ScalarProperty Name="UnitAmount" ColumnName="UnitAmount" />
+                <ScalarProperty Name="BalanceQty" ColumnName="BalanceQty" />
+                <ScalarProperty Name="OperQty" ColumnName="OperQty" />
+                <ScalarProperty Name="BillQty" ColumnName="BillQty" />
+                <ScalarProperty Name="BinID" ColumnName="BinID" />
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="UomID" ColumnName="UomID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="POID" ColumnName="POID" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

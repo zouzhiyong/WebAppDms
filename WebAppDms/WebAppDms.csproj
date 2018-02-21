@@ -470,6 +470,12 @@
     <Compile Include="Models\view_menu.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\view_purchase.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_purchase_detail.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\view_rights.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

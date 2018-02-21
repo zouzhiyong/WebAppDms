@@ -91,6 +91,8 @@ namespace WebAppDms.Models
         public virtual DbSet<view_item> view_item { get; set; }
         public virtual DbSet<view_item_category> view_item_category { get; set; }
         public virtual DbSet<view_menu> view_menu { get; set; }
+        public virtual DbSet<view_purchase> view_purchase { get; set; }
+        public virtual DbSet<view_purchase_detail> view_purchase_detail { get; set; }
         public virtual DbSet<view_rights> view_rights { get; set; }
         public virtual DbSet<view_supplier> view_supplier { get; set; }
         public virtual DbSet<view_uom> view_uom { get; set; }
