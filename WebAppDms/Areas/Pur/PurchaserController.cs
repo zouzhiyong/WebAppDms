@@ -53,32 +53,39 @@ namespace WebAppDms.Areas.Pur
 
             DateTime dt = DateTime.Now;
 
+            int CorpID = userInfo.CorpID;
 
-            var PurchaserIDList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0 && w.UserCategoryID == 4).Select(s => new
+            var WarehouseIDList = db.t_warehouse.Where(w => w.CorpID == CorpID && w.IsValid != 0).Select(s => new
+            {
+                label = s.Name,
+                value = s.WarehouseID
+            });
+
+            var PurchaserIDList = db.t_bas_user.Where(w => w.CorpID == CorpID && w.IsValid != 0 && w.UserCategoryID == 4).Select(s => new
             {
                 label = s.Name,
                 value = s.UserID
             });
 
-            var SupplierIDList = db.t_supplier.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
+            var SupplierIDList = db.t_supplier.Where(w => w.CorpID == CorpID && w.IsValid != 0).Select(s => new
             {
                 label = s.Name,
                 value = s.SupplierID
             });
 
-            var TruckIDList = db.t_bas_truck.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
+            var TruckIDList = db.t_bas_truck.Where(w => w.CorpID == CorpID && w.IsValid != 0).Select(s => new
             {
                 label = s.Name,
                 value = s.TruckID
             });
 
-            var DriverIDList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0 && w.UserCategoryID == 7).Select(s => new
+            var DriverIDList = db.t_bas_user.Where(w => w.CorpID == CorpID && w.IsValid != 0 && w.UserCategoryID == 7).Select(s => new
             {
                 label = s.Name,
                 value = s.UserID
             });
 
-            var CustList = db.t_bas_user.Where(w => w.CorpID == userInfo.CorpID).Select(s => new
+            var CustList = db.t_bas_user.Where(w => w.CorpID == CorpID).Select(s => new
             {
                 label = s.Name,
                 value = s.UserID
@@ -131,7 +138,7 @@ namespace WebAppDms.Areas.Pur
                     Code = NullValue,
                     ConfirmTime = NullValue,
                     ConfirmUserID = NullValue,
-                    CorpID = userInfo.CorpID,
+                    CorpID = CorpID,
                     CreateTime = NullValue,
                     CreateUserID = userInfo.UserID,
                     CustList = CustList,
@@ -144,8 +151,49 @@ namespace WebAppDms.Areas.Pur
                 return Json(true, "", list);
             }
             else
-            {
-                var list = db.t_purchase_order.Where(w => w.POID == POID && w.CorpID == userInfo.CorpID).Select(s => new
+            {                
+                var OrderDetail = db.view_purchase_detail.Where(w => w.POID == POID && w.CorpID == CorpID).Select(x => new
+                {
+                    CorpID = x.CorpID,
+                    POID = x.POID,
+                    RowID = x.RowID,
+                    ItemID = x.ItemID,
+                    Code = x.Code,
+                    Name = x.Name,
+                    UomID = x.UomID,
+                    UomIDList = db.view_uom.Where(w => w.CorpID == x.CorpID && w.ItemID == x.ItemID).OrderByDescending(o => o.UomType).Select(v => new
+                    {
+                        value = v.UomID,
+                        label = v.Name,
+                        UomID = v.UomID,
+                        ItemID = v.ItemID,
+                        CorpID = v.CorpID,
+                        Name = v.Name,
+                        PurchasePrice = v.PurchasePrice,
+                        SalesPrice = v.SalesPrice,
+                        UomType = v.UomType,
+                        RateQty = v.RateQty,
+                        IsPurchaseUOM = v.IsPurchaseUOM,
+                        IsSalesUOM = v.IsSalesUOM
+                    }),
+                    WarehouseID = x.WarehouseID,
+                    BinID = x.BinID,
+                    BillQty = x.BillQty,
+                    OperQty = x.OperQty,
+                    BalanceQty = x.BalanceQty,
+                    UnitAmount = x.UnitAmount,
+                    UnitCost = x.UnitCost,
+                    Amount = x.Amount,
+                    ReturnReasonID = x.ReturnReasonID,
+                    IsFree = x.IsFree,
+                    IsGift = x.IsGift,
+                    Remark = x.Remark,
+                    UpdateTime = x.UpdateTime,
+                    UpdateUserID = x.UpdateUserID,
+                    WarehouseIDList = WarehouseIDList
+                });
+
+                var list = db.t_purchase_order.Where(w => w.POID == POID && w.CorpID == CorpID).Select(s => new
                 {
                     s.POID,
                     s.PostDate,
@@ -171,53 +219,8 @@ namespace WebAppDms.Areas.Pur
                     s.DriverID,
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
-                    OrderDetail = db.view_purchase_detail.Where(w => w.POID == s.POID && w.CorpID == s.CorpID).Select(x=> new
-                    {
-                        CorpID = x.CorpID,
-                        POID = x.POID,
-                        RowID = x.RowID,
-                        ItemID = x.ItemID,
-                        Code = x.Code,
-                        Name = x.Name,
-                        UomID = x.UomID,
-                        //UomIDList = db.view_uom.Where(u => u.CorpID == x.CorpID && u.ItemID == x.ItemID).OrderByDescending(o => o.UomType).Select(v => new
-                        //{
-                        //    value = v.UomID,
-                        //    label = v.Name
-                        //    //UomID = u.UomID,
-                        //    //ItemID = u.ItemID,
-                        //    //CorpID = u.CorpID,
-                        //    //Name = u.Name,
-                        //    //PurchasePrice = u.PurchasePrice,
-                        //    //SalesPrice = u.SalesPrice,
-                        //    //UomType = u.UomType,
-                        //    //RateQty = u.RateQty,
-                        //    //IsPurchaseUOM = u.IsPurchaseUOM,
-                        //    //IsSalesUOM = u.IsSalesUOM
-                        //}),
-                        WarehouseID = x.WarehouseID,
-                        BinID = x.BinID,
-                        BillQty = x.BillQty,
-                        OperQty = x.OperQty,
-                        BalanceQty = x.BalanceQty,
-                        UnitAmount = x.UnitAmount,
-                        UnitCost = x.UnitCost,
-                        Amount = x.Amount,
-                        ReturnReasonID = x.ReturnReasonID,
-                        IsFree = x.IsFree,
-                        IsGift = x.IsGift,
-                        Remark = x.Remark,
-                        UpdateTime = x.UpdateTime,
-                        UpdateUserID = x.UpdateUserID,
-                        WarehouseIDList = db.t_warehouse.Where(w => w.CorpID == x.CorpID && w.IsValid != 0).Select(z => new
-                        {
-                            label = z.Name,
-                            value = z.WarehouseID
-                        })
-                    })
+                    OrderDetail
                 }).FirstOrDefault();
-
-
 
                 return Json(true, "", list);
             }
