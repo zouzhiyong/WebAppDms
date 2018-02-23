@@ -91,18 +91,24 @@ namespace WebAppDms.Areas.Pur
                 value = s.UserID
             });
 
+            
+
             if (POID == 0)
             {
                 string NullValue = null;
-                List<object> OrderDetailList = new List<object>();
+
                 var OrderDetail = new
                 {
+                    Code = NullValue,
+                    Name = NullValue,
                     CorpID = NullValue,
                     POID = NullValue,
                     RowID = NullValue,
                     ItemID = NullValue,
                     UomID = NullValue,
+                    UomIDList = NullValue,
                     WarehouseID = NullValue,
+                    WarehouseIDList = NullValue,
                     BinID = NullValue,
                     BillQty = NullValue,
                     OperQty = NullValue,
@@ -117,6 +123,8 @@ namespace WebAppDms.Areas.Pur
                     UpdateTime = NullValue,
                     UpdateUserID = NullValue
                 };
+
+                List<object> OrderDetailList = new List<object>();
                 OrderDetailList.Add(OrderDetail);
 
                 var list = new
@@ -151,7 +159,7 @@ namespace WebAppDms.Areas.Pur
                 return Json(true, "", list);
             }
             else
-            {                
+            {                   
                 var OrderDetail = db.view_purchase_detail.Where(w => w.POID == POID && w.CorpID == CorpID).Select(x => new
                 {
                     CorpID = x.CorpID,
@@ -191,7 +199,7 @@ namespace WebAppDms.Areas.Pur
                     UpdateTime = x.UpdateTime,
                     UpdateUserID = x.UpdateUserID,
                     WarehouseIDList = WarehouseIDList
-                });
+                });              
 
                 var list = db.t_purchase_order.Where(w => w.POID == POID && w.CorpID == CorpID).Select(s => new
                 {
@@ -219,8 +227,8 @@ namespace WebAppDms.Areas.Pur
                     s.DriverID,
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
-                    OrderDetail
-                }).FirstOrDefault();
+                    OrderDetail= OrderDetail
+                }).FirstOrDefault();                
 
                 return Json(true, "", list);
             }
@@ -348,13 +356,31 @@ namespace WebAppDms.Areas.Pur
 
                     //提交事务
                     transaction.Complete();
-                    return Json(true, "保存成功！", new { POID = objItem.POID, Status = objItem.Status, BillDate = objItem.BillDate, CreateTime = objItem.CreateTime, OrderDetail = obj.OrderDetail, Code = objItem.Code });
+                    return Json(true, "保存成功！", new { POID = objItem.POID });
                 }
                 catch (Exception ex)
                 {
                     return Json(false, "保存失败！" + ex.Message);
                 }
             }
+        }
+
+        public HttpResponseMessage AuditPurOrderForm(t_purchase_order obj)
+        {
+            obj.Status = 2;
+            DBHelper<t_purchase_order> dbhelp = new DBHelper<t_purchase_order>();
+            List<string> fileds = new List<string>();
+            fileds.Add("Status");
+            var result = dbhelp.UpdateEntityFields(obj, fileds);
+
+            if (result > 0)
+            {
+                return Json(true, "审核成功！", new { POID = obj.POID });
+            }
+            else
+            {
+                throw new DomainException("审核失败！");
+            }            
         }
 
         public class t_purchaseOrder : t_purchase_order
