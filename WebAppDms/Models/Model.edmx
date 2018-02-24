@@ -1459,17 +1459,20 @@
             <PropertyRef Name="Code" />
             <PropertyRef Name="BillDate" />
             <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="isRole" />
           </Key>
           <Property Name="POID" Type="int" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="UpdateUserName" Type="varchar" MaxLength="50" />
           <Property Name="PurchaserName" Type="varchar" MaxLength="50" />
-          <Property Name="Status" Type="varchar" MaxLength="2" />
+          <Property Name="Status" Type="uint" />
+          <Property Name="StatusName" Type="varchar" MaxLength="2" />
           <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="PostDate" Type="datetime" Precision="0" />
+          <Property Name="isRole" Type="int" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“def.dms.view_purchase_detail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -1572,13 +1575,14 @@
             <PropertyRef Name="UomID" />
             <PropertyRef Name="ItemID" />
             <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Name" />
             <PropertyRef Name="UomType" />
             <PropertyRef Name="RateQty" />
           </Key>
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="10" />
+          <Property Name="Name" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="PurchasePrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="SalesPrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="UomType" Type="int" Nullable="false" />
@@ -1825,10 +1829,12 @@ FROM `view_menu` AS `view_menu`</DefiningQuery>
 `view_purchase`.`UpdateUserName`, 
 `view_purchase`.`PurchaserName`, 
 `view_purchase`.`Status`, 
+`view_purchase`.`StatusName`, 
 `view_purchase`.`BillDate`, 
 `view_purchase`.`CreateTime`, 
 `view_purchase`.`UpdateTime`, 
-`view_purchase`.`PostDate`
+`view_purchase`.`PostDate`, 
+`view_purchase`.`isRole`
 FROM `view_purchase` AS `view_purchase`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_purchase_detail" EntityType="Self.view_purchase_detail" store:Type="Views" store:Schema="dms">
@@ -3464,17 +3470,20 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="Code" />
             <PropertyRef Name="BillDate" />
             <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="isRole" />
           </Key>
           <Property Name="POID" Type="Int32" Nullable="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PurchaserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int64" />
+          <Property Name="StatusName" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="PostDate" Type="DateTime" Precision="0" />
+          <Property Name="isRole" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="view_purchase_detail">
           <Key>
@@ -3569,13 +3578,14 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="UomID" />
             <PropertyRef Name="ItemID" />
             <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Name" />
             <PropertyRef Name="UomType" />
             <PropertyRef Name="RateQty" />
           </Key>
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PurchasePrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="SalesPrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="UomType" Type="Int32" Nullable="false" />
@@ -5057,10 +5067,12 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySetMapping Name="view_purchase">
             <EntityTypeMapping TypeName="webdmsModel.view_purchase">
               <MappingFragment StoreEntitySet="view_purchase">
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PurchaserName" ColumnName="PurchaserName" />
                 <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />

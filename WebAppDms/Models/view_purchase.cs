@@ -19,10 +19,12 @@ namespace WebAppDms.Models
         public string Code { get; set; }
         public string UpdateUserName { get; set; }
         public string PurchaserName { get; set; }
-        public string Status { get; set; }
+        public Nullable<long> Status { get; set; }
+        public string StatusName { get; set; }
         public System.DateTime BillDate { get; set; }
         public System.DateTime CreateTime { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public Nullable<System.DateTime> PostDate { get; set; }
+        public int isRole { get; set; }
     }
 }

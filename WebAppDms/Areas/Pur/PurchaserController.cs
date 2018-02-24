@@ -18,7 +18,8 @@ namespace WebAppDms.Areas.Pur
         {
             DBHelper<view_purchase> dbhelp = new DBHelper<view_purchase>();
 
-            string Code = obj.Code;
+            string Code = (obj.Code == null ? "" : obj.Code);
+            long? Status = obj.Status;
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
             int total = 0;
@@ -43,10 +44,33 @@ namespace WebAppDms.Areas.Pur
                 throw new DomainException("只能查询30天数据!");
             }
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.Code.Contains(Code) && x.CorpID == userInfo.CorpID && x.BillDate >= startDate && x.BillDate <= endDate, s => s.POID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.Code.Contains(Code) && x.CorpID == userInfo.CorpID && (x.Status == Status || Status == null) && x.BillDate >= startDate && x.BillDate <= endDate, s => s.POID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
+
+        [HttpPost]
+        public HttpResponseMessage DeletePurOrderRow(t_purchase_order obj)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                try
+                {
+                    var result = new DBHelper<t_purchase_order>().Remove(obj);
+                    result = result + new DBHelper<t_purchase_order_detail>().RemoveList(x => x.POID == obj.POID);
+
+                    //提交事务
+                    transaction.Complete();
+                    return Json(true, "删除成功！");
+                }
+                catch (Exception er)
+                {
+                    return Json(false, "删除失败！", er.Message);
+                }
+
+            }
+        }
+
         public HttpResponseMessage FindPurOrderForm(t_purchase_order obj)
         {
             long POID = obj.POID;
@@ -91,7 +115,7 @@ namespace WebAppDms.Areas.Pur
                 value = s.UserID
             });
 
-            
+
 
             if (POID == 0)
             {
@@ -159,7 +183,7 @@ namespace WebAppDms.Areas.Pur
                 return Json(true, "", list);
             }
             else
-            {                   
+            {
                 var OrderDetail = db.view_purchase_detail.Where(w => w.POID == POID && w.CorpID == CorpID).Select(x => new
                 {
                     CorpID = x.CorpID,
@@ -199,7 +223,7 @@ namespace WebAppDms.Areas.Pur
                     UpdateTime = x.UpdateTime,
                     UpdateUserID = x.UpdateUserID,
                     WarehouseIDList = WarehouseIDList
-                });              
+                });
 
                 var list = db.t_purchase_order.Where(w => w.POID == POID && w.CorpID == CorpID).Select(s => new
                 {
@@ -227,8 +251,8 @@ namespace WebAppDms.Areas.Pur
                     s.DriverID,
                     DriverIDList = DriverIDList,
                     s.IsStockFinished,
-                    OrderDetail= OrderDetail
-                }).FirstOrDefault();                
+                    OrderDetail = OrderDetail
+                }).FirstOrDefault();
 
                 return Json(true, "", list);
             }
@@ -380,7 +404,7 @@ namespace WebAppDms.Areas.Pur
             else
             {
                 throw new DomainException("审核失败！");
-            }            
+            }
         }
 
         public class t_purchaseOrder : t_purchase_order

@@ -59,6 +59,7 @@ namespace WebAppDms.Areas.Bas
             return Json(list, currentPage, pageSize, total);
         }
 
+        [HttpPost]
         public HttpResponseMessage DeleteBasItemRow(t_item obj)
         {
             var result = new DBHelper<t_item>().Remove(obj);
