@@ -539,6 +539,23 @@
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
         </EntityType>
+        <EntityType Name="t_itemprice">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="SuppCustID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="TargetType" />
+          </Key>
+          <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="SuppCustID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="UomID" Type="int" Nullable="false" />
+          <Property Name="LastPrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="TargetType" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="t_log_operation">
           <Key>
             <PropertyRef Name="OperationID" />
@@ -1670,6 +1687,7 @@
           <EntitySet Name="t_item_picture" EntityType="Self.t_item_picture" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_uom" EntityType="Self.t_item_uom" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_item_warehouse" EntityType="Self.t_item_warehouse" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_itemprice" EntityType="Self.t_itemprice" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_log_operation" EntityType="Self.t_log_operation" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_log_userlogin" EntityType="Self.t_log_userlogin" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_purchase_invoice" EntityType="Self.t_purchase_invoice" Schema="dms" store:Type="Tables" />
@@ -1982,6 +2000,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="t_item_picture" EntityType="webdmsModel.t_item_picture" />
           <EntitySet Name="t_item_uom" EntityType="webdmsModel.t_item_uom" />
           <EntitySet Name="t_item_warehouse" EntityType="webdmsModel.t_item_warehouse" />
+          <EntitySet Name="t_itemprice" EntityType="webdmsModel.t_itemprice" />
           <EntitySet Name="t_log_operation" EntityType="webdmsModel.t_log_operation" />
           <EntitySet Name="t_log_userlogin" EntityType="webdmsModel.t_log_userlogin" />
           <EntitySet Name="t_purchase_invoice" EntityType="webdmsModel.t_purchase_invoice" />
@@ -2563,6 +2582,23 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="t_itemprice">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="SuppCustID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="TargetType" />
+          </Key>
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="SuppCustID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="LastPrice" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TargetType" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_log_operation">
           <Key>
@@ -4196,6 +4232,20 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_itemprice">
+            <EntityTypeMapping TypeName="webdmsModel.t_itemprice">
+              <MappingFragment StoreEntitySet="t_itemprice">
+                <ScalarProperty Name="TargetType" ColumnName="TargetType" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+                <ScalarProperty Name="UomID" ColumnName="UomID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="SuppCustID" ColumnName="SuppCustID" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
               </MappingFragment>

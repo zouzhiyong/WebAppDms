@@ -202,6 +202,7 @@ namespace WebAppDms.Areas.Pur
                         CorpID = v.CorpID,
                         Name = v.Name,
                         PurchasePrice = v.PurchasePrice,
+                        LastPurchasePrice = db.t_itemprice.Where(w => w.CorpID == v.CorpID && w.ItemID == v.ItemID && w.SuppCustID == obj.SupplierID && w.TargetType == 1 && w.UomID == v.UomID).Select(x1 => (decimal?)x1.LastPrice).FirstOrDefault(),
                         SalesPrice = v.SalesPrice,
                         UomType = v.UomType,
                         RateQty = v.RateQty,
@@ -258,15 +259,21 @@ namespace WebAppDms.Areas.Pur
             }
         }
 
-        public HttpResponseMessage FindPurOrderItem(string str)
+        public HttpResponseMessage FindPurOrderItem(dynamic obj)
         {
+            string queryString = obj.queryString;
+            int? SupplierID = obj.SupplierID;
+            if (SupplierID == null)
+            {
+                throw new DomainException("请选择供应商！");
+            }
             var WarehouseIDList = db.t_warehouse.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
             {
                 label = s.Name,
                 value = s.WarehouseID
             });
 
-            var list = db.t_item.Where<t_item>(p => p.Name.Contains(str) || p.ShortName.Contains(str) || p.Code.Contains(str)).Select(s => new
+            var list = db.t_item.Where<t_item>(p => p.Name.Contains(queryString) || p.ShortName.Contains(queryString) || p.Code.Contains(queryString)).Select(s => new
             {
                 Barcode = s.Barcode,
                 Name = s.Name,
@@ -285,6 +292,7 @@ namespace WebAppDms.Areas.Pur
                     CorpID = s1.CorpID,
                     Name = s1.Name,
                     PurchasePrice = s1.PurchasePrice,
+                    LastPurchasePrice = db.t_itemprice.Where(w=>w.CorpID==s1.CorpID && w.ItemID==s1.ItemID && w.SuppCustID== SupplierID && w.TargetType==1 && w.UomID==s1.UomID).Select(x=> (decimal?)x.LastPrice).FirstOrDefault(),
                     SalesPrice = s1.SalesPrice,
                     UomType = s1.UomType,
                     RateQty = s1.RateQty,
@@ -292,12 +300,135 @@ namespace WebAppDms.Areas.Pur
                     IsSalesUOM = s1.IsSalesUOM
                 }).ToList(),
                 WarehouseIDList = WarehouseIDList
-            }).Take(10).ToList();
+            }).ToList();
 
             return Json(true, "", list);
         }
 
         public HttpResponseMessage SavePurOrderForm(t_purchaseOrder obj)
+        {
+            //using (TransactionScope transaction = new TransactionScope())
+            //{
+            //    DateTime dt = DateTime.Now;
+
+            //    t_purchase_order objItem = new t_purchase_order()
+            //    {
+            //        POID = obj.POID,
+            //        PostDate = obj.PostDate,
+            //        PurchaserID = obj.PurchaserID,
+            //        Remark = obj.Remark,
+            //        Status = obj.Status,
+            //        SupplierID = obj.SupplierID,
+            //        TruckID = obj.TruckID,
+            //        UpdateTime = obj.UpdateTime,
+            //        UpdateUserID = obj.UpdateUserID,
+            //        BillDate = obj.BillDate,
+            //        BillType = obj.BillType,
+            //        Code = obj.Code,
+            //        ConfirmTime = obj.ConfirmTime,
+            //        ConfirmUserID = obj.ConfirmUserID,
+            //        CorpID = obj.CorpID,
+            //        CreateTime = obj.CreateTime,
+            //        CreateUserID = obj.CreateUserID,
+            //        DriverID = obj.DriverID,
+            //        IsStockFinished = obj.IsStockFinished
+            //    };
+
+            //    DBHelper<t_purchase_order> dbhelp_purOrder = new DBHelper<t_purchase_order>();
+
+
+            //    //事务
+            //    var result = 0;
+            //    var Item = db.t_purchase_order.Where(w => w.Code == objItem.Code && w.CorpID == userInfo.CorpID);
+            //    try
+            //    {
+            //        if (objItem.POID == 0)
+            //        {
+            //            string Code = objItem.Code;
+            //            if (Code == "" || Code == null)
+            //            {
+            //                result = AutoIncrement.AutoIncrementResult("PurchaseOrder", out Code);
+            //            }
+
+            //            objItem.CreateTime = dt;
+            //            objItem.BillDate = dt;
+            //            objItem.CreateUserID = (int)userInfo.UserID;
+            //            objItem.CorpID = userInfo.CorpID;
+            //            objItem.Code = Code;
+            //            objItem.Status = 1;
+            //            if (Item.ToList().Count() > 0)
+            //            {
+            //                throw new Exception("账号重复！");
+            //            }
+            //            result = result + dbhelp_purOrder.Add(objItem);
+            //        }
+            //        else
+            //        {
+            //            objItem.CorpID = userInfo.CorpID;
+            //            objItem.UpdateTime = dt;
+            //            objItem.UpdateUserID = (int)userInfo.UserID;
+            //            if (Item.ToList().Count() > 1)
+            //            {
+            //                throw new Exception("账号重复！");
+            //            }
+            //            result = result + dbhelp_purOrder.Update(objItem);
+            //        }
+
+            //        //删除并保存明细
+            //        DBHelper<t_purchase_order_detail> dbhelp_purOderDetail = new DBHelper<t_purchase_order_detail>();
+            //        List<int> ItemList = new List<int>();
+            //        List<int> UomList = new List<int>();
+            //        List<t_itemprice> itempriceList = new List<t_itemprice>();
+            //        foreach (var item in obj.OrderDetail)
+            //        {
+            //            item.CorpID = userInfo.CorpID;
+            //            item.POID = objItem.POID;
+            //            item.UpdateTime = dt;
+            //            item.UpdateUserID = (int)userInfo.UserID;
+            //            ItemList.Add(item.ItemID);
+            //            UomList.Add(item.UomID);
+            //            itempriceList.Add(new t_itemprice {
+            //                CorpID = userInfo.CorpID,
+            //                SuppCustID=objItem.SupplierID,
+            //                ItemID=item.ItemID,
+            //                UomID=item.UomID,
+            //                LastPrice=item.UnitAmount,
+            //                UpdateTime=dt,
+            //                TargetType=1
+            //            });
+            //        }
+            //        //删除明细
+            //        result = result + dbhelp_purOderDetail.RemoveList(w => w.POID == objItem.POID);
+            //        //添加明细
+            //        result = result + dbhelp_purOderDetail.AddList(obj.OrderDetail);
+
+            //        //删除最后价格
+            //        DBHelper<t_itemprice> dbhelp_itemprice = new DBHelper<t_itemprice>();
+            //        result = result + dbhelp_itemprice.RemoveList(w => w.TargetType==1 && w.CorpID==userInfo.CorpID && ItemList.Contains(w.ItemID) && UomList.Contains(w.UomID) && w.SuppCustID==objItem.SupplierID);
+            //        //添加最后价格
+            //        result = result + dbhelp_itemprice.AddList(itempriceList.ToArray());
+
+            //        //提交事务
+            //        transaction.Complete();
+            //        return Json(true, "保存成功！", new { POID = objItem.POID });
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        return Json(false, "保存失败！" + ex.Message);
+            //    }
+            //}
+
+            var saveObj = SaveForm(obj);
+            if (saveObj.result == true)
+            {
+                return Json(true, saveObj.message, saveObj.data);
+            }else
+            {
+                return Json(false, saveObj.message);
+            }
+        }
+
+        private dynamic SaveForm(t_purchaseOrder obj)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -368,38 +499,106 @@ namespace WebAppDms.Areas.Pur
 
                     //删除并保存明细
                     DBHelper<t_purchase_order_detail> dbhelp_purOderDetail = new DBHelper<t_purchase_order_detail>();
+                    List<int> ItemList = new List<int>();
+                    List<int> UomList = new List<int>();
+                    List<t_itemprice> itempriceList = new List<t_itemprice>();
                     foreach (var item in obj.OrderDetail)
                     {
                         item.CorpID = userInfo.CorpID;
                         item.POID = objItem.POID;
                         item.UpdateTime = dt;
                         item.UpdateUserID = (int)userInfo.UserID;
+                        ItemList.Add(item.ItemID);
+                        UomList.Add(item.UomID);
+                        itempriceList.Add(new t_itemprice
+                        {
+                            CorpID = userInfo.CorpID,
+                            SuppCustID = objItem.SupplierID,
+                            ItemID = item.ItemID,
+                            UomID = item.UomID,
+                            LastPrice = item.UnitAmount,
+                            UpdateTime = dt,
+                            TargetType = 1
+                        });
                     }
+                    //删除明细
                     result = result + dbhelp_purOderDetail.RemoveList(w => w.POID == objItem.POID);
+                    //添加明细
                     result = result + dbhelp_purOderDetail.AddList(obj.OrderDetail);
+
+                    //删除最后价格
+                    DBHelper<t_itemprice> dbhelp_itemprice = new DBHelper<t_itemprice>();
+                    result = result + dbhelp_itemprice.RemoveList(w => w.TargetType == 1 && w.CorpID == userInfo.CorpID && ItemList.Contains(w.ItemID) && UomList.Contains(w.UomID) && w.SuppCustID == objItem.SupplierID);
+                    //添加最后价格
+                    result = result + dbhelp_itemprice.AddList(itempriceList.ToArray());
 
                     //提交事务
                     transaction.Complete();
-                    return Json(true, "保存成功！", new { POID = objItem.POID });
+                    return new { result = true, message = "保存成功！", data = new { POID = objItem.POID } };
                 }
                 catch (Exception ex)
                 {
-                    return Json(false, "保存失败！" + ex.Message);
+                    throw new DomainException("保存失败！");
                 }
             }
         }
 
-        public HttpResponseMessage AuditPurOrderForm(t_purchase_order obj)
+        public dynamic AuditForm(t_purchaseOrder obj)
         {
-            obj.Status = 2;
-            DBHelper<t_purchase_order> dbhelp = new DBHelper<t_purchase_order>();
-            List<string> fileds = new List<string>();
-            fileds.Add("Status");
-            var result = dbhelp.UpdateEntityFields(obj, fileds);
-
-            if (result > 0)
+            try
             {
-                return Json(true, "审核成功！", new { POID = obj.POID });
+                DateTime dt = DateTime.Now;
+
+                t_purchase_order orderObj = new t_purchase_order() {
+                    POID = obj.POID,
+                    PostDate = dt,
+                    PurchaserID = obj.PurchaserID,
+                    Remark = obj.Remark,
+                    Status = 2,
+                    SupplierID = obj.SupplierID,
+                    TruckID = obj.TruckID,
+                    UpdateTime = obj.UpdateTime,
+                    UpdateUserID = obj.UpdateUserID,
+                    BillDate = obj.BillDate,
+                    BillType = obj.BillType,
+                    Code = obj.Code,
+                    ConfirmTime = dt,
+                    ConfirmUserID = (int)userInfo.UserID,
+                    CorpID = obj.CorpID,
+                    CreateTime = obj.CreateTime,
+                    CreateUserID = obj.CreateUserID,
+                    DriverID = obj.IsStockFinished,
+                    IsStockFinished = obj.IsStockFinished,
+                };
+
+                DBHelper<t_purchase_order> dbhelp = new DBHelper<t_purchase_order>();
+                List<string> fileds = new List<string>();
+                fileds.Add("PostDate");
+                fileds.Add("Status");
+                var result = dbhelp.UpdateEntityFields(orderObj, fileds);
+                return new { result = true, message = "审核成功！",data= new { POID = orderObj.POID } };
+            }
+            catch (Exception er)
+            {
+                throw new DomainException("审核失败！"+ er.Message);
+            }            
+        }
+        public HttpResponseMessage AuditPurOrderForm(t_purchaseOrder obj)
+        {
+            var saveObj = SaveForm(obj);
+            if (saveObj.result == true)
+            {
+                obj.POID = saveObj.data.POID;
+
+                var auditOjb = AuditForm(obj);
+                if (auditOjb.result == true)
+                {
+                    return Json(true, auditOjb.message, auditOjb.data);
+                }
+                else
+                {
+                    throw new DomainException(auditOjb.message);
+                }
             }
             else
             {

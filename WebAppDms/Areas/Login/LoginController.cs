@@ -64,7 +64,7 @@ namespace WebAppDms.Areas.Login
                 {
                     path = "/" + s1.URL,
                     name = s1.Name,
-                    meta = new { name = s1.Name, button = new string[] { "save", "cancle", "new" }.ToList(), isButton = false },
+                    meta = new { name = s1.Name, button = new string[] { "save", "cancle", "new","audit" }.ToList(), isButton = false },
                     MenuPath = s1.URL.Replace("_", "/"),
                     Xh = s1.Sequence,
                     MenuID = s1.Code

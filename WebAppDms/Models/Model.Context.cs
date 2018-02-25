@@ -51,6 +51,7 @@ namespace WebAppDms.Models
         public virtual DbSet<t_item_picture> t_item_picture { get; set; }
         public virtual DbSet<t_item_uom> t_item_uom { get; set; }
         public virtual DbSet<t_item_warehouse> t_item_warehouse { get; set; }
+        public virtual DbSet<t_itemprice> t_itemprice { get; set; }
         public virtual DbSet<t_log_operation> t_log_operation { get; set; }
         public virtual DbSet<t_log_userlogin> t_log_userlogin { get; set; }
         public virtual DbSet<t_purchase_invoice> t_purchase_invoice { get; set; }

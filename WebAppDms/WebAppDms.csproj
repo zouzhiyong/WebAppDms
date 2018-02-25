@@ -332,6 +332,9 @@
     <Compile Include="Models\t_item.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\t_itemprice.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\t_item_category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
