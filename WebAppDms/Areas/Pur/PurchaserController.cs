@@ -14,11 +14,25 @@ namespace WebAppDms.Areas.Pur
 {
     public class PurchaserController : ApiBaseController
     {
+        public HttpResponseMessage FindSupplierList()
+        {
+
+            var list = db.t_supplier.Where(w => w.CorpID == userInfo.CorpID && w.IsValid != 0).Select(s => new
+            {
+                value = s.SupplierID,
+                label = s.Name
+            });
+
+            return Json(true, "", list);
+        }
+
         public HttpResponseMessage FindPurOrderTable(dynamic obj)
         {
             DBHelper<view_purchase> dbhelp = new DBHelper<view_purchase>();
 
             string Code = (obj.Code == null ? "" : obj.Code);
+            int BillType = obj.BillType;
+            long? SupplierID = obj.SupplierID;
             long? Status = obj.Status;
             int pageSize = obj.pageSize;
             int currentPage = obj.currentPage;
@@ -44,7 +58,7 @@ namespace WebAppDms.Areas.Pur
                 throw new DomainException("只能查询30天数据!");
             }
 
-            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.Code.Contains(Code) && x.CorpID == userInfo.CorpID && (x.Status == Status || Status == null) && x.BillDate >= startDate && x.BillDate <= endDate, s => s.POID, true);
+            var list = dbhelp.FindPagedList(currentPage, pageSize, out total, x => x.Code.Contains(Code) && x.CorpID == userInfo.CorpID && x.BillType == BillType && (x.SupplierID == SupplierID || SupplierID == null) && (x.Status == Status || Status == null) && x.BillDate >= startDate && x.BillDate <= endDate, s => s.POID, true);
 
             return Json(list, currentPage, pageSize, total);
         }
@@ -292,7 +306,7 @@ namespace WebAppDms.Areas.Pur
                     CorpID = s1.CorpID,
                     Name = s1.Name,
                     PurchasePrice = s1.PurchasePrice,
-                    LastPurchasePrice = db.t_itemprice.Where(w=>w.CorpID==s1.CorpID && w.ItemID==s1.ItemID && w.SuppCustID== SupplierID && w.TargetType==1 && w.UomID==s1.UomID).Select(x=> (decimal?)x.LastPrice).FirstOrDefault(),
+                    LastPurchasePrice = db.t_itemprice.Where(w => w.CorpID == s1.CorpID && w.ItemID == s1.ItemID && w.SuppCustID == SupplierID && w.TargetType == 1 && w.UomID == s1.UomID).Select(x => (decimal?)x.LastPrice).FirstOrDefault(),
                     SalesPrice = s1.SalesPrice,
                     UomType = s1.UomType,
                     RateQty = s1.RateQty,
@@ -422,7 +436,8 @@ namespace WebAppDms.Areas.Pur
             if (saveObj.result == true)
             {
                 return Json(true, saveObj.message, saveObj.data);
-            }else
+            }
+            else
             {
                 return Json(false, saveObj.message);
             }
@@ -543,62 +558,16 @@ namespace WebAppDms.Areas.Pur
             }
         }
 
-        public dynamic AuditForm(t_purchaseOrder obj)
-        {
-            try
-            {
-                DateTime dt = DateTime.Now;
-
-                t_purchase_order orderObj = new t_purchase_order() {
-                    POID = obj.POID,
-                    PostDate = dt,
-                    PurchaserID = obj.PurchaserID,
-                    Remark = obj.Remark,
-                    Status = 2,
-                    SupplierID = obj.SupplierID,
-                    TruckID = obj.TruckID,
-                    UpdateTime = obj.UpdateTime,
-                    UpdateUserID = obj.UpdateUserID,
-                    BillDate = obj.BillDate,
-                    BillType = obj.BillType,
-                    Code = obj.Code,
-                    ConfirmTime = dt,
-                    ConfirmUserID = (int)userInfo.UserID,
-                    CorpID = obj.CorpID,
-                    CreateTime = obj.CreateTime,
-                    CreateUserID = obj.CreateUserID,
-                    DriverID = obj.IsStockFinished,
-                    IsStockFinished = obj.IsStockFinished,
-                };
-
-                DBHelper<t_purchase_order> dbhelp = new DBHelper<t_purchase_order>();
-                List<string> fileds = new List<string>();
-                fileds.Add("PostDate");
-                fileds.Add("Status");
-                var result = dbhelp.UpdateEntityFields(orderObj, fileds);
-                return new { result = true, message = "审核成功！",data= new { POID = orderObj.POID } };
-            }
-            catch (Exception er)
-            {
-                throw new DomainException("审核失败！"+ er.Message);
-            }            
-        }
         public HttpResponseMessage AuditPurOrderForm(t_purchaseOrder obj)
         {
+            DateTime dt = DateTime.Now;
+            obj.Status = 2;
+            obj.ConfirmTime = dt;
+            obj.ConfirmUserID = (int)userInfo.UserID;
             var saveObj = SaveForm(obj);
             if (saveObj.result == true)
             {
-                obj.POID = saveObj.data.POID;
-
-                var auditOjb = AuditForm(obj);
-                if (auditOjb.result == true)
-                {
-                    return Json(true, auditOjb.message, auditOjb.data);
-                }
-                else
-                {
-                    throw new DomainException(auditOjb.message);
-                }
+                return Json(true, saveObj.message, saveObj.data);
             }
             else
             {

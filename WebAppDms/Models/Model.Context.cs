@@ -27,6 +27,7 @@ namespace WebAppDms.Models
     
         public virtual DbSet<t_bas_area> t_bas_area { get; set; }
         public virtual DbSet<t_bas_company> t_bas_company { get; set; }
+        public virtual DbSet<t_bas_config> t_bas_config { get; set; }
         public virtual DbSet<t_bas_department> t_bas_department { get; set; }
         public virtual DbSet<t_bas_payment> t_bas_payment { get; set; }
         public virtual DbSet<t_bas_position> t_bas_position { get; set; }

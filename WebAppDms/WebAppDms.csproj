@@ -278,6 +278,9 @@
     <Compile Include="Models\t_bas_company.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\t_bas_config.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\t_bas_department.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

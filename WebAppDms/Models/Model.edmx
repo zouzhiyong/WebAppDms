@@ -41,6 +41,25 @@
           <Property Name="UpdateTime" Type="datetime" Precision="0" />
           <Property Name="UpdateUserID" Type="int" />
         </EntityType>
+        <EntityType Name="t_bas_config">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Descript" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParaType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="OperationType" Type="uint" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateUser" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUser" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
         <EntityType Name="t_bas_department">
           <Key>
             <PropertyRef Name="DeptID" />
@@ -1474,6 +1493,7 @@
             <PropertyRef Name="POID" />
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="Code" />
+            <PropertyRef Name="BillType" />
             <PropertyRef Name="BillDate" />
             <PropertyRef Name="CreateTime" />
             <PropertyRef Name="isRole" />
@@ -1481,8 +1501,10 @@
           <Property Name="POID" Type="int" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BillType" Type="int" Nullable="false" />
+          <Property Name="SupplierID" Type="uint" />
           <Property Name="UpdateUserName" Type="varchar" MaxLength="50" />
-          <Property Name="PurchaserName" Type="varchar" MaxLength="50" />
+          <Property Name="SupplierName" Type="varchar" MaxLength="50" />
           <Property Name="Status" Type="uint" />
           <Property Name="StatusName" Type="varchar" MaxLength="2" />
           <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
@@ -1663,6 +1685,7 @@
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_company" EntityType="Self.t_bas_company" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_bas_config" EntityType="Self.t_bas_config" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_department" EntityType="Self.t_bas_department" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_payment" EntityType="Self.t_bas_payment" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_position" EntityType="Self.t_bas_position" Schema="dms" store:Type="Tables" />
@@ -1844,8 +1867,10 @@ FROM `view_menu` AS `view_menu`</DefiningQuery>
 `view_purchase`.`POID`, 
 `view_purchase`.`CorpID`, 
 `view_purchase`.`Code`, 
+`view_purchase`.`BillType`, 
+`view_purchase`.`SupplierID`, 
 `view_purchase`.`UpdateUserName`, 
-`view_purchase`.`PurchaserName`, 
+`view_purchase`.`SupplierName`, 
 `view_purchase`.`Status`, 
 `view_purchase`.`StatusName`, 
 `view_purchase`.`BillDate`, 
@@ -1976,6 +2001,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
         <EntityContainer Name="webDmsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="t_bas_area" EntityType="webdmsModel.t_bas_area" />
           <EntitySet Name="t_bas_company" EntityType="webdmsModel.t_bas_company" />
+          <EntitySet Name="t_bas_config" EntityType="webdmsModel.t_bas_config" />
           <EntitySet Name="t_bas_department" EntityType="webdmsModel.t_bas_department" />
           <EntitySet Name="t_bas_payment" EntityType="webdmsModel.t_bas_payment" />
           <EntitySet Name="t_bas_position" EntityType="webdmsModel.t_bas_position" />
@@ -2084,6 +2110,25 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="t_bas_config">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Descript" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParaType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="OperationType" Type="Int64" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUser" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="t_bas_department">
           <Key>
@@ -3507,12 +3552,14 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="BillDate" />
             <PropertyRef Name="CreateTime" />
             <PropertyRef Name="isRole" />
+            <PropertyRef Name="BillType" />
           </Key>
           <Property Name="POID" Type="Int32" Nullable="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SupplierID" Type="Int64" />
           <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PurchaserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SupplierName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Int64" />
           <Property Name="StatusName" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -3520,6 +3567,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="PostDate" Type="DateTime" Precision="0" />
           <Property Name="isRole" Type="Int32" Nullable="false" />
+          <Property Name="BillType" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="view_purchase_detail">
           <Key>
@@ -3716,6 +3764,25 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Address2" ColumnName="Address2" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_bas_config">
+            <EntityTypeMapping TypeName="webdmsModel.t_bas_config">
+              <MappingFragment StoreEntitySet="t_bas_config">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="OperationType" ColumnName="OperationType" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ParaType" ColumnName="ParaType" />
+                <ScalarProperty Name="Descript" ColumnName="Descript" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
@@ -5117,6 +5184,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySetMapping Name="view_purchase">
             <EntityTypeMapping TypeName="webdmsModel.view_purchase">
               <MappingFragment StoreEntitySet="view_purchase">
+                <ScalarProperty Name="BillType" ColumnName="BillType" />
                 <ScalarProperty Name="isRole" ColumnName="isRole" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -5124,8 +5192,9 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="BillDate" ColumnName="BillDate" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PurchaserName" ColumnName="PurchaserName" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
                 <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="POID" ColumnName="POID" />

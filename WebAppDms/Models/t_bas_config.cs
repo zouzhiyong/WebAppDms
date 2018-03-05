@@ -12,21 +12,20 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_purchase
+    public partial class t_bas_config
     {
-        public int POID { get; set; }
+        public System.DateTime TimeStamp { get; set; }
         public int CorpID { get; set; }
         public string Code { get; set; }
-        public Nullable<long> SupplierID { get; set; }
-        public string UpdateUserName { get; set; }
-        public string SupplierName { get; set; }
-        public Nullable<long> Status { get; set; }
-        public string StatusName { get; set; }
-        public System.DateTime BillDate { get; set; }
-        public System.DateTime CreateTime { get; set; }
+        public string Descript { get; set; }
+        public string ParaType { get; set; }
+        public string Value { get; set; }
+        public int Sequence { get; set; }
+        public long OperationType { get; set; }
+        public string Remark { get; set; }
+        public Nullable<int> CreateUser { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
+        public Nullable<int> UpdateUser { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
-        public Nullable<System.DateTime> PostDate { get; set; }
-        public int isRole { get; set; }
-        public int BillType { get; set; }
     }
 }
