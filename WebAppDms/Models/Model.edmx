@@ -132,6 +132,32 @@
           <Property Name="RegionAllID" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="NameAll" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="t_bas_serial_number">
+          <Key>
+            <PropertyRef Name="SerialID" />
+          </Key>
+          <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SerialID" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsManual" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="MaintainMethod" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Prefix" Type="varchar" MaxLength="10" />
+          <Property Name="StartingNumber" Type="int" Nullable="false" />
+          <Property Name="EndingNumber" Type="uint" Nullable="false" />
+          <Property Name="WarningNumber" Type="int" />
+          <Property Name="IncrementByNumber" Type="int" Nullable="false" />
+          <Property Name="YearLength" Type="int" />
+          <Property Name="LastDateUsed" Type="datetime" Precision="0" />
+          <Property Name="LastNumberUsed" Type="varchar" MaxLength="30" />
+          <Property Name="IsValid" Type="uint" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="varchar" MaxLength="255" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
         <EntityType Name="t_bas_truck">
           <Key>
             <PropertyRef Name="TruckID" />
@@ -346,7 +372,7 @@
           <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvEntryID" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
-          <Property Name="InvEntryCode" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="InvEntryCode" Type="int" Nullable="false" />
           <Property Name="BillID" Type="int" />
           <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="PostDate" Type="datetime" Precision="0" Nullable="false" />
@@ -354,7 +380,7 @@
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="BinID" Type="int" />
           <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="Batch" Type="varchar" MaxLength="20" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="25" />
           <Property Name="ProduceDate" Type="datetime" Precision="0" />
           <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="UomID" Type="int" Nullable="false" />
@@ -1216,7 +1242,7 @@
           <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="PostDate" Type="datetime" Precision="0" />
-          <Property Name="BillTypeID" Type="int" Nullable="false" />
+          <Property Name="BillType" Type="int" Nullable="false" />
           <Property Name="TruckID" Type="int" />
           <Property Name="DriverID" Type="int" />
           <Property Name="Status" Type="uint" Nullable="false" />
@@ -1232,6 +1258,7 @@
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="ReceiptID" />
             <PropertyRef Name="RowID" />
+            <PropertyRef Name="BatchCode" />
           </Key>
           <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
@@ -1241,7 +1268,7 @@
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="BinID" Type="int" />
-          <Property Name="Batch" Type="varchar" MaxLength="25" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="ProduceDate" Type="datetime" Precision="0" />
           <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="BillQty" Type="float" Nullable="false" />
@@ -1281,6 +1308,7 @@
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="ShipmentID" />
             <PropertyRef Name="RowID" />
+            <PropertyRef Name="BatchCode" />
           </Key>
           <Property Name="TimeStamp" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CorpID" Type="int" Nullable="false" />
@@ -1290,7 +1318,7 @@
           <Property Name="UomID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="BinID" Type="int" />
-          <Property Name="Batch" Type="varchar" MaxLength="25" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="ProduceDate" Type="datetime" Precision="0" />
           <Property Name="ExpireDate" Type="datetime" Precision="0" />
           <Property Name="BillQty" Type="int" Nullable="false" />
@@ -1682,6 +1710,72 @@
           <Property Name="WarehouseID" Type="uint" Nullable="false" />
           <Property Name="isRole" Type="bigint" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_warehouse_receipt”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_warehouse_receipt">
+          <Key>
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="BillType" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="BillDate" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="isRole" />
+          </Key>
+          <Property Name="ReceiptID" Type="uint" Nullable="false" />
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BillType" Type="int" Nullable="false" />
+          <Property Name="UpdateUserName" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="uint" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="2" />
+          <Property Name="BillDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="PostDate" Type="datetime" Precision="0" />
+          <Property Name="isRole" Type="int" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.dms.view_warehouse_receipt_detail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="view_warehouse_receipt_detail">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="BillQty" />
+            <PropertyRef Name="ReceiptQty" />
+            <PropertyRef Name="UnitAmount" />
+            <PropertyRef Name="UnitCost" />
+            <PropertyRef Name="Amount" />
+            <PropertyRef Name="BatchCode" />
+          </Key>
+          <Property Name="CorpID" Type="int" Nullable="false" />
+          <Property Name="ReceiptID" Type="int" Nullable="false" />
+          <Property Name="RowID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="UomID" Type="int" Nullable="false" />
+          <Property Name="WarehouseID" Type="int" Nullable="false" />
+          <Property Name="BinID" Type="int" />
+          <Property Name="BillQty" Type="float" Nullable="false" />
+          <Property Name="ReceiptQty" Type="float" Nullable="false" />
+          <Property Name="BalanceQty" Type="float" />
+          <Property Name="UnitAmount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="UnitCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ProduceDate" Type="datetime" Precision="0" />
+          <Property Name="ExpireDate" Type="datetime" Precision="0" />
+          <Property Name="ReturnReasonID" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
         <EntityContainer Name="webdmsModelStoreContainer">
           <EntitySet Name="t_bas_area" EntityType="Self.t_bas_area" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_company" EntityType="Self.t_bas_company" Schema="dms" store:Type="Tables" />
@@ -1690,6 +1784,7 @@
           <EntitySet Name="t_bas_payment" EntityType="Self.t_bas_payment" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_position" EntityType="Self.t_bas_position" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_region" EntityType="Self.t_bas_region" Schema="dms" store:Type="Tables" />
+          <EntitySet Name="t_bas_serial_number" EntityType="Self.t_bas_serial_number" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_truck" EntityType="Self.t_bas_truck" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_unitofmeasure" EntityType="Self.t_bas_unitofmeasure" Schema="dms" store:Type="Tables" />
           <EntitySet Name="t_bas_user" EntityType="Self.t_bas_user" Schema="dms" store:Type="Tables" />
@@ -1993,6 +2088,48 @@ FROM `view_user` AS `view_user`</DefiningQuery>
 `view_warehouse`.`isRole`
 FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_warehouse_receipt" EntityType="Self.view_warehouse_receipt" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_warehouse_receipt`.`ReceiptID`, 
+`view_warehouse_receipt`.`CorpID`, 
+`view_warehouse_receipt`.`Code`, 
+`view_warehouse_receipt`.`BillType`, 
+`view_warehouse_receipt`.`UpdateUserName`, 
+`view_warehouse_receipt`.`Status`, 
+`view_warehouse_receipt`.`StatusName`, 
+`view_warehouse_receipt`.`BillDate`, 
+`view_warehouse_receipt`.`CreateTime`, 
+`view_warehouse_receipt`.`UpdateTime`, 
+`view_warehouse_receipt`.`PostDate`, 
+`view_warehouse_receipt`.`isRole`
+FROM `view_warehouse_receipt` AS `view_warehouse_receipt`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_warehouse_receipt_detail" EntityType="Self.view_warehouse_receipt_detail" store:Type="Views" store:Schema="dms">
+            <DefiningQuery>SELECT
+`view_warehouse_receipt_detail`.`CorpID`, 
+`view_warehouse_receipt_detail`.`ReceiptID`, 
+`view_warehouse_receipt_detail`.`RowID`, 
+`view_warehouse_receipt_detail`.`ItemID`, 
+`view_warehouse_receipt_detail`.`Code`, 
+`view_warehouse_receipt_detail`.`Name`, 
+`view_warehouse_receipt_detail`.`UomID`, 
+`view_warehouse_receipt_detail`.`WarehouseID`, 
+`view_warehouse_receipt_detail`.`BinID`, 
+`view_warehouse_receipt_detail`.`BillQty`, 
+`view_warehouse_receipt_detail`.`ReceiptQty`, 
+`view_warehouse_receipt_detail`.`BalanceQty`, 
+`view_warehouse_receipt_detail`.`UnitAmount`, 
+`view_warehouse_receipt_detail`.`UnitCost`, 
+`view_warehouse_receipt_detail`.`Amount`, 
+`view_warehouse_receipt_detail`.`BatchCode`, 
+`view_warehouse_receipt_detail`.`ProduceDate`, 
+`view_warehouse_receipt_detail`.`ExpireDate`, 
+`view_warehouse_receipt_detail`.`ReturnReasonID`, 
+`view_warehouse_receipt_detail`.`Remark`, 
+`view_warehouse_receipt_detail`.`UpdateTime`, 
+`view_warehouse_receipt_detail`.`UpdateUserID`
+FROM `view_warehouse_receipt_detail` AS `view_warehouse_receipt_detail`</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2006,6 +2143,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="t_bas_payment" EntityType="webdmsModel.t_bas_payment" />
           <EntitySet Name="t_bas_position" EntityType="webdmsModel.t_bas_position" />
           <EntitySet Name="t_bas_region" EntityType="webdmsModel.t_bas_region" />
+          <EntitySet Name="t_bas_serial_number" EntityType="webdmsModel.t_bas_serial_number" />
           <EntitySet Name="t_bas_truck" EntityType="webdmsModel.t_bas_truck" />
           <EntitySet Name="t_bas_unitofmeasure" EntityType="webdmsModel.t_bas_unitofmeasure" />
           <EntitySet Name="t_bas_user" EntityType="webdmsModel.t_bas_user" />
@@ -2074,6 +2212,8 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySet Name="view_uom" EntityType="webdmsModel.view_uom" />
           <EntitySet Name="view_user" EntityType="webdmsModel.view_user" />
           <EntitySet Name="view_warehouse" EntityType="webdmsModel.view_warehouse" />
+          <EntitySet Name="view_warehouse_receipt" EntityType="webdmsModel.view_warehouse_receipt" />
+          <EntitySet Name="view_warehouse_receipt_detail" EntityType="webdmsModel.view_warehouse_receipt_detail" />
         </EntityContainer>
         <EntityType Name="t_bas_area">
           <Key>
@@ -2201,6 +2341,32 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateUserID" Type="Int32" Nullable="false" />
           <Property Name="RegionAllID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="NameAll" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="t_bas_serial_number">
+          <Key>
+            <PropertyRef Name="SerialID" />
+          </Key>
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
+          <Property Name="SerialID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsManual" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="MaintainMethod" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Prefix" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="StartingNumber" Type="Int32" Nullable="false" />
+          <Property Name="EndingNumber" Type="Int64" Nullable="false" />
+          <Property Name="WarningNumber" Type="Int32" />
+          <Property Name="IncrementByNumber" Type="Int32" Nullable="false" />
+          <Property Name="YearLength" Type="Int32" />
+          <Property Name="LastDateUsed" Type="DateTime" Precision="0" />
+          <Property Name="LastNumberUsed" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Int64" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
         </EntityType>
         <EntityType Name="t_bas_truck">
           <Key>
@@ -2416,7 +2582,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
           <Property Name="InvEntryID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
-          <Property Name="InvEntryCode" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="InvEntryCode" Type="Int32" Nullable="false" />
           <Property Name="BillID" Type="Int32" />
           <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -2424,7 +2590,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="BinID" Type="Int32" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="Batch" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="ProduceDate" Type="DateTime" Precision="0" />
           <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="UomID" Type="Int32" Nullable="false" />
@@ -3286,7 +3452,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PostDate" Type="DateTime" Precision="0" />
-          <Property Name="BillTypeID" Type="Int32" Nullable="false" />
+          <Property Name="BillType" Type="Int32" Nullable="false" />
           <Property Name="TruckID" Type="Int32" />
           <Property Name="DriverID" Type="Int32" />
           <Property Name="Status" Type="Int64" Nullable="false" />
@@ -3302,6 +3468,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="ReceiptID" />
             <PropertyRef Name="RowID" />
+            <PropertyRef Name="BatchCode" />
           </Key>
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
@@ -3311,7 +3478,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="BinID" Type="Int32" />
-          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="ProduceDate" Type="DateTime" Precision="0" />
           <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="BillQty" Type="Single" Nullable="false" />
@@ -3351,6 +3518,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="ShipmentID" />
             <PropertyRef Name="RowID" />
+            <PropertyRef Name="BatchCode" />
           </Key>
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" Precision="0" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
@@ -3360,7 +3528,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UomID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="BinID" Type="Int32" />
-          <Property Name="Batch" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="ProduceDate" Type="DateTime" Precision="0" />
           <Property Name="ExpireDate" Type="DateTime" Precision="0" />
           <Property Name="BillQty" Type="Int32" Nullable="false" />
@@ -3549,14 +3717,15 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
             <PropertyRef Name="POID" />
             <PropertyRef Name="CorpID" />
             <PropertyRef Name="Code" />
+            <PropertyRef Name="BillType" />
             <PropertyRef Name="BillDate" />
             <PropertyRef Name="CreateTime" />
             <PropertyRef Name="isRole" />
-            <PropertyRef Name="BillType" />
           </Key>
           <Property Name="POID" Type="Int32" Nullable="false" />
           <Property Name="CorpID" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BillType" Type="Int32" Nullable="false" />
           <Property Name="SupplierID" Type="Int64" />
           <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SupplierName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -3567,7 +3736,6 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="UpdateTime" Type="DateTime" Precision="0" />
           <Property Name="PostDate" Type="DateTime" Precision="0" />
           <Property Name="isRole" Type="Int32" Nullable="false" />
-          <Property Name="BillType" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="view_purchase_detail">
           <Key>
@@ -3726,6 +3894,68 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <Property Name="WarehouseID" Type="Int64" Nullable="false" />
           <Property Name="isRole" Type="Int64" />
         </EntityType>
+        <EntityType Name="view_warehouse_receipt">
+          <Key>
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="BillType" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="BillDate" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="isRole" />
+          </Key>
+          <Property Name="ReceiptID" Type="Int64" Nullable="false" />
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BillType" Type="Int32" Nullable="false" />
+          <Property Name="UpdateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int64" Nullable="false" />
+          <Property Name="StatusName" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="PostDate" Type="DateTime" Precision="0" />
+          <Property Name="isRole" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="view_warehouse_receipt_detail">
+          <Key>
+            <PropertyRef Name="CorpID" />
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UomID" />
+            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="BillQty" />
+            <PropertyRef Name="ReceiptQty" />
+            <PropertyRef Name="UnitAmount" />
+            <PropertyRef Name="UnitCost" />
+            <PropertyRef Name="Amount" />
+            <PropertyRef Name="BatchCode" />
+          </Key>
+          <Property Name="CorpID" Type="Int32" Nullable="false" />
+          <Property Name="ReceiptID" Type="Int32" Nullable="false" />
+          <Property Name="RowID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UomID" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseID" Type="Int32" Nullable="false" />
+          <Property Name="BinID" Type="Int32" />
+          <Property Name="BillQty" Type="Single" Nullable="false" />
+          <Property Name="ReceiptQty" Type="Single" Nullable="false" />
+          <Property Name="BalanceQty" Type="Single" />
+          <Property Name="UnitAmount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="UnitCost" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProduceDate" Type="DateTime" Precision="0" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="0" />
+          <Property Name="ReturnReasonID" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="0" />
+          <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3861,6 +4091,33 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_bas_serial_number">
+            <EntityTypeMapping TypeName="webdmsModel.t_bas_serial_number">
+              <MappingFragment StoreEntitySet="t_bas_serial_number">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="LastNumberUsed" ColumnName="LastNumberUsed" />
+                <ScalarProperty Name="LastDateUsed" ColumnName="LastDateUsed" />
+                <ScalarProperty Name="YearLength" ColumnName="YearLength" />
+                <ScalarProperty Name="IncrementByNumber" ColumnName="IncrementByNumber" />
+                <ScalarProperty Name="WarningNumber" ColumnName="WarningNumber" />
+                <ScalarProperty Name="EndingNumber" ColumnName="EndingNumber" />
+                <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="MaintainMethod" ColumnName="MaintainMethod" />
+                <ScalarProperty Name="IsManual" ColumnName="IsManual" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="SerialID" ColumnName="SerialID" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4095,7 +4352,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
@@ -4964,7 +5221,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DriverID" ColumnName="DriverID" />
                 <ScalarProperty Name="TruckID" ColumnName="TruckID" />
-                <ScalarProperty Name="BillTypeID" ColumnName="BillTypeID" />
+                <ScalarProperty Name="BillType" ColumnName="BillType" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="BillDate" ColumnName="BillDate" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -4989,7 +5246,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="BillQty" ColumnName="BillQty" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
@@ -5040,7 +5297,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="BillQty" ColumnName="BillQty" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
                 <ScalarProperty Name="BinID" ColumnName="BinID" />
                 <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
                 <ScalarProperty Name="UomID" ColumnName="UomID" />
@@ -5184,7 +5441,6 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
           <EntitySetMapping Name="view_purchase">
             <EntityTypeMapping TypeName="webdmsModel.view_purchase">
               <MappingFragment StoreEntitySet="view_purchase">
-                <ScalarProperty Name="BillType" ColumnName="BillType" />
                 <ScalarProperty Name="isRole" ColumnName="isRole" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -5195,6 +5451,7 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
                 <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="BillType" ColumnName="BillType" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CorpID" ColumnName="CorpID" />
                 <ScalarProperty Name="POID" ColumnName="POID" />
@@ -5323,6 +5580,52 @@ FROM `view_warehouse` AS `view_warehouse`</DefiningQuery>
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_warehouse_receipt">
+            <EntityTypeMapping TypeName="webdmsModel.view_warehouse_receipt">
+              <MappingFragment StoreEntitySet="view_warehouse_receipt">
+                <ScalarProperty Name="isRole" ColumnName="isRole" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdateUserName" ColumnName="UpdateUserName" />
+                <ScalarProperty Name="BillType" ColumnName="BillType" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
+                <ScalarProperty Name="ReceiptID" ColumnName="ReceiptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_warehouse_receipt_detail">
+            <EntityTypeMapping TypeName="webdmsModel.view_warehouse_receipt_detail">
+              <MappingFragment StoreEntitySet="view_warehouse_receipt_detail">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ReturnReasonID" ColumnName="ReturnReasonID" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ProduceDate" ColumnName="ProduceDate" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+                <ScalarProperty Name="UnitAmount" ColumnName="UnitAmount" />
+                <ScalarProperty Name="BalanceQty" ColumnName="BalanceQty" />
+                <ScalarProperty Name="ReceiptQty" ColumnName="ReceiptQty" />
+                <ScalarProperty Name="BillQty" ColumnName="BillQty" />
+                <ScalarProperty Name="BinID" ColumnName="BinID" />
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="UomID" ColumnName="UomID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="ReceiptID" ColumnName="ReceiptID" />
+                <ScalarProperty Name="CorpID" ColumnName="CorpID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

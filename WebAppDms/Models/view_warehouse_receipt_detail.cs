@@ -12,25 +12,26 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class t_warehouse_receipt_detail
+    public partial class view_warehouse_receipt_detail
     {
-        public System.DateTime TimeStamp { get; set; }
         public int CorpID { get; set; }
         public int ReceiptID { get; set; }
         public int RowID { get; set; }
         public int ItemID { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
         public int UomID { get; set; }
         public int WarehouseID { get; set; }
         public Nullable<int> BinID { get; set; }
-        public string BatchCode { get; set; }
-        public Nullable<System.DateTime> ProduceDate { get; set; }
-        public Nullable<System.DateTime> ExpireDate { get; set; }
         public float BillQty { get; set; }
         public float ReceiptQty { get; set; }
         public Nullable<float> BalanceQty { get; set; }
         public decimal UnitAmount { get; set; }
         public decimal UnitCost { get; set; }
         public decimal Amount { get; set; }
+        public string BatchCode { get; set; }
+        public Nullable<System.DateTime> ProduceDate { get; set; }
+        public Nullable<System.DateTime> ExpireDate { get; set; }
         public Nullable<int> ReturnReasonID { get; set; }
         public string Remark { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }

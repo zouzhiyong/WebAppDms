@@ -17,7 +17,7 @@ namespace WebAppDms.Models
         public System.DateTime TimeStamp { get; set; }
         public long InvEntryID { get; set; }
         public int CorpID { get; set; }
-        public string InvEntryCode { get; set; }
+        public int InvEntryCode { get; set; }
         public Nullable<int> BillID { get; set; }
         public System.DateTime BillDate { get; set; }
         public System.DateTime PostDate { get; set; }
@@ -25,7 +25,7 @@ namespace WebAppDms.Models
         public int WarehouseID { get; set; }
         public Nullable<int> BinID { get; set; }
         public int ItemID { get; set; }
-        public string Batch { get; set; }
+        public string BatchCode { get; set; }
         public Nullable<System.DateTime> ProduceDate { get; set; }
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public int UomID { get; set; }

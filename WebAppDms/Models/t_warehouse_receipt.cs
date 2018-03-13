@@ -20,7 +20,7 @@ namespace WebAppDms.Models
         public string Code { get; set; }
         public System.DateTime BillDate { get; set; }
         public Nullable<System.DateTime> PostDate { get; set; }
-        public int BillTypeID { get; set; }
+        public int BillType { get; set; }
         public Nullable<int> TruckID { get; set; }
         public Nullable<int> DriverID { get; set; }
         public long Status { get; set; }

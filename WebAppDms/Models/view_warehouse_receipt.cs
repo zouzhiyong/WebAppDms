@@ -12,16 +12,14 @@ namespace WebAppDms.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_purchase
+    public partial class view_warehouse_receipt
     {
-        public int POID { get; set; }
+        public long ReceiptID { get; set; }
         public int CorpID { get; set; }
         public string Code { get; set; }
         public int BillType { get; set; }
-        public Nullable<long> SupplierID { get; set; }
         public string UpdateUserName { get; set; }
-        public string SupplierName { get; set; }
-        public Nullable<long> Status { get; set; }
+        public long Status { get; set; }
         public string StatusName { get; set; }
         public System.DateTime BillDate { get; set; }
         public System.DateTime CreateTime { get; set; }
