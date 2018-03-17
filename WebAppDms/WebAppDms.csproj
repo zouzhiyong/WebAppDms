@@ -225,6 +225,15 @@
     <Content Include="Dms\Area\Index\Js\Index.js" />
     <Content Include="Dms\Js\jquery.min.js" />
     <Content Include="Dms\Area\Main\Main.html" />
+    <Content Include="Dms\Js\layer\layer.js" />
+    <Content Include="Dms\Js\layer\mobile\layer.js" />
+    <Content Include="Dms\Js\layer\mobile\need\layer.css" />
+    <Content Include="Dms\Js\layer\theme\default\icon-ext.png" />
+    <Content Include="Dms\Js\layer\theme\default\icon.png" />
+    <Content Include="Dms\Js\layer\theme\default\layer.css" />
+    <Content Include="Dms\Js\layer\theme\default\loading-0.gif" />
+    <Content Include="Dms\Js\layer\theme\default\loading-1.gif" />
+    <Content Include="Dms\Js\layer\theme\default\loading-2.gif" />
     <Content Include="Dms\Js\vue.js" />
     <Content Include="Dms\login.html" />
     <Content Include="Global.asax" />
@@ -576,7 +585,6 @@
     <Folder Include="Dms\Area\Pur\" />
     <Folder Include="Dms\Area\Sys\" />
     <Folder Include="Dms\Area\Ware\" />
-    <Folder Include="Dms\Js\layer\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
