@@ -156,3 +156,12 @@ input.input_color {
   background-color: #538bfa;
   color: #ffffff;
 }
+.loading2 {
+    border-left-color: #538bfa;
+    border-top-color: #538bfa;
+}
+
+.loading {
+    border-left-color:#85acfb;
+    border-top-color: #85acfb;
+}

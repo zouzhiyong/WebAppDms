@@ -199,6 +199,7 @@
     <Content Include="Dms\Area\Index\SideBar.html" />
     <Content Include="Dms\Area\Index\Tabs.html" />
     <Content Include="Dms\Area\Login\Css\login.css" />
+    <Content Include="Dms\Area\Login\Js\Login.js" />
     <Content Include="Dms\Area\Main\Js\Main.js" />
     <Content Include="Dms\Css\base.css" />
     <Content Include="Dms\Css\bootstrap-table.css" />
@@ -234,6 +235,7 @@
     <Content Include="Dms\Js\layer\theme\default\loading-0.gif" />
     <Content Include="Dms\Js\layer\theme\default\loading-1.gif" />
     <Content Include="Dms\Js\layer\theme\default\loading-2.gif" />
+    <Content Include="Dms\Js\Router.js" />
     <Content Include="Dms\Js\vue.js" />
     <Content Include="Dms\login.html" />
     <Content Include="Global.asax" />

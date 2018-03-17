@@ -45,6 +45,9 @@ $(function() {
 
     //关闭其它
     $('.J_tabCloseOther').on('click', BaseFun.closeOtherTabs);
+
+    //退出
+    $('.logoff-link').on('click', BaseFun.Logoff);
 });
 
 
@@ -439,5 +442,17 @@ var BaseFun = {
             width += $(this).outerWidth(true);
         });
         return width;
+    },
+    //退出
+    Logoff: function () {
+        new Vue().$confirm('是否确定退出?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(function () {            
+            window.location.href = "login.html";
+        }).catch(function () {
+            return;
+        });
     }
 }

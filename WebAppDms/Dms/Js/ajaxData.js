@@ -7,14 +7,23 @@ var ajaxGloble = function() {
     })
     var index;
     var loadTimeOut = true;
+
+    var loading = "<div class='loadingBox ajax'>" +
+            "<div class='loading1'></div>" +
+            "<div class='loading2'></div>" +
+            "<div class='loading'></div>" +
+            "<div class='loadingTxt'>请稍候</div>" +
+        "</div>";
+    
+
     $(document).ajaxStart(function() {
         //超过500毫秒才会显示加载层
-        setTimeout(function() {
+        //setTimeout(function() {
             if (loadTimeOut) {
-                window.top.$(".loadingBox.ajax", window.top.document).show();
+                window.top.$(".loadingBox.ajax", window.top.document).remove();
+                $("body").append(loading);
             }
-
-        }, 500);
+        //}, 500);
     }).ajaxSuccess(function(e, xhr, o) {
         //判断返回状态是否为真
         if (xhr.responseJSON.result == true) {
@@ -57,13 +66,13 @@ var ajaxGloble = function() {
         }
         //layer.close(index);
         loadTimeOut = false;
-        window.top.$(".loadingBox.ajax", window.top.document).hide();
+        window.top.$(".loadingBox.ajax", window.top.document).remove();
     }).ajaxComplete(function(e, xhr, o) {
 
     }).ajaxStop(function() {
         //layer.close(index);
         loadTimeOut = false;
-        window.top.$(".loadingBox.ajax", window.top.document).hide();
+        window.top.$(".loadingBox.ajax", window.top.document).remove();
     });
 }
 
@@ -76,7 +85,7 @@ var ajaxData = function(url, option) {
         async: true,
         global: true,
         beforeSend: function(xhr) {
-            var _ticket = $.cookie('Ticket');
+            var _ticket = sessionStorage.getItem("Ticket");
             if (_ticket) {
                 xhr.setRequestHeader('Authorization', 'BasicAuth ' + _ticket);
             }
@@ -96,7 +105,8 @@ var ajaxData = function(url, option) {
 
 
 // var hostUrl = 'http://localhost:64573/';
-var hostUrl = 'http://localhost/webDmsApi/';
-var getUrl = function(url) {
+var hostUrl = 'http://localhost/WebAppDms/';
+var getUrl = function (url) {
     return hostUrl + url;
 }
+
