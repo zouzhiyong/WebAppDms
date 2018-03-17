@@ -194,6 +194,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dms\Css\bootstrap.min.css" />
+    <Content Include="Dms\Css\color.css" />
+    <Content Include="Dms\Css\font-awesome.css" />
+    <Content Include="Dms\Css\font-awesome.min.css" />
+    <Content Include="Dms\Css\layout.css" />
+    <Content Include="Dms\Fonts\fontawesome-webfont.svg" />
+    <Content Include="Dms\index.html" />
+    <Content Include="Dms\Js\bootstrap.min.js" />
+    <Content Include="Dms\Js\frame.js" />
+    <Content Include="Dms\Js\jquery.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -244,7 +254,7 @@
     <Compile Include="Areas\Sys\MenuController.cs" />
     <Compile Include="Areas\Sys\RoleController.cs" />
     <Compile Include="Areas\Sys\RoleMenuController.cs" />
-    <Compile Include="Areas\ware\WarehouseController.cs" />
+    <Compile Include="Areas\Ware\WarehouseController.cs" />
     <Compile Include="Common\Exception\DomainException.cs" />
     <Compile Include="Common\LoggingProvider.cs" />
     <Compile Include="Common\LoggingProviderCollection.cs" />
@@ -522,6 +532,11 @@
     <Content Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Dms\Fonts\fontawesome-webfont.eot" />
+    <Content Include="Dms\Fonts\fontawesome-webfont.ttf" />
+    <Content Include="Dms\Fonts\fontawesome-webfont.woff" />
+    <Content Include="Dms\Fonts\fontawesome-webfont.woff2" />
+    <Content Include="Dms\Fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\webAppDms.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -532,6 +547,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Dms\View\Bas\" />
+    <Folder Include="Dms\View\Login\" />
+    <Folder Include="Dms\View\Pur\" />
+    <Folder Include="Dms\View\Sys\" />
+    <Folder Include="Dms\View\Ware\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
