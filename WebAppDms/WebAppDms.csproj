@@ -194,9 +194,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dms\Area\Bas\test.html" />
     <Content Include="Dms\Area\Index\Header.html" />
     <Content Include="Dms\Area\Index\SideBar.html" />
     <Content Include="Dms\Area\Index\Tabs.html" />
+    <Content Include="Dms\Area\Login\Css\login.css" />
     <Content Include="Dms\Area\Main\Js\Main.js" />
     <Content Include="Dms\Css\base.css" />
     <Content Include="Dms\Css\bootstrap-table.css" />
@@ -205,6 +207,7 @@
     <Content Include="Dms\Css\color.css" />
     <Content Include="Dms\Css\font-awesome.css" />
     <Content Include="Dms\Css\font-awesome.min.css" />
+    <Content Include="Dms\Css\global.css" />
     <Content Include="Dms\Css\layout.css" />
     <Content Include="Dms\Fonts\fontawesome-webfont.svg" />
     <Content Include="Dms\Iconfont\demo.css" />
@@ -215,12 +218,15 @@
     <Content Include="Dms\Iconfont\iconfont.js" />
     <Content Include="Dms\Iconfont\iconfont.svg" />
     <Content Include="Dms\index.html" />
+    <Content Include="Dms\Js\ajaxData.js" />
     <Content Include="Dms\Js\bootstrap-table.js" />
     <Content Include="Dms\Js\bootstrap.min.js" />
     <Content Include="Dms\Js\echarts.min.js" />
     <Content Include="Dms\Area\Index\Js\Index.js" />
     <Content Include="Dms\Js\jquery.min.js" />
     <Content Include="Dms\Area\Main\Main.html" />
+    <Content Include="Dms\Js\vue.js" />
+    <Content Include="Dms\login.html" />
     <Content Include="Global.asax" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -567,11 +573,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Dms\Area\Bas\" />
-    <Folder Include="Dms\Area\Login\" />
     <Folder Include="Dms\Area\Pur\" />
     <Folder Include="Dms\Area\Sys\" />
     <Folder Include="Dms\Area\Ware\" />
+    <Folder Include="Dms\Js\layer\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

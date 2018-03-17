@@ -49,8 +49,8 @@ header .header_logo {
 
 .side_bar {
     width: 180px;
-    position: fixed;
-    height: 100%
+    position: absolute;
+    height: calc(100% - 60px)
 }
 
 .side_bar .top_nav {
@@ -86,6 +86,7 @@ header .header_logo {
     display: block !important;
     border-style: solid;
     border-width: 8px;
+    z-index:999999999;
 }
 
 .mini-navbar .side_bar>.menu>ul>li:hover ul.collapse a {
@@ -138,11 +139,6 @@ body:not(.mini-navbar) .side_bar>.menu>ul>li {
     font-size: 14px;
     margin-right: 10px;
     pointer-events: none;
-}
-
-.side_bar ul>li>a .arrow {
-    float: right;
-    margin-top: 2px;
 }
 
 .side_bar ul>li>a .arrow {
@@ -273,7 +269,6 @@ input.input_color {
     border-radius: 4px;
     -moz-appearance: none;
     -webkit-appearance: none;
-    appearance: none;
     border-width: 1px;
 }
 

@@ -197,7 +197,7 @@ var BaseFun = {
             $.ajaxSetup({ cache: false });
             var domName = ".J_iframe[data-id='" + dataIndex + "']";
 
-            $(domName).load(dataUrl + " #content ", function (result) {
+            $(domName).load(dataUrl + " .content ", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domName);
             });
@@ -214,7 +214,7 @@ var BaseFun = {
             return;
         }
 
-        $("ul", this).css("top", $(this).offset().top + "px");
+        $("ul", this).css({ "top": $(this).offset().top + "px"});
     },
     //判断浏览器是否支持html5本地存储    
     localStorageSupport: function() {

@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
 </head>
 <body>
     <div class="side_bar content">
@@ -12,7 +12,7 @@
                 <i class="fa fa-bars"></i>
             </a>
         </div>
-        <div class="menu scroll">
+        <div class="menu scroll" id="IndexMenu180317">
             <ul>
                 <li>
                     <a class="menu_item" href="./Area/Main/Main.html" data-index="0" expanded="false">
@@ -20,56 +20,325 @@
                         <span class="">主页</span>
                     </a>
                 </li>
-                <li>
-                    <a href="javascript:;" data-index="1" expanded="false">
-                        <i class="iconfont icon-setting"></i>
-                        <span class="menu-label">系统管理</span>
+                <li v-for="item in menu">
+                    <a href="javascript:;" :data-index="item.MenuID" expanded="false">
+                        <i :class="item.iconCls"></i>
+                        <span class="menu-label">{{item.name}}</span>
                         <span class="fa fa-angle-left arrow"> </span>
                     </a>
                     <ul class="collapse" expanded="false">
-                        <li>
-                            <a class="menu_item" href="View/Bas/Main.html" data-index="1">
-                                <i class=""></i> 单文件组件
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu_item" href="views/button.html" data-index="1">
-                                <i class=""></i> 单文件按钮组件
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu_item" href="views/template.html" data-index="2">
-                                <i class=""></i> 组件测试
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu_item" href="views/router.html" data-index="3">
-                                <i class=""></i> 路由
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;" data-index="2" expanded="false">
-                        <i class="iconfont icon-setting"></i>
-                        <span class="menu-label">仓库管理</span>
-                        <span class="fa fa-angle-left arrow"> </span>
-                    </a>
-                    <ul class="collapse" expanded="false">
-                        <li>
-                            <a class="menu_item" href="views/ck.html" data-index="4">
-                                <i class=""></i> 进货入库单
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu_item" href="views/form.html" data-index="4">
-                                <i class=""></i> 表单
+                        <li v-for="_item in item.children">
+                            <a class="menu_item" :href="_item.MenuPath" :data-index="_item.MenuID">
+                                <i class=""></i> {{_item.name}}
                             </a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
+
+        <script>
+            var vm = new Vue({
+                el: '#IndexMenu180317',
+                data: {
+                    "menu": [{
+                        "path": "/",
+                        "name": "",
+                        "meta": {
+                            "name": "系统管理",
+                            "button": []
+                        },
+                        "Xh": 100,
+                        "MenuID": "01",
+                        "iconCls": "fa fa-cog",
+                        "children": [
+                            {
+                                "path": "/sys_module/index",
+                                "name": "菜单设置",
+                                "meta": {
+                                    "name": "菜单设置",
+                                    "button": [
+                                        "audit",
+                                        "new",
+                                        "cancle",
+                                        "save"
+                                    ],
+                                    "isButton": false
+                                },
+                                "MenuPath": "sys/module/index",
+                                "Xh": 102,
+                                "MenuID": "0101"
+                            },
+                            {
+                                "path": "/sys_role/index",
+                                "name": "角色设置",
+                                "meta": {
+                                    "name": "角色设置",
+                                    "button": [
+                                        "new",
+                                        "cancle",
+                                        "save",
+                                        "audit"
+                                    ],
+                                    "isButton": false
+                                },
+                                "MenuPath": "sys/role/index",
+                                "Xh": 103,
+                                "MenuID": "0102"
+                            },
+                            {
+                                "path": "/sys_rolemenu/index",
+                                "name": "权限设置",
+                                "meta": {
+                                    "name": "权限设置",
+                                    "button": [
+                                        "save",
+                                        "cancle",
+                                        "audit",
+                                        "new"
+                                    ],
+                                    "isButton": false
+                                },
+                                "MenuPath": "sys/rolemenu/index",
+                                "Xh": 104,
+                                "MenuID": "0103"
+                            }
+                        ]
+                    },
+        {
+            "path": "/",
+            "name": "",
+            "meta": {
+                "name": "基本数据",
+                "button": []
+            },
+            "Xh": 200,
+            "MenuID": "02",
+            "iconCls": "fa fa-database",
+            "children": [
+                {
+                    "path": "/bas_supplier/index",
+                    "name": "供应商信息",
+                    "meta": {
+                        "name": "供应商信息",
+                        "button": [
+                            "cancle",
+                            "save",
+                            "new",
+                            "audit"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/supplier/index",
+                    "Xh": 201,
+                    "MenuID": "0201"
+                },
+                {
+                    "path": "/bas_company/index",
+                    "name": "公司信息",
+                    "meta": {
+                        "name": "公司信息",
+                        "button": [
+                            "new",
+                            "audit",
+                            "cancle",
+                            "save"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/company/index",
+                    "Xh": 202,
+                    "MenuID": "0202"
+                },
+                {
+                    "path": "/bas_user/index",
+                    "name": "用户设置",
+                    "meta": {
+                        "name": "用户设置",
+                        "button": [
+                            "cancle",
+                            "save",
+                            "new",
+                            "audit"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/user/index",
+                    "Xh": 203,
+                    "MenuID": "0203"
+                },
+                {
+                    "path": "/bas_warehouse/index",
+                    "name": "仓库信息",
+                    "meta": {
+                        "name": "仓库信息",
+                        "button": [
+                            "new",
+                            "audit",
+                            "cancle",
+                            "save"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/warehouse/index",
+                    "Xh": 203,
+                    "MenuID": "0203"
+                },
+                {
+                    "path": "/bas_department/index",
+                    "name": "部门信息",
+                    "meta": {
+                        "name": "部门信息",
+                        "button": [
+                            "audit",
+                            "cancle",
+                            "save",
+                            "new"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/department/index",
+                    "Xh": 204,
+                    "MenuID": "0204"
+                },
+                {
+                    "path": "/bas_customer/index",
+                    "name": "客户信息",
+                    "meta": {
+                        "name": "客户信息",
+                        "button": [
+                            "new",
+                            "audit",
+                            "cancle",
+                            "save"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/customer/index",
+                    "Xh": 205,
+                    "MenuID": "0205"
+                },
+                {
+                    "path": "/bas_itemcategory/index",
+                    "name": "商品类别",
+                    "meta": {
+                        "name": "商品类别",
+                        "button": [
+                            "audit",
+                            "cancle",
+                            "save",
+                            "new"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/itemcategory/index",
+                    "Xh": 206,
+                    "MenuID": "0206"
+                },
+                {
+                    "path": "/bas_item/index",
+                    "name": "商品信息",
+                    "meta": {
+                        "name": "商品信息",
+                        "button": [
+                            "new",
+                            "audit",
+                            "cancle",
+                            "save"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "bas/item/index",
+                    "Xh": 207,
+                    "MenuID": "0207"
+                }
+            ]
+        },
+        {
+            "path": "/",
+            "name": "",
+            "meta": {
+                "name": "采购管理",
+                "button": []
+            },
+            "Xh": 300,
+            "MenuID": "03",
+            "iconCls": "fa fa-shopping-cart",
+            "children": [
+                {
+                    "path": "/pur_purchaser/indexorder",
+                    "name": "采购订单",
+                    "meta": {
+                        "name": "采购订单",
+                        "button": [
+                            "new",
+                            "save",
+                            "cancle",
+                            "audit"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "pur/purchaser/indexorder",
+                    "Xh": 301,
+                    "MenuID": "0301"
+                },
+                {
+                    "path": "/pur_purchaser/indexreturn",
+                    "name": "采购退货",
+                    "meta": {
+                        "name": "采购退货",
+                        "button": [
+                            "new",
+                            "audit",
+                            "save",
+                            "cancle"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "pur/purchaser/indexreturn",
+                    "Xh": 302,
+                    "MenuID": "0302"
+                },
+                {
+                    "path": "/ware_purchaser/indexorder",
+                    "name": "采购入库",
+                    "meta": {
+                        "name": "采购入库",
+                        "button": [
+                            "new",
+                            "save",
+                            "audit",
+                            "cancle"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "ware/purchaser/indexorder",
+                    "Xh": 303,
+                    "MenuID": "0303"
+                },
+                {
+                    "path": "/ware_purchaser/indexreturn",
+                    "name": "采购出库",
+                    "meta": {
+                        "name": "采购出库",
+                        "button": [
+                            "new",
+                            "save",
+                            "audit",
+                            "cancle"
+                        ],
+                        "isButton": false
+                    },
+                    "MenuPath": "ware/purchaser/indexreturn",
+                    "Xh": 304,
+                    "MenuID": "0304"
+                }
+            ]
+        }
+                    ]
+                }
+            })
+        </script>
     </div>
 </body>
 </html>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8" />
+    <title>进销存</title>
+    <link rel="stylesheet" href="Global/css/font-awesome.css?ver=20170916" />
+    <link rel="stylesheet" href="Global/css/index.css?ver=20170916" />
+    <link rel="stylesheet" href="Global/css/global.css?ver=20170916" />
+    <link rel="stylesheet" href="Global/css/login.css?ver=20170916" />
+    <link rel="stylesheet" href="Global/css/layout.css?ver=20170916" />
+    <link rel="stylesheet/less" href="Global/css/color.less?ver=20170916" />
+    <script src="Global/js/less.min.js?ver=20170916"></script>
+
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="./Iconfont/iconfont.css?ver=20170718" />
+    <link rel="stylesheet" href="./Css/font-awesome.min.css?ver=20170718" />
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./Area/Login/Css/login.css?ver=20170718" />
+    <link rel="stylesheet" href="./Css/global.css?ver=20170718" />
+    <link rel="stylesheet" href="./Css/layout.css?ver=20170718" />
+    <link rel="stylesheet" href="./Css/color.css?ver=20170718" />
+
+</head>
+
+<body>
+    <div class='login'>
+        <el-form :model="ruleForm" ref="ruleForm" :rules="loginRules">
+            <el-form-item prop="userName">
+                <el-input placeholder="请输入帐号" v-model="ruleForm.userName" auto-complete="on">
+                    <template slot="prepend">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="passWord">
+                <el-input type="password" placeholder="请输入密码" v-model="ruleForm.passWord" auto-complete="off" @keyup.enter.native="handleLogin">
+                    <template slot="prepend">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="handleLogin">登录</el-button>
+            </el-form-item>
+        </el-form>
+        <div class="loadingBox ajax" style="display:none">
+            <div class="loading1"></div>
+            <div class="loading2"></div>
+            <div class="loading"></div>
+            <div class="loadingTxt">请稍候</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="./Js/vue.js?ver=20170916"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="./Js/jquery.min.js?ver=20170916"></script>
+<script src="./Js/layer/layer.js?ver=20170916"></script>
+<script src="./Js/ajaxData.js?ver=20170916"></script>
+<script>
+    new Vue({
+        el: '.login',
+        data: {
+            ruleForm: {
+                userName: '',
+                passWord: ''
+            },
+            loginRules: {
+                userName: [{
+                    required: true,
+                    message: '帐号不能为空',
+                    trigger: 'blur'
+                }],
+                passWord: [{
+                    required: true,
+                    message: '密码不能为空',
+                    trigger: 'blur'
+                }]
+            }
+        },
+        methods: {
+            handleLogin: function() {
+                var _self = this;
+                this.$refs.ruleForm.validate(function(valid) {
+                    if (valid) {
+                        $.cookie('Ticket', '', {
+                            expires: -1
+                        });
+                        ajaxData('api/Login/Login', {
+                            data: {
+                                strUser: _self.ruleForm.userName,
+                                strPwd: _self.ruleForm.passWord
+                            }
+                        }).then(function(result) {
+                            if (result.bRes) {　　　　
+                                //登录成功之后将用户名和用户票据带到主界面
+                                $.cookie('Ticket', result.Ticket);
+                                window.location.href = "index.html";
+                            } else {
+                                _self.$message(result.message);
+                                return;　　　　　　　
+                            }
+                        }, function() {
+
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        }
+    })
+</script>

@@ -50,12 +50,13 @@ namespace WebAppDms.Areas.Login
                             FormsAuthentication.FormsCookiePath);
             webDmsEntities db = new webDmsEntities();
 
-            var homeOjb = new object[] { new { path = "/", iconCls = "fa fa-home", leaf = true, children = new object[] { new { path = "/index", MenuPath = "index", meta = new { name = "主页", button = new string[] { }.ToList() } } } } };
+            //var homeOjb = new object[] { new { path = "/", iconCls = "fa fa-home", leaf = true, children = new object[] { new { path = "/index", MenuPath = "index", meta = new { name = "主页", button = new string[] { }.ToList() } } } } };
 
             var list = db.view_menu.Where<view_menu>(p => p.UserID.ToString() == tBasUser.UserID.ToString() && p.ParentCode == "&").Select(s => new
             {
                 path = "/",
-                name = "",
+                name = s.Name,
+                url = "",
                 meta = new { name = s.Name, button = new string[0] { }.ToList() },
                 Xh = s.Sequence,
                 MenuID = s.Code,
@@ -63,6 +64,7 @@ namespace WebAppDms.Areas.Login
                 children = db.view_menu.Where<view_menu>(p1 => p1.UserID.ToString() == tBasUser.UserID.ToString() && p1.ParentCode == s.Code).Select(s1 => new
                 {
                     path = "/" + s1.URL,
+                    url = s1.URL,
                     name = s1.Name,
                     meta = new { name = s1.Name, button = new string[] { "save", "cancle", "new","audit" }.ToList(), isButton = false },
                     MenuPath = s1.URL.Replace("_", "/"),
@@ -71,7 +73,7 @@ namespace WebAppDms.Areas.Login
                 }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList()
             }).OrderBy(o => o.Xh).ThenBy(o => o.MenuID).ToList();
 
-            var tempList = homeOjb.Concat(list).ToList();
+            var tempList = list.ToList();
 
             //返回登录结果、用户信息、用户验证票据信息
             var tSysCompany = db.t_sys_company.Where(w => w.CorpID == tBasUser.CorpID);
