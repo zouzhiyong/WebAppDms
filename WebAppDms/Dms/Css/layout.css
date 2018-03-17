@@ -162,6 +162,7 @@ body:not(.mini-navbar) .side_bar>.menu>ul>li {
 
 .J_iframe {
     height: 100%;
+    overflow:auto;
 }
 
 .main_tabs {

@@ -4,208 +4,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!--<meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">-->
+
     <title>进销存</title>
     <meta charset="utf-8" />
     <!-- 引入样式 -->
     <link rel="stylesheet" href="./Css/bootstrap.min.css?ver=20170718" />
-    <!--<link rel="stylesheet" href="css/icon.css?ver=20170718" />
-    <link rel="stylesheet" href="css/iconfont.css?ver=20170718" />-->
+    <link rel="stylesheet" href="./Css/bootstrap-theme.min.css?ver=20170703" />
+    <link rel="stylesheet" href="./Css/bootstrap-table.css?ver=20170703" />
+    <link rel="stylesheet" href="./Iconfont/iconfont.css?ver=20170718" />
     <link rel="stylesheet" href="./Css/font-awesome.min.css?ver=20170718" />
-    <!--<link rel="stylesheet" href="css/base.css?ver=20170718" />-->
-    <!--<link rel="stylesheet" href="css/global.css?ver=20170718" />-->
+    <link rel="stylesheet" href="./Css/base.css?ver=20170718" />
     <link rel="stylesheet" href="./Css/layout.css?ver=20170718" />
     <link rel="stylesheet" href="./Css/color.css?ver=20170718" />
-    <!--<link rel="stylesheet/less" href="css/color.less" />-->
-    <!--<script src="js/less.min.js"></script>-->
-
 </head>
 
 <body>
-    <div class="wrapper">
-        <header>
-            <img src="" class="header_logo">
-            <nav class="nav navbar-top-links navbar-right">
-                <ul class="header_operations">
-                    <li>
-                        <a href="javascript:;" data-toggle="modal" data-target="#myModal">
-                            <i class="fa fa-tasks"></i> 主题
-                        </a>
-                        <!-- Modal -->
-                        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel"><label>切换主题色</label></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label>主题颜色</label>
-                                        <div>
-
-                                            <input type="color" autocomplete="off" class="input_color">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-custom-primary" data-dismiss="modal">切换</button>
-                                        <button type="button" class="btn btn-custom">重置</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown dropdown-win">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
-                            <i class="fa fa-windows"></i>
-                            <span class="username username-hide-on-mobile">窗口模式 </span>
-
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default">
-                            <li>
-                                <a class="J-window-model" href="javascript:;">
-                                    <i class="fa fa-window-restore"></i> <span>切换单窗口</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown dropdown-user">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
-                            <span class="username username-hide-on-mobile">系统管理员 </span>
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default">
-                            <li>
-                                <a class="MyselfMsg-link" href="javascript:;">
-                                    <i class="icon iconfont icon-code"></i> 个人资料
-                                </a>
-                            </li>
-                            <li>
-                                <a class="Mainset-link" href="javascript:;">
-                                    <i class="icon iconfont icon-homeset"></i> 主页设置
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a class="UpdatePwd-link" href="javascript:;">
-                                    <i class="icon iconfont icon-lock"></i> 修改密码
-                                </a>
-                            </li>
-                            <li>
-                                <a class="logoff-link" href="javascript:;">
-                                    <i class="icon iconfont icon-exit"></i> 安全退出
-                                    <input id="loginurl" value="Login" type="hidden">
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </nav>
-        </header>
-        <div class="side_bar">
-            <div class="top_nav">
-                <a href="javascript:;">
-                    <i class="fa fa-bars"></i>
-                </a>
-            </div>
-            <div class="menu scroll">
-                <ul>
-                    <li>
-                        <a class="menu_item" href="views/ck.html" data-index="0" expanded="false">
-                            <i class="fa fa-home"></i>
-                            <span class="">主页</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-index="0" expanded="false">
-                            <i class="iconfont icon-setting"></i>
-                            <span class="menu-label">系统管理</span>
-                            <span class="fa fa-angle-left arrow"> </span>
-                        </a>
-                        <ul class="collapse" expanded="false">
-                            <li>
-                                <a class="menu_item" href="views/test.html" data-index="1">
-                                    <i class=""></i> 单文件组件
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu_item" href="views/button.html" data-index="1">
-                                    <i class=""></i> 单文件按钮组件
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu_item" href="views/template.html" data-index="2">
-                                    <i class=""></i> 组件测试
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu_item" href="views/router.html" data-index="3">
-                                    <i class=""></i> 路由
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-index="1" expanded="false">
-                            <i class="iconfont icon-setting"></i>
-                            <span class="menu-label">仓库管理</span>
-                            <span class="fa fa-angle-left arrow"> </span>
-                        </a>
-                        <ul class="collapse" expanded="false">
-                            <li>
-                                <a class="menu_item" href="views/ck.html" data-index="4">
-                                    <i class=""></i> 进货入库单
-                                </a>
-                            </li>
-                            <li>
-                                <a class="menu_item" href="views/form.html" data-index="4">
-                                    <i class=""></i> 表单
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <div class="wrapper">        
+        <div data-url="./Area/Index/Header.html" name="header"></div>     
+        <div data-url="./Area/Index/SideBar.html" name="menu"></div>      
         <div class="main">
-            <div class="main_tabs">
-                <button class="roll-nav roll-left J_tabLeft">
-                    <i class="fa fa-backward"></i>
-                </button>
-                <nav class="page-tabs J_menuTabs">
-                    <div class="page-tabs-content" style="margin-left: 0px;">
-                        <a href="javascript:;" class="J_menuTab active" data-id="0">主页</a>
-                    </div>
-                </nav>
-
-                <button class="roll-nav roll-right J_tabRight">
-                    <i class="fa fa-forward"></i>
-                </button>
-                <div class="btn-group roll-nav roll-right">
-                    <button class="dropdown-toggle J_tabClose" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                        关闭操作<span class="caret"></span>
-
-                    </button>
-                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li class="J_tabShowActive">
-                            <a>定位当前选项卡</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="J_tabCloseAll">
-                            <a>关闭全部选项卡</a>
-                        </li>
-                        <li class="J_tabCloseOther">
-                            <a>关闭其他选项卡</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="javascript:;" class="roll-nav roll-right J_tabExit logoff-link"><i class="fa fa fa-sign-out"></i>退出</a>
-            </div>
+            <div data-url="./Area/Index/Tabs.html" name="tabs"></div>
             <div class="J_mainContent">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="views/ck.html" frameborder="0" data-id="0"></iframe>
+                <div class="J_iframe" name="iframe0" data-url="./Area/Main/Main.html" data-id="0"></div>
             </div>
             <div class="footer">
                 <div class="pull-right ">
@@ -214,13 +34,13 @@
             </div>
         </div>
 
-
     </div>
 
     <script src="./Js/jquery.min.js?ver=20170703"></script>
-     <script src="./Js/bootstrap.min.js?ver=20170703"></script> 
-    <script src="./Js/frame.js?ver=20170703"></script>
-
+    <script src="./Js/bootstrap.min.js?ver=20170703"></script>    
+    <script src="./Js/bootstrap-table.js?ver=20170703"></script>
+    <script src="./Js/echarts.min.js?ver=20170703"></script>
+    <script src="./Area/Index/Js/Index.js?ver=20170703"></script>
 </body>
 
 </html>

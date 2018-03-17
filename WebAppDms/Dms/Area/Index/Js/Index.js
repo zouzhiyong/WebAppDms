@@ -2,7 +2,8 @@ $(function() {
     //*************初始化***************
     //初始化窗口模式
     BaseFun.Initialize.windowModelFun();
-
+    //加载头部、菜单、工具栏
+    BaseFun.Initialize.InitLayer();
 
     //*************侧栏部分*************
 
@@ -67,6 +68,36 @@ var BaseFun = {
                 $(".J_mainContent").css("height", "calc(100% - 36px)");
                 $(".J-window-model").html("<i class='fa fa-window-restore'></i> 切换多窗口");
             }
+        },
+        InitLayer: function () {
+            $.ajaxSetup({ async: false, cache: false });
+            //加载页头
+            var domHeaderName = "div[name='header']";
+            $(domHeaderName).load($(domHeaderName).data("url") + " .content", function (result) {
+                $result = $(result);
+                $result.find("script").appendTo(domHeaderName);
+                $(domHeaderName).removeAttr("data-url");
+            });
+            //加载左边菜单
+            var domMenuName = "div[name='menu']";
+            $(domMenuName).load($(domMenuName).data("url") + " .content", function (result) {
+                $result = $(result);
+                $result.find("script").appendTo(domMenuName);
+                $(domMenuName).removeAttr("data-url");
+            });
+            //加载工具栏
+            var domTabsName = "div[name='tabs']";
+            $(domTabsName).load($(domTabsName).data("url") + " .content", function (result) {
+                $result = $(result);
+                $result.find("script").appendTo(domTabsName);
+                $(domTabsName).removeAttr("data-url");
+            });
+            //加载主页
+            var domMainName = ".J_iframe[data-id='0']";
+            $(domMainName).load($(domMainName).data("url") + " .content", function (result) {
+                $result = $(result);
+                $result.find("script").appendTo(domMainName);
+            });
         }
     },
     //菜单顶部点击折叠
@@ -151,18 +182,25 @@ var BaseFun = {
             if ($(this).data('id').toString() == dataIndex) {
                 $(this).show().siblings('.J_iframe').hide();
                 //重新加载
-                $(this).attr('src', dataUrl).load(function() {});
+                //$(this).attr('src', dataUrl).load(function() {});
                 flag = false;
             }
         });
 
         // 添加选项卡对应的iframe
         if (flag) {
-            var new_iframe = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataIndex + '" seamless></iframe>';
-            $('.J_mainContent').find('iframe.J_iframe').hide().parents('.J_mainContent').append(new_iframe);
+            var new_iframe = '<div class="J_iframe" name="iframe' + dataIndex + '" data-url="' + dataUrl + '" data-id="' + dataIndex + '"></div>';
+            $('.J_mainContent').find('div.J_iframe').hide().parents('.J_mainContent').append(new_iframe);
 
+            //$(".J_iframe[data-id='" + dataIndex + "']").load(dataUrl);
 
-            // $('.J_mainContent iframe:visible').load();
+            $.ajaxSetup({ cache: false });
+            var domName = ".J_iframe[data-id='" + dataIndex + "']";
+
+            $(domName).load(dataUrl + " #content ", function (result) {
+                $result = $(result);
+                $result.find("script").appendTo(domName);
+            });
 
             var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataIndex + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
             $('.J_menuTab').removeClass('active');
