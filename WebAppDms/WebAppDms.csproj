@@ -194,13 +194,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dms\Area\Bas\test.html" />
+    <Content Include="Dms\Area\Index\Css\index.css" />
     <Content Include="Dms\Area\Index\Header.html" />
     <Content Include="Dms\Area\Index\SideBar.html" />
     <Content Include="Dms\Area\Index\Tabs.html" />
     <Content Include="Dms\Area\Login\Css\login.css" />
     <Content Include="Dms\Area\Login\Js\Login.js" />
     <Content Include="Dms\Area\Main\Js\Main.js" />
+    <Content Include="Dms\Area\Sys\Module\index.html" />
     <Content Include="Dms\Css\base.css" />
     <Content Include="Dms\Css\bootstrap-table.css" />
     <Content Include="Dms\Css\bootstrap-theme.min.css" />
@@ -584,8 +585,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Dms\Area\Bas\" />
     <Folder Include="Dms\Area\Pur\" />
-    <Folder Include="Dms\Area\Sys\" />
+    <Folder Include="Dms\Area\Sys\Js\" />
     <Folder Include="Dms\Area\Ware\" />
   </ItemGroup>
   <ItemGroup>

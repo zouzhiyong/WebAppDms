@@ -76,31 +76,33 @@ var BaseFun = {
             $.ajaxSetup({ async: false, cache: false });
             //加载页头
             var domHeaderName = "div[name='header']";
-            $(domHeaderName).load($(domHeaderName).data("url") + " .content", function (result) {
+            $(domHeaderName).load($(domHeaderName).data("url") + " .LayoutHeader", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domHeaderName);
                 $(domHeaderName).removeAttr("data-url");
             });
             //加载左边菜单
             var domMenuName = "div[name='menu']";
-            $(domMenuName).load($(domMenuName).data("url") + " .content", function (result) {
+            $(domMenuName).load($(domMenuName).data("url") + " .LayoutMenu", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domMenuName);
                 $(domMenuName).removeAttr("data-url");
             });
             //加载工具栏
             var domTabsName = "div[name='tabs']";
-            $(domTabsName).load($(domTabsName).data("url") + " .content", function (result) {
+            $(domTabsName).load($(domTabsName).data("url") + " .LayoutTabs", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domTabsName);
                 $(domTabsName).removeAttr("data-url");
             });
             //加载主页
             var domMainName = ".J_iframe[data-id='0']";
-            $(domMainName).load($(domMainName).data("url") + " .content", function (result) {
+            $(domMainName).load($(domMainName).data("url") + " .LayoutMain", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domMainName);
+                $("#_loginloadIcon").hide();
             });
+            
         }
     },
     //菜单顶部点击折叠
@@ -195,14 +197,16 @@ var BaseFun = {
             var new_iframe = '<div class="J_iframe" name="iframe' + dataIndex + '" data-url="' + dataUrl + '" data-id="' + dataIndex + '"></div>';
             $('.J_mainContent').find('div.J_iframe').hide().parents('.J_mainContent').append(new_iframe);
 
-            //$(".J_iframe[data-id='" + dataIndex + "']").load(dataUrl);
-
             $.ajaxSetup({ cache: false });
             var domName = ".J_iframe[data-id='" + dataIndex + "']";
 
-            $(domName).load(dataUrl + " .content ", function (result) {
+            $(domName).load(dataUrl + " .Layout ", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domName);
+                //给每个页面标题赋值
+                if ($(".layoutTitle").length > 0) { 
+                    $(".layoutTitle").text(menuName);
+                } 
             });
 
             var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataIndex + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
