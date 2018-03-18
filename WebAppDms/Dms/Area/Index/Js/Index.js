@@ -109,8 +109,8 @@ var BaseFun = {
     collapse: function() {
         $(".side_bar .menu").animate({ opacity: '0' }, 0);
         if ($("body").hasClass("mini-navbar")) {
-            $(".side_bar").animate({ "width": "180px" }, 200);
-            $(".main").animate({ marginLeft: "180px" }, 200);
+            $(".side_bar").animate({ "width": "200px" }, 200);
+            $(".main").animate({ marginLeft: "200px" }, 200);
         } else {
             $(".side_bar").animate({ "width": "60px" }, 200);
             $(".main").animate({ marginLeft: "60px" }, 200);
@@ -197,10 +197,10 @@ var BaseFun = {
             var new_iframe = '<div class="J_iframe" name="iframe' + dataIndex + '" data-url="' + dataUrl + '" data-id="' + dataIndex + '"></div>';
             $('.J_mainContent').find('div.J_iframe').hide().parents('.J_mainContent').append(new_iframe);
 
-            $.ajaxSetup({ cache: false });
+            $.ajaxSetup({ cache: false, method: 'GET', });
             var domName = ".J_iframe[data-id='" + dataIndex + "']";
-
-            $(domName).load(dataUrl + " .Layout ", function (result) {
+            
+            $(domName).load(dataUrl + '?random=' + Math.random() + " .Layout ", function (result) {
                 $result = $(result);
                 $result.find("script").appendTo(domName);
                 //给每个页面标题赋值
@@ -285,6 +285,7 @@ var BaseFun = {
             $('.J_mainContent .J_iframe').each(function() {
                 if ($(this).data('id') == closeTabId) {
                     $(this).remove();
+                    
                     return false;
                 }
             });

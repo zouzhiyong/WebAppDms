@@ -18,33 +18,35 @@ var ajaxGloble = function() {
 
     $(document).ajaxStart(function() {
         //超过500毫秒才会显示加载层
-        //setTimeout(function() {
+        setTimeout(function() {
             if (loadTimeOut) {
                 window.top.$(".loadingBox.ajax", window.top.document).remove();
                 $("body").append(loading);
             }
-        //}, 500);
-    }).ajaxSuccess(function(e, xhr, o) {
-        //判断返回状态是否为真
-        if (xhr.responseJSON.result == true) {
-            if (xhr.responseJSON.message != "" && xhr.responseJSON.message != null) {
-                parent.layer.msg(xhr.responseJSON.message, {
-                    icon: 6,
-                    offset: 't',
-                    anim: 4
+        }, 500);
+    }).ajaxSuccess(function (e, xhr, o) {
+        try{
+            //判断返回状态是否为真
+            if (xhr.responseJSON.result == true) {
+                if (xhr.responseJSON.message != "" && xhr.responseJSON.message != null) {
+                    new Vue().$message({
+                        message: xhr.responseJSON.message,
+                        type: 'success'
+                    });              
+                }
+            }
+            //判断返回状态是否为否
+            if (xhr.responseJSON.result == false) {
+                new Vue().$message({
+                    message: xhr.responseJSON.message,
+                    type: 'success'
                 });
+                if (xhr.responseJSON.direct) {
+                    window.location.href = xhr.responseJSON.direct;
+                }
             }
-        }
-        //判断返回状态是否为否
-        if (xhr.responseJSON.result == false) {
-            parent.layer.msg(xhr.responseJSON.message, {
-                icon: 5,
-                offset: 't',
-                anim: 6
-            });
-            if (xhr.responseJSON.direct) {
-                window.location.href = xhr.responseJSON.direct;
-            }
+        }catch(e){
+
         }
     }).ajaxError(function(e, xhr, o) {
         if (xhr.statusText == "abort") {
@@ -52,17 +54,20 @@ var ajaxGloble = function() {
         }
 
         if (xhr.statusText == "timeout") {
-            parent.layer.msg("访问超时！", {
-                icon: 5,
-                offset: 't',
-                anim: 6
+            new Vue().$message({
+                message: "访问超时！",
+                type: 'error'
             });
         } else {
-            parent.layer.msg(xhr.statusText, {
-                icon: 5,
-                offset: 't',
-                anim: 6
+            new Vue().$message({
+                message: xhr.statusText,
+                type: 'error'
             });
+            //parent.layer.msg(xhr.statusText, {
+            //    icon: 5,
+            //    offset: 't',
+            //    anim: 6
+            //});
         }
         //layer.close(index);
         loadTimeOut = false;

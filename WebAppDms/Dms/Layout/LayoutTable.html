@@ -1,0 +1,8 @@
+﻿<div>
+    <el-table ref="table" :data="tableData" style="width: 100%" border>
+        <el-table-column v-for="item in columns" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
+    </el-table>
+    <el-pagination background prev-text="上一页" next-text="下一页" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="pageSize" layout="slot,->,prev, pager, next" :total="total">
+        <span class="demonstration">显示第 {{pageSize * currentPage - pageSize + (total==0?0:1)}} 到第 {{((pageSize * currentPage) > total ? total : (pageSize * currentPage))}} 条记录，总共 {{total}} 条记录</span>
+    </el-pagination>
+</div>

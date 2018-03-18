@@ -6,7 +6,7 @@
 
 header {
     height: 60px;
-    padding: 0 20px;
+    padding: 0 20px 0 0;
 }
 
 header:after {
@@ -48,7 +48,7 @@ header .header_logo {
 }
 
 .side_bar {
-    width: 180px;
+    width: 200px;
     position: absolute;
     height: calc(100% - 60px)
 }
@@ -147,7 +147,7 @@ body:not(.mini-navbar) .side_bar>.menu>ul>li {
 }
 
 .main {
-    margin-left: 180px;
+    margin-left: 200px;
     height: calc(100% - 60px);
     position: inherit;
 }

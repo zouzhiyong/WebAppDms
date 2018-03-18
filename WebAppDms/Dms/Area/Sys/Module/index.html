@@ -2,24 +2,48 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>菜单模块</title>
     <meta charset="utf-8" />
 </head>
 <body>
-    <div class="Layout container-fluid" style="height:100%">
+    <div class="Layout container-fluid" style="height:100%" id="SysModuleIndex180318">
         <div class="row layoutTop">
             <div class="col-xs-2 layoutTitle"></div>
             <div class="col-xs-10 layoutTools"><el-button type="text" icon="el-icon-news">新建</el-button></div>
         </div>
         <div class="row LayoutContent">
             <div class="col-xs-12 Box">
-                <div class="col-xs-2 leftBox">123</div><div class="col-xs-10 rightBox">123</div>
+                <div class="leftBox">
+                    <el-tree ref="tree" :data="treeData" :props="defaultProps" node-key="FID" :expand-on-click-node="false" :current-node-key="0" :highlight-current="true" :default-expanded-keys="[0]" @node-click="handleNodeClick"></el-tree>
+                </div>
+                <div class="rightBox">
+                    <el-table ref="table" :data="tableData" size="small" style="width: 100%" border  height="calc(100% - 40px)">
+                        <el-table-column type="index" width="50" header-align="center" align="center">
+                            <template slot-scope="scope">
+                                {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-for="item in columns" :prop="item.prop" :label="item.label" :width="item.width" header-align="center" :align="item.align" :formatter="item.formatter"></el-table-column>
+                        <el-table-column label="操作" width="120" align="center" header-align="center">
+                            <template slot-scope="scope">
+                                <span style="width:32px;display:inline-block">
+                                    <el-button :disabled="scope.row.IsSystem==1" type="text" icon="el-icon-edit" @click="handleEditClick(scope.row)"></el-button>
+                                </span>
+                                <span style="width:32px;display:inline-block">
+                                    <el-button :disabled="scope.row.IsSystem==1 || parseInt(scope.row.isRole)!=0" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"></el-button>
+                                </span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination background prev-text="上一页" next-text="下一页" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="pageSize" layout="slot,->,prev, pager, next" :total="total">
+                        <span class="demonstration">显示第 {{pageSize * currentPage - pageSize + (total==0?0:1)}} 到第 {{((pageSize * currentPage) > total ? total : (pageSize * currentPage))}} 条记录，总共 {{total}} 条记录</span>
+                    </el-pagination>
+                </div>
             </div>
         </div>
+        <script src="./Area/Sys/Js/Module.js"></script>
         <script>
-            new Vue({
-                el: ".layoutTop"
-            })
+            new Module().index();
         </script>
     </div>
 </body>

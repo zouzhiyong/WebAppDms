@@ -7,35 +7,9 @@
 </head>
 <body>
     <header class="LayoutHeader">
-        <img src="" class="header_logo">
+        <div class="logo" style="float:left"><img src="" width="199" height="60"></div>
         <nav class="nav navbar-top-links navbar-right">
-            <ul class="header_operations">
-                <!--<li>
-                    <a href="javascript:;" data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-tasks"></i> 主题
-                    </a>
-                    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel"><label>切换主题色</label></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <label>主题颜色</label>
-                                    <div>
-
-                                        <input type="color" autocomplete="off" class="input_color">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-custom-primary" data-dismiss="modal">切换</button>
-                                    <button type="button" class="btn btn-custom">重置</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>-->
+            <ul class="header_operations">             
                 <li class="dropdown dropdown-win">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                         <i class="fa fa-windows"></i>
@@ -52,6 +26,7 @@
                 </li>
                 <li class="dropdown dropdown-user">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+                        <img style="height:38px;" alt="" class="img-circle" src="" onerror="this.src = './Img/user.png';">
                         <span class="username username-hide-on-mobile">系统管理员 </span>
                         <i class="fa fa-angle-down"></i>
                     </a>
@@ -83,6 +58,11 @@
 
             </ul>
         </nav>
+        <script>
+            var UserInfo = JSON.parse(sessionStorage.user);
+            $(".logo img").attr("src", UserInfo.TradeMark);
+            $(".img-circle").attr("src", UserInfo.avatar);
+        </script>
     </header>
 </body>
 </html>

@@ -201,6 +201,7 @@
     <Content Include="Dms\Area\Login\Css\login.css" />
     <Content Include="Dms\Area\Login\Js\Login.js" />
     <Content Include="Dms\Area\Main\Js\Main.js" />
+    <Content Include="Dms\Area\Sys\Js\Module.js" />
     <Content Include="Dms\Area\Sys\Module\index.html" />
     <Content Include="Dms\Css\base.css" />
     <Content Include="Dms\Css\bootstrap-table.css" />
@@ -210,6 +211,7 @@
     <Content Include="Dms\Css\font-awesome.css" />
     <Content Include="Dms\Css\font-awesome.min.css" />
     <Content Include="Dms\Css\global.css" />
+    <Content Include="Dms\Css\index.css" />
     <Content Include="Dms\Css\layout.css" />
     <Content Include="Dms\Fonts\fontawesome-webfont.svg" />
     <Content Include="Dms\Iconfont\demo.css" />
@@ -219,12 +221,14 @@
     <Content Include="Dms\Iconfont\iconfont.css" />
     <Content Include="Dms\Iconfont\iconfont.js" />
     <Content Include="Dms\Iconfont\iconfont.svg" />
+    <Content Include="Dms\Img\user.png" />
     <Content Include="Dms\index.html" />
     <Content Include="Dms\Js\ajaxData.js" />
     <Content Include="Dms\Js\bootstrap-table.js" />
     <Content Include="Dms\Js\bootstrap.min.js" />
     <Content Include="Dms\Js\echarts.min.js" />
     <Content Include="Dms\Area\Index\Js\Index.js" />
+    <Content Include="Dms\Js\index.js" />
     <Content Include="Dms\Js\jquery.min.js" />
     <Content Include="Dms\Area\Main\Main.html" />
     <Content Include="Dms\Js\layer\layer.js" />
@@ -237,7 +241,9 @@
     <Content Include="Dms\Js\layer\theme\default\loading-1.gif" />
     <Content Include="Dms\Js\layer\theme\default\loading-2.gif" />
     <Content Include="Dms\Js\Router.js" />
+    <Content Include="Dms\Js\tableJs.js" />
     <Content Include="Dms\Js\vue.js" />
+    <Content Include="Dms\Layout\LayoutTable.html" />
     <Content Include="Dms\login.html" />
     <Content Include="Global.asax" />
     <Content Include="Models\Model.Context.tt">
@@ -575,6 +581,8 @@
     <Content Include="Dms\Iconfont\iconfont.eot" />
     <Content Include="Dms\Iconfont\iconfont.ttf" />
     <Content Include="Dms\Iconfont\iconfont.woff" />
+    <Content Include="Dms\Css\fonts\element-icons.woff" />
+    <Content Include="Dms\Css\fonts\element-icons.ttf" />
     <None Include="Properties\PublishProfiles\webAppDms.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -587,7 +595,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Dms\Area\Bas\" />
     <Folder Include="Dms\Area\Pur\" />
-    <Folder Include="Dms\Area\Sys\Js\" />
     <Folder Include="Dms\Area\Ware\" />
   </ItemGroup>
   <ItemGroup>
